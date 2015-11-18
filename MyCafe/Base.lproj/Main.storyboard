@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wXx-9t-KzW">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -20,6 +21,88 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-36" y="187"/>
+        </scene>
+        <!--MyCafé-->
+        <scene sceneID="aJv-iE-TgW">
+            <objects>
+                <tableViewController id="adg-mu-C2s" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="uvA-x4-nB1">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <stackView key="tableHeaderView" opaque="NO" tag="1" contentMode="scaleToFill" axis="vertical" id="oHU-Wc-9fn">
+                            <rect key="frame" x="0.0" y="64" width="600" height="73"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="9G4-XH-qjr">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <variation key="widthClass=compact" misplaced="YES">
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
+                                    </variation>
+                                </searchBar>
+                                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Tfg-Fm-tOg">
+                                    <rect key="frame" x="0.0" y="44" width="600" height="30"/>
+                                    <segments>
+                                        <segment title="Map"/>
+                                        <segment title="Sort"/>
+                                        <segment title="Filter"/>
+                                    </segments>
+                                    <variation key="heightClass=compact" misplaced="YES">
+                                        <rect key="frame" x="0.0" y="44" width="600" height="30"/>
+                                    </variation>
+                                    <variation key="widthClass=compact" misplaced="YES">
+                                        <rect key="frame" x="0.0" y="44" width="400" height="30"/>
+                                    </variation>
+                                </segmentedControl>
+                            </subviews>
+                            <variation key="heightClass=compact-widthClass=compact" ambiguous="YES">
+                                <rect key="frame" x="0.0" y="64" width="400" height="73"/>
+                            </variation>
+                        </stackView>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Entry" id="4K8-bD-ARF">
+                                <rect key="frame" x="0.0" y="165" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4K8-bD-ARF" id="7sY-2G-3Wr">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="adg-mu-C2s" id="6Yf-yZ-cQT"/>
+                            <outlet property="delegate" destination="adg-mu-C2s" id="Jw1-od-ZSN"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="MyCafé" id="Qo9-SX-ZAf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="EHj-vU-0l2">
+                            <connections>
+                                <segue destination="BYZ-38-t0r" kind="show" id="QGd-rj-nSD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="btk-dR-xZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-741" y="192"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="6ra-1N-kvg">
+            <objects>
+                <navigationController id="wXx-9t-KzW" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2SD-pT-nN4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="adg-mu-C2s" kind="relationship" relationship="rootViewController" id="2wq-Xk-ftk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DWf-nc-mWF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1474.5" y="187.5"/>
         </scene>
     </scenes>
 </document>
