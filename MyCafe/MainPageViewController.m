@@ -7,14 +7,14 @@
 //
 
 #import "MainPageViewController.h"
-#import "ContainerViewController.h"
 
 static NSString *_zeroSegmentName = @"Map"; //initial name
 static BOOL _isMapTitle = YES;
 
 @interface MainPageViewController ()
 
-@property (nonatomic) ContainerViewController *containerViewController;
+@property (nonatomic) IBOutlet UIView *mapView;
+@property (nonatomic) IBOutlet UIView *listView;
 
 @end
 
@@ -23,6 +23,7 @@ static BOOL _isMapTitle = YES;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.mapView setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,7 +38,6 @@ static BOOL _isMapTitle = YES;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    self.containerViewController = segue.destinationViewController; //DO NOT DELETE
 }
 
 - (IBAction)segmentTriggered:(id)sender {
@@ -45,8 +45,7 @@ static BOOL _isMapTitle = YES;
     switch (mapSortFilter.selectedSegmentIndex) {
         case 0:
             NSLog(@"%@ pressed", _zeroSegmentName);
-            [self swapTitle];
-            [self.containerViewController swapView];
+            [self swapView];
             [mapSortFilter setTitle:_zeroSegmentName forSegmentAtIndex:0];
             break;
         case 1:
@@ -58,15 +57,18 @@ static BOOL _isMapTitle = YES;
     }
 }
 
-- (void)swapTitle {
+- (void)swapView {
     if (_isMapTitle) {
         _zeroSegmentName = @"List";
+        [self.listView setHidden:YES];
+        [self.mapView setHidden:NO];
         _isMapTitle = NO;
     } else {
         _zeroSegmentName = @"Map";
+        [self.mapView setHidden:YES];
+        [self.listView setHidden:NO];
         _isMapTitle = YES;
     }
-    
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  ContainerViewController.h
+//  MapViewController.h
 //  MyCafe
 //
 //  Created by User on 11/19/15.
@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
-@interface ContainerViewController : UIViewController
-
-- (void)swapView;
+@interface MapViewController : UIViewController
 
 @end

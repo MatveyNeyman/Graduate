@@ -12,8 +12,9 @@
 		CE0F03AC1BFCD93600A785A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AA1BFCD93600A785A9 /* Main.storyboard */; };
 		CE0F03AE1BFCD93600A785A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */; };
 		CE0F03B11BFCD93600A785A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AF1BFCD93600A785A9 /* LaunchScreen.storyboard */; };
+		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
+		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
-		CE6457CD1BFDDC96004B59AC /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457CC1BFDDC96004B59AC /* ContainerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,10 +26,11 @@
 		CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0F03B01BFCD93600A785A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0F03B21BFCD93600A785A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE59C0421BFE517F005E414B /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		CE59C0431BFE517F005E414B /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		CE59C0451BFE5238005E414B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
-		CE6457CB1BFDDC95004B59AC /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
-		CE6457CC1BFDDC96004B59AC /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +48,7 @@
 		CE0F03951BFCD93600A785A9 = {
 			isa = PBXGroup;
 			children = (
+				CE59C0451BFE5238005E414B /* MapKit.framework */,
 				CE0F03A01BFCD93600A785A9 /* MyCafe */,
 				CE0F039F1BFCD93600A785A9 /* Products */,
 			);
@@ -65,8 +69,8 @@
 				CE0F03A51BFCD93600A785A9 /* AppDelegate.m */,
 				CE6457C81BFDD83E004B59AC /* MainPageViewController.h */,
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
-				CE6457CB1BFDDC95004B59AC /* ContainerViewController.h */,
-				CE6457CC1BFDDC96004B59AC /* ContainerViewController.m */,
+				CE59C0421BFE517F005E414B /* MapViewController.h */,
+				CE59C0431BFE517F005E414B /* MapViewController.m */,
 				CE0F03AA1BFCD93600A785A9 /* Main.storyboard */,
 				CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */,
 				CE0F03AF1BFCD93600A785A9 /* LaunchScreen.storyboard */,
@@ -156,9 +160,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */,
-				CE6457CD1BFDDC96004B59AC /* ContainerViewController.m in Sources */,
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
+				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
