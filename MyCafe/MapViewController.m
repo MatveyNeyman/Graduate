@@ -89,7 +89,7 @@
     [self.mapView setRegion:coordinateRegion animated:YES];
 }
 
-- (IBAction)showMyLocationPressed:(id)sender {
+- (IBAction)showMyLocationClicked:(id)sender {
     CLLocationCoordinate2D currentLocationCoordinate = self.locationManager.location.coordinate;
     [self.mapView setCenterCoordinate:currentLocationCoordinate animated:YES];
 }

@@ -71,7 +71,13 @@
                             <constraint firstAttribute="trailing" secondItem="I6g-uL-Lqg" secondAttribute="trailing" id="lvl-18-KdP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="MyCafé" id="QUt-9b-9Dp"/>
+                    <navigationItem key="navigationItem" title="MyCafé" id="QUt-9b-9Dp">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Icl-fj-Da6">
+                            <connections>
+                                <segue destination="qFr-RU-UVa" kind="show" id="bCt-zf-nhv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="listView" destination="Xdt-CG-DzN" id="Qew-WL-gB4"/>
                         <outlet property="mapView" destination="Ll6-iF-LB0" id="n43-Bm-E8C"/>
@@ -116,7 +122,7 @@
                                 <rect key="frame" x="522" y="412" width="58" height="30"/>
                                 <state key="normal" title="CENTER"/>
                                 <connections>
-                                    <action selector="showMyLocationPressed:" destination="ffS-Zi-Jxl" eventType="touchUpInside" id="Ij2-0G-KgB"/>
+                                    <action selector="showMyLocationClicked:" destination="ffS-Zi-Jxl" eventType="touchUpInside" id="cll-Jv-ucC"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -165,7 +171,41 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnL-Np-WH4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-43" y="430"/>
+            <point key="canvasLocation" x="-35" y="494"/>
+        </scene>
+        <!--NewRecord-->
+        <scene sceneID="VGm-Se-LLp">
+            <objects>
+                <viewController title="NewRecord" id="qFr-RU-UVa" customClass="NewRecordViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xJq-U0-Lw7"/>
+                        <viewControllerLayoutGuide type="bottom" id="SnO-cM-AIz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wSM-by-0O8">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="New Record" id="9c9-wh-cFK">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="SFH-1L-ZzE">
+                            <connections>
+                                <action selector="cancelButtonClicked:" destination="qFr-RU-UVa" id="5zl-5E-VAe"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="0rA-jB-8EX">
+                            <connections>
+                                <action selector="doneButtonClicked:" destination="qFr-RU-UVa" id="fTb-KF-kPE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cancelButton" destination="SFH-1L-ZzE" id="AdA-OR-t1Z"/>
+                        <outlet property="doneButton" destination="0rA-jB-8EX" id="VVa-eY-Ho8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SuZ-Pb-7o5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="649" y="193"/>
         </scene>
     </scenes>
 </document>
