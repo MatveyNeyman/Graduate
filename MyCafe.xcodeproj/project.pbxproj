@@ -15,6 +15,7 @@
 		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
+		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		CE59C0451BFE5238005E414B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
+		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */,
 				CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,6 +51,7 @@
 		CE0F03951BFCD93600A785A9 = {
 			isa = PBXGroup;
 			children = (
+				CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */,
 				CE59C0451BFE5238005E414B /* MapKit.framework */,
 				CE0F03A01BFCD93600A785A9 /* MyCafe */,
 				CE0F039F1BFCD93600A785A9 /* Products */,

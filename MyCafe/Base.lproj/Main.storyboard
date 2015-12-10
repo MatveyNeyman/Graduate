@@ -100,7 +100,7 @@
         <!--Map-->
         <scene sceneID="fcv-rT-4Eo">
             <objects>
-                <viewController title="Map" id="ffS-Zi-Jxl" sceneMemberID="viewController">
+                <viewController title="Map" id="ffS-Zi-Jxl" customClass="MapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8YA-4R-7Nm"/>
                         <viewControllerLayoutGuide type="bottom" id="4pw-sv-IVJ"/>
@@ -112,15 +112,28 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eog-2U-tg6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rIs-mu-2iB">
+                                <rect key="frame" x="522" y="412" width="58" height="30"/>
+                                <state key="normal" title="CENTER"/>
+                                <connections>
+                                    <action selector="showMyLocationPressed:" destination="ffS-Zi-Jxl" eventType="touchUpInside" id="Ij2-0G-KgB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Eog-2U-tg6" secondAttribute="trailing" id="Sto-0e-7I7"/>
-                            <constraint firstItem="Eog-2U-tg6" firstAttribute="leading" secondItem="bwM-sc-4tc" secondAttribute="leading" id="eBE-9J-N1r"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Eog-2U-tg6" secondAttribute="bottom" id="roT-xD-L0c"/>
-                            <constraint firstAttribute="topMargin" secondItem="Eog-2U-tg6" secondAttribute="top" id="shD-dq-dhs"/>
+                            <constraint firstItem="Eog-2U-tg6" firstAttribute="bottom" secondItem="4pw-sv-IVJ" secondAttribute="top" id="5ah-pC-vQb"/>
+                            <constraint firstItem="Eog-2U-tg6" firstAttribute="top" secondItem="8YA-4R-7Nm" secondAttribute="bottom" id="9uq-zn-mCs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rIs-mu-2iB" secondAttribute="trailing" id="d8Q-QT-Nj3"/>
+                            <constraint firstItem="Eog-2U-tg6" firstAttribute="leading" secondItem="bwM-sc-4tc" secondAttribute="leading" id="lZE-M0-rZG"/>
+                            <constraint firstAttribute="bottom" secondItem="rIs-mu-2iB" secondAttribute="bottom" constant="20" symbolic="YES" id="nJM-Ai-ieG"/>
+                            <constraint firstAttribute="trailing" secondItem="Eog-2U-tg6" secondAttribute="trailing" id="vaR-KB-lRn"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="Eog-2U-tg6" id="aBQ-pX-h1W"/>
+                        <outlet property="showMyLocation" destination="rIs-mu-2iB" id="jyM-DF-G1t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a8l-bS-Mv1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

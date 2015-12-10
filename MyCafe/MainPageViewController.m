@@ -8,11 +8,12 @@
 
 #import "MainPageViewController.h"
 
-static NSString *_zeroSegmentName = @"Map"; //initial name
-static BOOL _isMapTitle = YES;
+static NSString *_zeroSegmentName = @"Map"; //initial zero segment's name in UISegmentedControl
+static BOOL _isMapTitle = YES;              //initial flag
 
 @interface MainPageViewController ()
 
+// Outlets for containers which contain Map or List scenes
 @property (nonatomic) IBOutlet UIView *mapView;
 @property (nonatomic) IBOutlet UIView *listView;
 
@@ -23,7 +24,9 @@ static BOOL _isMapTitle = YES;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"ListView loaded");
     [self.mapView setHidden:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,10 +52,10 @@ static BOOL _isMapTitle = YES;
             [mapSortFilter setTitle:_zeroSegmentName forSegmentAtIndex:0];
             break;
         case 1:
-            NSLog(@"sort");
+            NSLog(@"sort pressed");
             break;
         case 2:
-            NSLog(@"filter");
+            NSLog(@"filter pressed");
             break;
     }
 }
