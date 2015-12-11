@@ -12,6 +12,8 @@
 		CE0F03AC1BFCD93600A785A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AA1BFCD93600A785A9 /* Main.storyboard */; };
 		CE0F03AE1BFCD93600A785A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */; };
 		CE0F03B11BFCD93600A785A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AF1BFCD93600A785A9 /* LaunchScreen.storyboard */; };
+		CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */; };
+		CE58ECEF1C1AFA3C00B82FEB /* TypesOfPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58ECEE1C1AFA3C00B82FEB /* TypesOfPlace.m */; };
 		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
@@ -28,6 +30,10 @@
 		CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0F03B01BFCD93600A785A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0F03B21BFCD93600A785A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE58ECE61C1ADCEB00B82FEB /* TypeSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeSelectorViewController.h; sourceTree = "<group>"; };
+		CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeSelectorViewController.m; sourceTree = "<group>"; };
+		CE58ECED1C1AFA3C00B82FEB /* TypesOfPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesOfPlace.h; sourceTree = "<group>"; };
+		CE58ECEE1C1AFA3C00B82FEB /* TypesOfPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypesOfPlace.m; sourceTree = "<group>"; };
 		CE59C0421BFE517F005E414B /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		CE59C0431BFE517F005E414B /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		CE59C0451BFE5238005E414B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -76,14 +82,17 @@
 				CE0F03A51BFCD93600A785A9 /* AppDelegate.m */,
 				CE6457C81BFDD83E004B59AC /* MainPageViewController.h */,
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
-				CEECA79A1C1A0B2100A9F84E /* NewRecordViewController.h */,
-				CEECA79B1C1A0B2100A9F84E /* NewRecordViewController.m */,
 				CE59C0421BFE517F005E414B /* MapViewController.h */,
 				CE59C0431BFE517F005E414B /* MapViewController.m */,
+				CEECA79A1C1A0B2100A9F84E /* NewRecordViewController.h */,
+				CEECA79B1C1A0B2100A9F84E /* NewRecordViewController.m */,
+				CE58ECE61C1ADCEB00B82FEB /* TypeSelectorViewController.h */,
+				CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */,
 				CE0F03AA1BFCD93600A785A9 /* Main.storyboard */,
 				CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */,
 				CE0F03AF1BFCD93600A785A9 /* LaunchScreen.storyboard */,
 				CE0F03B21BFCD93600A785A9 /* Info.plist */,
+				CE58ECE91C1AF46F00B82FEB /* Data */,
 				CE0F03A11BFCD93600A785A9 /* Supporting Files */,
 			);
 			path = MyCafe;
@@ -95,6 +104,15 @@
 				CE0F03A21BFCD93600A785A9 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CE58ECE91C1AF46F00B82FEB /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				CE58ECED1C1AFA3C00B82FEB /* TypesOfPlace.h */,
+				CE58ECEE1C1AFA3C00B82FEB /* TypesOfPlace.m */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,11 +186,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE58ECEF1C1AFA3C00B82FEB /* TypesOfPlace.m in Sources */,
 				CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */,
 				CEECA79C1C1A0B2100A9F84E /* NewRecordViewController.m in Sources */,
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
 				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,
+				CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

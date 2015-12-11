@@ -50,12 +50,24 @@ static BOOL _isMapTitle = YES;              //initial flag
             NSLog(@"%@ pressed", _zeroSegmentName);
             [self swapView];
             [mapSortFilter setTitle:_zeroSegmentName forSegmentAtIndex:0];
+            if ([_zeroSegmentName  isEqual: @"List"]) {
+                [mapSortFilter removeSegmentAtIndex:1 animated:YES];
+            } else {
+                [mapSortFilter insertSegmentWithTitle:@"Sort" atIndex:1 animated:YES];
+            }
             break;
         case 1:
-            NSLog(@"sort pressed");
+            if ([mapSortFilter numberOfSegments] == 3) {
+                NSLog(@"sort pressed");
+                //sort list method
+            } else {
+                NSLog(@"filter pressed");
+                //filter map method
+            }
             break;
         case 2:
             NSLog(@"filter pressed");
+            //filter list method
             break;
     }
 }

@@ -8,9 +8,11 @@
 
 #import "NewRecordViewController.h"
 
-@interface NewRecordViewController ()
+@interface NewRecordViewController () <UITableViewDelegate>//<UINavigationControllerDelegate>
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 
 @end
 
@@ -19,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"New Record loaded");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,11 +39,18 @@
 }
 */
 - (IBAction)cancelButtonClicked:(id)sender {
-    NSLog(@"New Record appeared");
+    NSLog(@"New Record cancelled");
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)doneButtonClicked:(id)sender {
     
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

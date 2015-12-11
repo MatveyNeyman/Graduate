@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewRecordViewController : UIViewController
+@interface NewRecordViewController : UITableViewController
 
 @end
