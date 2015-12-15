@@ -10,4 +10,6 @@
 
 @interface TypeSelectorViewController : UITableViewController
 
+@property(strong, nonatomic) NSString *currentType;
+
 @end

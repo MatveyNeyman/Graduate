@@ -7,12 +7,15 @@
 //
 
 #import "NewRecordViewController.h"
+#import "TypeSelectorViewController.h"
 
-@interface NewRecordViewController () <UITableViewDelegate>//<UINavigationControllerDelegate>
+@interface NewRecordViewController ()
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
+@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
+@property(nonatomic) TypeSelectorViewController *typeSelectorViewController;
 
 @end
 
@@ -22,6 +25,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"New Record loaded");
+    self.selectedType = @"Restaurant";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    if (self.typeSelectorViewController.currentType) {
+        self.selectedType = self.typeSelectorViewController.currentType;
+    }
+    self.typeLabel.text = self.selectedType;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,19 +41,19 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    self.typeSelectorViewController = segue.destinationViewController;
+    self.typeSelectorViewController.currentType = self.selectedType;
+    NSLog(@"Current Type in prepare for segue: %@", self.typeSelectorViewController.currentType);
 }
-*/
+
 - (IBAction)cancelButtonClicked:(id)sender {
     NSLog(@"New Record cancelled");
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (IBAction)doneButtonClicked:(id)sender {
     
 }
