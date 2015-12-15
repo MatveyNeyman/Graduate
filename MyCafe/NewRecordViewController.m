@@ -11,13 +11,17 @@
 
 @interface NewRecordViewController ()
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
-@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
-@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
+@property(strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+@property(strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property(strong, nonatomic) IBOutlet UITextField *nameTextField;
+@property(strong, nonatomic) IBOutlet UILabel *typeLabel;
+@property (strong, nonatomic) IBOutlet UITextField *addressTextField;
+@property (strong, nonatomic) IBOutlet UITableView *createRecordTableView;
+
 @property(nonatomic) TypeSelectorViewController *typeSelectorViewController;
 
 @end
+
 
 @implementation NewRecordViewController
 
@@ -41,6 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -58,11 +63,23 @@
     
 }
 
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001;
 }
 
 @end
