@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wXx-9t-KzW">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -173,14 +172,14 @@
             </objects>
             <point key="canvasLocation" x="-35" y="494"/>
         </scene>
-        <!--New Record-->
+        <!--Create Record-->
         <scene sceneID="w4h-c2-GXX">
             <objects>
-                <tableViewController id="R7U-2E-ZBN" customClass="NewRecordViewController" sceneMemberID="viewController">
+                <tableViewController id="R7U-2E-ZBN" userLabel="Create Record" customClass="CreateRecordViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="oa8-nU-LGx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection id="D4b-Bi-GyL">
                                 <cells>
@@ -278,6 +277,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zvg-Zj-CUv">
                                                     <rect key="frame" x="533" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="useCurrentLocationSwitchTriggered:" destination="R7U-2E-ZBN" eventType="valueChanged" id="yu0-wr-4g5"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -387,7 +389,7 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oNe-vE-EbC">
                                                     <rect key="frame" x="18" y="10" width="45" height="68"/>
-                                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="45" id="3RC-M2-yAz"/>
                                                         <constraint firstAttribute="height" constant="68" id="I9y-G0-WL0"/>
@@ -453,8 +455,19 @@
                         <outlet property="cancelButton" destination="SFH-1L-ZzE" id="DjV-es-Hst"/>
                         <outlet property="createRecordTableView" destination="oa8-nU-LGx" id="jPr-sA-Kl1"/>
                         <outlet property="doneButton" destination="0rA-jB-8EX" id="5wh-NS-eXi"/>
+                        <outlet property="fiveBucksButton" destination="dtZ-N4-ShS" id="6N4-R1-gOh"/>
+                        <outlet property="fiveStarsButton" destination="RG8-eK-Vf0" id="ccy-DL-bbF"/>
+                        <outlet property="fourBucksButton" destination="9JZ-9J-tvZ" id="gJA-07-etR"/>
+                        <outlet property="fourStarsButton" destination="Xng-es-jXu" id="GQm-aA-oYF"/>
                         <outlet property="nameTextField" destination="Npq-MU-whA" id="nSh-6N-Rn0"/>
+                        <outlet property="oneBuckButton" destination="Rlt-eb-lSQ" id="X4p-B6-vMH"/>
+                        <outlet property="oneStarButton" destination="f2u-W1-pQG" id="ELE-il-Vfc"/>
+                        <outlet property="threeBucksButton" destination="k04-Xf-Zc0" id="B4T-Vb-s3Z"/>
+                        <outlet property="threeStarsButton" destination="JxH-ub-IhV" id="1p3-Lc-Q5x"/>
+                        <outlet property="twoBucksButton" destination="UqY-hY-orh" id="bFE-9R-9Do"/>
+                        <outlet property="twoStarsButton" destination="IaX-zM-8zZ" id="6CF-zR-YcL"/>
                         <outlet property="typeLabel" destination="3Ul-Lg-ZVX" id="BAX-rG-hQ4"/>
+                        <outlet property="useCurrentLocationSwitch" destination="zvg-Zj-CUv" id="QpY-pO-v0q"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0gT-D8-tsZ" userLabel="First Responder" sceneMemberID="firstResponder"/>

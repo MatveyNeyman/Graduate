@@ -10,7 +10,7 @@
 
 @interface TypeSelectorViewController ()
 
-@property(strong, nonatomic) NSMutableArray<NSString *> *types;
+@property (strong, nonatomic) NSMutableArray<NSString *> *types;
 @property (strong, nonatomic) IBOutlet UITableView *typesTableView;
 
 @end

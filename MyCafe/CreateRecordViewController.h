@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewRecordViewController : UITableViewController
+@interface CreateRecordViewController : UITableViewController
 
-@property(strong, nonatomic) NSString *selectedType;
+@property (strong, nonatomic) NSString *selectedType;
 
 @end

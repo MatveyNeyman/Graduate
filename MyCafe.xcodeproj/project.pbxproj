@@ -18,7 +18,8 @@
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
 		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
-		CEECA79C1C1A0B2100A9F84E /* NewRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEECA79B1C1A0B2100A9F84E /* NewRecordViewController.m */; };
+		CEE49F3B1C21708500652F58 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE49F3A1C21708500652F58 /* Contacts.framework */; };
+		CEECA79C1C1A0B2100A9F84E /* CreateRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,8 +41,10 @@
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
 		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		CEECA79A1C1A0B2100A9F84E /* NewRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewRecordViewController.h; sourceTree = "<group>"; };
-		CEECA79B1C1A0B2100A9F84E /* NewRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewRecordViewController.m; sourceTree = "<group>"; };
+		CEE49F331C216DAE00652F58 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		CEE49F3A1C21708500652F58 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		CEECA79A1C1A0B2100A9F84E /* CreateRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateRecordViewController.h; sourceTree = "<group>"; };
+		CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateRecordViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEE49F3B1C21708500652F58 /* Contacts.framework in Frameworks */,
 				CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */,
 				CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */,
 			);
@@ -60,6 +64,8 @@
 		CE0F03951BFCD93600A785A9 = {
 			isa = PBXGroup;
 			children = (
+				CEE49F3A1C21708500652F58 /* Contacts.framework */,
+				CEE49F331C216DAE00652F58 /* AddressBookUI.framework */,
 				CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */,
 				CE59C0451BFE5238005E414B /* MapKit.framework */,
 				CE0F03A01BFCD93600A785A9 /* MyCafe */,
@@ -84,8 +90,8 @@
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
 				CE59C0421BFE517F005E414B /* MapViewController.h */,
 				CE59C0431BFE517F005E414B /* MapViewController.m */,
-				CEECA79A1C1A0B2100A9F84E /* NewRecordViewController.h */,
-				CEECA79B1C1A0B2100A9F84E /* NewRecordViewController.m */,
+				CEECA79A1C1A0B2100A9F84E /* CreateRecordViewController.h */,
+				CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */,
 				CE58ECE61C1ADCEB00B82FEB /* TypeSelectorViewController.h */,
 				CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */,
 				CE0F03AA1BFCD93600A785A9 /* Main.storyboard */,
@@ -188,7 +194,7 @@
 			files = (
 				CE58ECEF1C1AFA3C00B82FEB /* TypesOfPlace.m in Sources */,
 				CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */,
-				CEECA79C1C1A0B2100A9F84E /* NewRecordViewController.m in Sources */,
+				CEECA79C1C1A0B2100A9F84E /* CreateRecordViewController.m in Sources */,
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
 				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,
