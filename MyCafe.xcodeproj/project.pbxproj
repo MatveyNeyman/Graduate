@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A640527702B213AB5D05FEE5 /* Pods_MyCafe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */; };
 		CE0F03A31BFCD93600A785A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0F03A21BFCD93600A785A9 /* main.m */; };
 		CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0F03A51BFCD93600A785A9 /* AppDelegate.m */; };
 		CE0F03AC1BFCD93600A785A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AA1BFCD93600A785A9 /* Main.storyboard */; };
@@ -18,11 +19,12 @@
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
 		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
-		CEE49F3B1C21708500652F58 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE49F3A1C21708500652F58 /* Contacts.framework */; };
 		CEECA79C1C1A0B2100A9F84E /* CreateRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2132DFB9B65855E8FAE9337D /* Pods-MyCafe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCafe.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe.release.xcconfig"; sourceTree = "<group>"; };
+		4A1EFE8A885BE84DA1BAF82E /* Pods-MyCafe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCafe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe.debug.xcconfig"; sourceTree = "<group>"; };
 		CE0F039E1BFCD93600A785A9 /* MyCafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0F03A21BFCD93600A785A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE0F03A41BFCD93600A785A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -41,10 +43,9 @@
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
 		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		CEE49F331C216DAE00652F58 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
-		CEE49F3A1C21708500652F58 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		CEECA79A1C1A0B2100A9F84E /* CreateRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateRecordViewController.h; sourceTree = "<group>"; };
 		CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateRecordViewController.m; sourceTree = "<group>"; };
+		F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyCafe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,24 +53,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEE49F3B1C21708500652F58 /* Contacts.framework in Frameworks */,
 				CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */,
 				CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */,
+				A640527702B213AB5D05FEE5 /* Pods_MyCafe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52FD4A2D85CC65A49F664EC6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4A1EFE8A885BE84DA1BAF82E /* Pods-MyCafe.debug.xcconfig */,
+				2132DFB9B65855E8FAE9337D /* Pods-MyCafe.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		AE9A90A6B2144D83FEE55B9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CE0F03951BFCD93600A785A9 = {
 			isa = PBXGroup;
 			children = (
-				CEE49F3A1C21708500652F58 /* Contacts.framework */,
-				CEE49F331C216DAE00652F58 /* AddressBookUI.framework */,
 				CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */,
 				CE59C0451BFE5238005E414B /* MapKit.framework */,
 				CE0F03A01BFCD93600A785A9 /* MyCafe */,
 				CE0F039F1BFCD93600A785A9 /* Products */,
+				52FD4A2D85CC65A49F664EC6 /* Pods */,
+				AE9A90A6B2144D83FEE55B9D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,9 +146,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE0F03B51BFCD93600A785A9 /* Build configuration list for PBXNativeTarget "MyCafe" */;
 			buildPhases = (
+				B4DB08F9D10F244D6100B46A /* Check Pods Manifest.lock */,
 				CE0F039A1BFCD93600A785A9 /* Sources */,
 				CE0F039B1BFCD93600A785A9 /* Frameworks */,
 				CE0F039C1BFCD93600A785A9 /* Resources */,
+				D06F41AED7B63B999BC7AB77 /* Embed Pods Frameworks */,
+				21F98F0D5F4700F6B898281C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -186,6 +207,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		21F98F0D5F4700F6B898281C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B4DB08F9D10F244D6100B46A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D06F41AED7B63B999BC7AB77 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CE0F039A1BFCD93600A785A9 /* Sources */ = {
@@ -306,6 +375,7 @@
 		};
 		CE0F03B61BFCD93600A785A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A1EFE8A885BE84DA1BAF82E /* Pods-MyCafe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MyCafe/Info.plist;
@@ -318,6 +388,7 @@
 		};
 		CE0F03B71BFCD93600A785A9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2132DFB9B65855E8FAE9337D /* Pods-MyCafe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MyCafe/Info.plist;
