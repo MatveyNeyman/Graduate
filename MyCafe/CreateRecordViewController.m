@@ -11,8 +11,12 @@
 #import <CoreLocation/CoreLocation.h>
 #import <HCSStarRatingView/HCSStarRatingView.h>
 
-
-@interface CreateRecordViewController () <CLLocationManagerDelegate>
+@interface CreateRecordViewController () <CLLocationManagerDelegate,
+                                        UINavigationControllerDelegate, UIImagePickerControllerDelegate> // Both needed for image picker
+{
+    CGFloat pos; // Start position for the first photo
+    CGFloat gap; // Gap between photos and leading margin for the first photo
+}
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
@@ -38,7 +42,12 @@
 @property (strong, nonatomic) IBOutlet UIButton *fourBucksButton;
 @property (strong, nonatomic) IBOutlet UIButton *fiveBucksButton;
 
+@property (strong, nonatomic) IBOutlet UIButton *addPhotoButton;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollPhotosView;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
 @property (nonatomic) TypeSelectorViewController *typeSelectorViewController;
+
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLGeocoder *geocoder;
 
@@ -52,6 +61,8 @@
     // Do any additional setup after loading the view.
     NSLog(@"New Record loaded");
     self.selectedType = @"Restaurant";
+    pos = 0;
+    gap = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -172,7 +183,7 @@
                      withEmptyImageNamed:(NSString *)emptyImage
                withFilledImageNamed:(NSString *)filledImage
                              action:(SEL)action {
-    HCSStarRatingView *starRatingView = [HCSStarRatingView new];
+    HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] init];
     starRatingView.maximumValue = 5;
     starRatingView.minimumValue = 0;
     starRatingView.value = 0;
@@ -218,5 +229,90 @@
 - (IBAction)didChangePrice:(HCSStarRatingView *)sender {
     NSLog(@"Changed price to %.1f", sender.value);
 }
+
+- (IBAction)addPhoto:(id)sender {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    // If the device has a camera, take a picture, otherwise, just pick from photo library
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+// Dealing with taken picture
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    CGFloat ratio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
+    CGFloat imageWidth;     // Placeholder's width
+    CGFloat imageHeight;    // Placeholder's height
+    CGFloat originY;        // Placeholder's center point
+    
+    // Check portrait or landscape view
+    if (ratio >= 1) {
+        imageWidth = 70 / ratio;
+        imageHeight = 70;
+    } else {
+        imageWidth = 70;
+        imageHeight = 70 * ratio;
+    }
+    originY = (self.scrollPhotosView.frame.size.height - imageHeight) / 2;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, imageWidth, imageHeight)];
+
+    imageView.image = image;
+    [self.scrollPhotosView addSubview:imageView];
+    
+    /*
+    [[NSLayoutConstraint constraintWithItem:imageView
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self.scrollPhotosView
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1
+                                   constant:0] setActive:YES];
+    [[NSLayoutConstraint constraintWithItem:self.scrollPhotosView
+                                  attribute:NSLayoutAttributeLeadingMargin
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:imageView
+                                  attribute:NSLayoutAttributeLeadingMargin
+                                 multiplier:1
+                                   constant:0] setActive:YES];
+    
+    [[NSLayoutConstraint constraintWithItem:imageView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1
+                                   constant:69] setActive:YES];
+     
+    [[NSLayoutConstraint constraintWithItem:imageView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1
+                                   constant:45] setActive:YES];
+     */
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame = self.addPhotoButton.frame;
+        frame.origin.x = self.addPhotoButton.frame.origin.x + imageWidth + gap;
+        pos += imageWidth + gap;
+        self.addPhotoButton.translatesAutoresizingMaskIntoConstraints = YES;
+        self.addPhotoButton.frame = frame;
+    }];
+    
+}
+
+
+
 
 @end

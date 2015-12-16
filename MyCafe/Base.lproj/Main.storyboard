@@ -388,23 +388,43 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="87"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oNe-vE-EbC">
-                                                    <rect key="frame" x="18" y="10" width="45" height="68"/>
-                                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWI-Mc-p8F">
+                                                    <rect key="frame" x="8" y="0.0" width="584" height="87"/>
+                                                    <subviews>
+                                                        <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oNe-vE-EbC">
+                                                            <rect key="frame" x="8" y="9" width="45" height="69"/>
+                                                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="45" id="3RC-M2-yAz"/>
+                                                                <constraint firstAttribute="height" constant="69" id="I9y-G0-WL0"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="wh9-G7-qjP">
+                                                            <rect key="frame" x="8" y="29" width="46" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <state key="normal" title="Add photo"/>
+                                                            <connections>
+                                                                <action selector="addPhoto:" destination="R7U-2E-ZBN" eventType="touchUpInside" id="Okp-RG-HA4"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="45" id="3RC-M2-yAz"/>
-                                                        <constraint firstAttribute="height" constant="68" id="I9y-G0-WL0"/>
+                                                        <constraint firstItem="oNe-vE-EbC" firstAttribute="centerY" secondItem="zWI-Mc-p8F" secondAttribute="centerY" id="60c-t0-9TP"/>
+                                                        <constraint firstItem="wh9-G7-qjP" firstAttribute="centerY" secondItem="oNe-vE-EbC" secondAttribute="centerY" id="7eZ-8H-e1t"/>
+                                                        <constraint firstItem="wh9-G7-qjP" firstAttribute="top" secondItem="zWI-Mc-p8F" secondAttribute="top" constant="29" id="BPq-aW-hk5"/>
+                                                        <constraint firstItem="wh9-G7-qjP" firstAttribute="leading" secondItem="oNe-vE-EbC" secondAttribute="leading" id="Ebg-6v-usM"/>
+                                                        <constraint firstAttribute="bottom" secondItem="oNe-vE-EbC" secondAttribute="bottom" id="HDp-mm-xbO"/>
+                                                        <constraint firstItem="wh9-G7-qjP" firstAttribute="centerX" secondItem="oNe-vE-EbC" secondAttribute="centerX" id="NzC-EJ-4T4"/>
+                                                        <constraint firstItem="oNe-vE-EbC" firstAttribute="leading" secondItem="zWI-Mc-p8F" secondAttribute="leadingMargin" id="OpW-RH-GKQ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="oNe-vE-EbC" secondAttribute="trailing" constant="270" id="zQl-GQ-YCJ"/>
                                                     </constraints>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="wh9-G7-qjP">
-                                                    <rect key="frame" x="18" y="29" width="46" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <state key="normal" title="Add photo"/>
-                                                </button>
+                                                </scrollView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="oNe-vE-EbC" firstAttribute="centerY" secondItem="ghp-Ux-xxI" secondAttribute="centerY" id="m8t-jb-Qdb"/>
-                                                <constraint firstItem="oNe-vE-EbC" firstAttribute="leading" secondItem="ghp-Ux-xxI" secondAttribute="leadingMargin" constant="10" id="pqm-Ub-Ol2"/>
+                                                <constraint firstItem="zWI-Mc-p8F" firstAttribute="leading" secondItem="ghp-Ux-xxI" secondAttribute="leadingMargin" id="0hP-Io-HpD"/>
+                                                <constraint firstAttribute="bottom" secondItem="zWI-Mc-p8F" secondAttribute="bottom" id="0sw-5D-3Hx"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="zWI-Mc-p8F" secondAttribute="trailing" id="3UM-Rk-IBf"/>
+                                                <constraint firstItem="zWI-Mc-p8F" firstAttribute="top" secondItem="ghp-Ux-xxI" secondAttribute="top" id="xQs-F7-lgO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -452,6 +472,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addPhotoButton" destination="wh9-G7-qjP" id="PfV-Ax-Ods"/>
                         <outlet property="addressTextField" destination="VKq-KK-kRO" id="5xA-mS-mEr"/>
                         <outlet property="cancelButton" destination="SFH-1L-ZzE" id="DjV-es-Hst"/>
                         <outlet property="createRecordTableView" destination="oa8-nU-LGx" id="jPr-sA-Kl1"/>
@@ -460,9 +481,11 @@
                         <outlet property="fiveStarsButton" destination="RG8-eK-Vf0" id="ccy-DL-bbF"/>
                         <outlet property="fourBucksButton" destination="9JZ-9J-tvZ" id="gJA-07-etR"/>
                         <outlet property="fourStarsButton" destination="Xng-es-jXu" id="GQm-aA-oYF"/>
+                        <outlet property="imageView" destination="oNe-vE-EbC" id="EWL-hT-9Kp"/>
                         <outlet property="nameTextField" destination="Npq-MU-whA" id="nSh-6N-Rn0"/>
                         <outlet property="oneBuckButton" destination="Rlt-eb-lSQ" id="X4p-B6-vMH"/>
                         <outlet property="oneStarButton" destination="f2u-W1-pQG" id="ELE-il-Vfc"/>
+                        <outlet property="scrollPhotosView" destination="zWI-Mc-p8F" id="L9D-aj-34r"/>
                         <outlet property="threeBucksButton" destination="k04-Xf-Zc0" id="B4T-Vb-s3Z"/>
                         <outlet property="threeStarsButton" destination="JxH-ub-IhV" id="1p3-Lc-Q5x"/>
                         <outlet property="twoBucksButton" destination="UqY-hY-orh" id="bFE-9R-9Do"/>
