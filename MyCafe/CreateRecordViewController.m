@@ -16,6 +16,8 @@
 {
     CGFloat pos; // Start position for the first photo
     CGFloat gap; // Gap between photos and leading margin for the first photo
+    UIView *activeField;
+    UIEdgeInsets currentInsets;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -30,26 +32,21 @@
 
 @property (strong, nonatomic) IBOutlet UISwitch *useCurrentLocationSwitch;
 
-@property (strong, nonatomic) IBOutlet UIButton *oneStarButton;
-@property (strong, nonatomic) IBOutlet UIButton *twoStarsButton;
-@property (strong, nonatomic) IBOutlet UIButton *threeStarsButton;
-@property (strong, nonatomic) IBOutlet UIButton *fourStarsButton;
-@property (strong, nonatomic) IBOutlet UIButton *fiveStarsButton;
-
-@property (strong, nonatomic) IBOutlet UIButton *oneBuckButton;
-@property (strong, nonatomic) IBOutlet UIButton *twoBucksButton;
-@property (strong, nonatomic) IBOutlet UIButton *threeBucksButton;
-@property (strong, nonatomic) IBOutlet UIButton *fourBucksButton;
-@property (strong, nonatomic) IBOutlet UIButton *fiveBucksButton;
-
 @property (strong, nonatomic) IBOutlet UIButton *addPhotoButton;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollPhotosView;
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UITextView *notesTextView;
 
 @property (nonatomic) TypeSelectorViewController *typeSelectorViewController;
-
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLGeocoder *geocoder;
+
+@property (nonatomic) NSString *name;
+@property (nonatomic) NSString *type;
+@property (nonatomic) NSString *address;
+@property (nonatomic) NSInteger rating;
+@property (nonatomic) NSInteger price;
+@property (nonatomic) NSMutableArray<UIImage *> *photos;
+@property (nonatomic) NSString *notes;
 
 @end
 
@@ -59,10 +56,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSLog(@"New Record loaded");
+    //NSLog(@"New Record loaded");
     self.selectedType = @"Restaurant";
     pos = 0;
     gap = 10;
+    [self registerForKeyboardNotifications];
+    self.photos = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -93,6 +92,22 @@
 }
 
 - (IBAction)doneButtonClicked:(id)sender {
+    self.name = self.nameTextField.text;
+    self.type = self.selectedType;
+    self.address = self.addressTextField.text;
+    //self.rating = self.rating;
+    //self.price = self.price;
+    //self.photos = self.photos;
+    self.notes = self.notesTextView.text;
+    
+    NSLog(@"Create new record with the folloing fields: %@, %@, %@, %d, %d, %@, %@",
+          self.name,
+          self.type,
+          self.address,
+          self.rating,
+          self.price,
+          self.photos,
+          self.notes);
     
 }
 
@@ -116,13 +131,13 @@
 }
 
 - (IBAction)useCurrentLocationSwitchTriggered:(id)sender {
-    NSLog(@"Current Location Switch Triggered");
+    //NSLog(@"Current Location Switch Triggered");
     UISwitch *switcher = (UISwitch *) sender;
     if (switcher.isOn) {
-        NSLog(@"Switch is ON");
+        //NSLog(@"Switch is ON");
         [self feedAddress];
     } else {
-        NSLog(@"Switch is OFF");
+        //NSLog(@"Switch is OFF");
         self.addressTextField.text = nil;
     }
 }
@@ -164,14 +179,14 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([cell.reuseIdentifier isEqual:@"Rating"]) {
-        NSLog(@"Rating cell found");
+        //NSLog(@"Rating cell found");
         [self createStarRatingViewForCell:cell
                       withEmptyImageNamed:@"emptyStar"
                      withFilledImageNamed:@"filledStar"
                                    action:@selector(didChangeRating:)];
     }
     if ([cell.reuseIdentifier isEqual:@"Price"]) {
-        NSLog(@"Price cell found");
+        //NSLog(@"Price cell found");
         [self createStarRatingViewForCell:cell
                       withEmptyImageNamed:@"emptyCoin"
                      withFilledImageNamed:@"filledCoin"
@@ -224,10 +239,12 @@
 
 - (IBAction)didChangeRating:(HCSStarRatingView *)sender {
     NSLog(@"Changed rating to %.1f", sender.value);
+    self.rating = sender.value;
 }
 
 - (IBAction)didChangePrice:(HCSStarRatingView *)sender {
     NSLog(@"Changed price to %.1f", sender.value);
+    self.price = sender.value;
 }
 
 - (IBAction)addPhoto:(id)sender {
@@ -268,40 +285,7 @@
 
     imageView.image = image;
     [self.scrollPhotosView addSubview:imageView];
-    
-    /*
-    [[NSLayoutConstraint constraintWithItem:imageView
-                                  attribute:NSLayoutAttributeCenterY
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self.scrollPhotosView
-                                  attribute:NSLayoutAttributeCenterY
-                                 multiplier:1
-                                   constant:0] setActive:YES];
-    [[NSLayoutConstraint constraintWithItem:self.scrollPhotosView
-                                  attribute:NSLayoutAttributeLeadingMargin
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:imageView
-                                  attribute:NSLayoutAttributeLeadingMargin
-                                 multiplier:1
-                                   constant:0] setActive:YES];
-    
-    [[NSLayoutConstraint constraintWithItem:imageView
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1
-                                   constant:69] setActive:YES];
-     
-    [[NSLayoutConstraint constraintWithItem:imageView
-                                  attribute:NSLayoutAttributeWidth
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:nil
-                                  attribute:NSLayoutAttributeNotAnAttribute
-                                 multiplier:1
-                                   constant:45] setActive:YES];
-     */
-    
+
     [UIView animateWithDuration:0.5 animations:^{
         CGRect frame = self.addPhotoButton.frame;
         frame.origin.x = self.addPhotoButton.frame.origin.x + imageWidth + gap;
@@ -309,10 +293,79 @@
         self.addPhotoButton.translatesAutoresizingMaskIntoConstraints = YES;
         self.addPhotoButton.frame = frame;
     }];
-    
+    [self.photos addObject:image];
 }
 
+// Called in view controller setup code.
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    //NSLog(@"Keybord observer has been set");
+}
 
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    
+    //NSLog(@"Keybord was shown");
+    
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 
+    // Initialize currentInsets varyable by current table view's insets
+    currentInsets = self.createRecordTableView.contentInset;
+    
+    // Construct visible rectangle
+    CGRect aRect = self.createRecordTableView.frame;
+    aRect.size.height -= kbSize.height;
+    
+    // Get upper left corner (origin) of the current view
+    CGPoint point = activeField.superview.superview.frame.origin; // All of the three text fields have the same level
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    if (!CGRectContainsPoint(aRect, point) ) {
+        // Construct new insets
+        UIEdgeInsets newInsets = UIEdgeInsetsMake(currentInsets.top + 0.0,
+                                                  currentInsets.left + 0.0,
+                                                  currentInsets.bottom + kbSize.height,
+                                                  currentInsets.right + 0.0);
+        
+        self.createRecordTableView.contentInset = newInsets;
+        self.createRecordTableView.scrollIndicatorInsets = newInsets;
+        
+        [self.createRecordTableView scrollRectToVisible:activeField.superview.superview.frame animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    //NSLog(@"Keybord will be hidden");
+    self.createRecordTableView.contentInset = currentInsets;
+    self.createRecordTableView.scrollIndicatorInsets = currentInsets;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    //NSLog(@"TextFieldDidBeginEditing");
+    activeField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    //NSLog(@"TextFieldDidEndEditing");
+    activeField = nil;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    //NSLog(@"TextViewDidBeginEditing");
+    activeField = textView;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    //NSLog(@"TextViewDidEndEditing");
+    activeField = nil;
+}
 
 @end
