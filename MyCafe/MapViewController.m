@@ -7,6 +7,8 @@
 //
 
 #import "MapViewController.h"
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 //#import "MainPageViewController.h"
 
 //CLLocationManager *locationManager;
@@ -89,6 +91,7 @@
     [self.mapView setRegion:coordinateRegion animated:YES];
 }
 
+// Centers map on the current location along with set parameters
 - (IBAction)showMyLocationClicked:(id)sender {
     CLLocationCoordinate2D currentLocationCoordinate = self.locationManager.location.coordinate;
     [self.mapView setCenterCoordinate:currentLocationCoordinate animated:YES];

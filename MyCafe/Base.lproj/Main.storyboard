@@ -118,6 +118,9 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eog-2U-tg6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ffS-Zi-Jxl" id="nay-dO-j8W"/>
+                                </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rIs-mu-2iB">
                                 <rect key="frame" x="522" y="412" width="58" height="30"/>
@@ -203,6 +206,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="addressLabel" destination="0vT-8q-9IW" id="0RE-Xf-i3M"/>
+                                    <outlet property="distanceLabel" destination="7zg-4H-FxB" id="Qun-Xz-0CO"/>
                                     <outlet property="nameLabel" destination="cTZ-fN-yzV" id="yIC-zd-hEe"/>
                                     <outlet property="typeLabel" destination="8nI-7s-0Ae" id="su9-nL-gmL"/>
                                     <segue destination="hyt-Po-bKp" kind="showDetail" action="showViewController:sender:" id="YDL-Ly-jeZ"/>
@@ -482,10 +486,10 @@
             </objects>
             <point key="canvasLocation" x="620" y="193"/>
         </scene>
-        <!--View Controller-->
+        <!--Record View Controller-->
         <scene sceneID="th8-8f-8Rc">
             <objects>
-                <viewController id="hyt-Po-bKp" sceneMemberID="viewController">
+                <viewController id="hyt-Po-bKp" customClass="RecordViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ikI-eh-sht"/>
                         <viewControllerLayoutGuide type="bottom" id="EPN-d8-rQm"/>
@@ -497,23 +501,23 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09u-V7-oNw">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VHB-R6-IW1">
+                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VHB-R6-IW1">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="619"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label for name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLN-sE-XAX" userLabel="Name">
-                                                <rect key="frame" x="88" y="8" width="504" height="21"/>
+                                                <rect key="frame" x="108" y="8" width="484" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhP-xB-lCE" userLabel="Label for type">
-                                                <rect key="frame" x="88" y="37" width="504" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label for type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhP-xB-lCE" userLabel="Type">
+                                                <rect key="frame" x="108" y="37" width="484" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label for address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHd-qy-0IR" userLabel="Address">
-                                                <rect key="frame" x="88" y="66" width="504" height="21"/>
+                                                <rect key="frame" x="108" y="66" width="484" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -529,6 +533,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="WJ9-0E-NFX"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outlet property="delegate" destination="hyt-Po-bKp" id="rAZ-a7-O5S"/>
+                                                </connections>
                                             </mapView>
                                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CBc-FS-cH9" userLabel="Scroll Photos View">
                                                 <rect key="frame" x="0.0" y="303" width="600" height="150"/>
@@ -550,7 +557,7 @@
                                                     <constraint firstItem="i88-3G-DwT" firstAttribute="leading" secondItem="CBc-FS-cH9" secondAttribute="leading" id="Pob-ZM-j6b"/>
                                                 </constraints>
                                             </scrollView>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aFU-BX-IPM">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aFU-BX-IPM">
                                                 <rect key="frame" x="8" y="461" width="584" height="150"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -571,7 +578,7 @@
                                             <constraint firstAttribute="trailingMargin" secondItem="5aN-Tt-161" secondAttribute="trailing" id="Iap-9n-6o2"/>
                                             <constraint firstItem="XhP-xB-lCE" firstAttribute="leading" secondItem="bLN-sE-XAX" secondAttribute="leading" id="Iiw-57-ydL"/>
                                             <constraint firstItem="IHd-qy-0IR" firstAttribute="top" secondItem="XhP-xB-lCE" secondAttribute="bottom" constant="8" id="JNL-hT-fEV"/>
-                                            <constraint firstItem="bLN-sE-XAX" firstAttribute="leading" secondItem="VHB-R6-IW1" secondAttribute="leadingMargin" constant="80" id="JQ1-EB-5R0"/>
+                                            <constraint firstItem="bLN-sE-XAX" firstAttribute="leading" secondItem="VHB-R6-IW1" secondAttribute="leadingMargin" constant="100" id="JQ1-EB-5R0"/>
                                             <constraint firstAttribute="leadingMargin" secondItem="Dhv-DS-pUG" secondAttribute="leading" id="Nvf-dO-Dxl"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="aFU-BX-IPM" secondAttribute="bottom" id="POU-me-Cez"/>
                                             <constraint firstAttribute="topMargin" secondItem="bLN-sE-XAX" secondAttribute="top" id="Qci-8n-hBy"/>
@@ -608,28 +615,19 @@
                     <navigationItem key="navigationItem" id="0n7-pb-STR">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="pYY-Ex-qAu"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addressLabel" destination="IHd-qy-0IR" id="q2s-eJ-aRW"/>
+                        <outlet property="distanceLabel" destination="Dhv-DS-pUG" id="R90-RT-93v"/>
+                        <outlet property="mapView" destination="5aN-Tt-161" id="Lw8-bK-Mqg"/>
+                        <outlet property="nameLabel" destination="bLN-sE-XAX" id="rej-co-dpT"/>
+                        <outlet property="notesView" destination="aFU-BX-IPM" id="M92-eO-weP"/>
+                        <outlet property="photosView" destination="i88-3G-DwT" id="fZO-Wz-dwn"/>
+                        <outlet property="typeLabel" destination="XhP-xB-lCE" id="Ms4-dn-3MP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vL5-f6-JLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="620" y="940"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="wus-hf-S5a">
-            <objects>
-                <viewController id="Yl2-ug-BJZ" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="BgV-NH-Knd"/>
-                        <viewControllerLayoutGuide type="bottom" id="Njj-DD-5EJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="NM6-OT-Ogt">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d2T-dj-dhg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="632" y="1861"/>
         </scene>
         <!--Type-->
         <scene sceneID="waY-IR-K32">

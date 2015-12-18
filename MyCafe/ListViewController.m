@@ -10,11 +10,13 @@
 //#import "MainPageViewController.h"
 #import "SharedData.h"
 #import "ListViewCell.h"
+#import "RecordViewController.h"
 
 @interface ListViewController ()
 
 @property (nonatomic) NSArray *records;
 @property (strong, nonatomic) IBOutlet UITableView *listTableView;
+@property (nonatomic) RecordViewController *recordViewController;
 
 @end
 
@@ -62,14 +64,20 @@
 }
 
 
-#pragma mark - UITableViewDelegate - just for test
+#pragma mark - Navigation
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"Prepare for segue in ListViewController");
+    self.recordViewController = [segue destinationViewController];
+}
+
+
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSLog(@"Click!");
-    
+    self.recordViewController.record = [self.records objectAtIndex:indexPath.row];
 }
 
 /*
@@ -103,16 +111,6 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 */
 
