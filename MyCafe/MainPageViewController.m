@@ -7,6 +7,7 @@
 //
 
 #import "MainPageViewController.h"
+#import "SharedData.h"
 
 @interface MainPageViewController ()
 
@@ -23,10 +24,14 @@
 
 @implementation MainPageViewController
 
+- (void)awakeFromNib {
+    NSLog(@"MainPage awaked from nib");
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"MainPage loaded");
     // Do any additional setup after loading the view.
-    NSLog(@"ListView loaded");
     [self.mapView setHidden:YES];
     _zeroSegmentName = @"Map";
     _isMapTitle = YES;

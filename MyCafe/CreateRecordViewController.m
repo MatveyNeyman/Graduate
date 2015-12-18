@@ -10,6 +10,8 @@
 #import "TypeSelectorViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <HCSStarRatingView/HCSStarRatingView.h>
+#import "Record.h"
+#import "SharedData.h"
 
 @interface CreateRecordViewController () <CLLocationManagerDelegate,
                                         UINavigationControllerDelegate, UIImagePickerControllerDelegate> // Both needed for image picker
@@ -95,20 +97,37 @@
     self.name = self.nameTextField.text;
     self.type = self.selectedType;
     self.address = self.addressTextField.text;
-    //self.rating = self.rating;
-    //self.price = self.price;
-    //self.photos = self.photos;
     self.notes = self.notesTextView.text;
+
+    // Checking for empty name and showing an alert message if it is
+    if ([[self.name stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Please input name of the place"
+                                                               message:nil
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        return;
+    }
     
-    NSLog(@"Create new record with the folloing fields: %@, %@, %@, %d, %d, %@, %@",
-          self.name,
-          self.type,
-          self.address,
-          self.rating,
-          self.price,
-          self.photos,
-          self.notes);
+    // Creating new Record object initialized by the corresponding properties and adding it to the array
+    Record *newRecord = [[Record alloc] initWithName:self.name
+                                                type:self.type
+                                             address:self.address
+                                              rating:self.rating
+                                               price:self.price
+                                              photos:self.photos
+                                               notes:self.notes];
+    NSLog(@"New record created: %@", newRecord);
     
+    // Adding created object to the storage
+    [[SharedData sharedData] addRecord:newRecord];
+    
+    // Closing the view
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -221,6 +240,7 @@
                                   attribute:NSLayoutAttributeTrailing
                                  multiplier:1
                                    constant:10] setActive:YES];
+    /*
     [[NSLayoutConstraint constraintWithItem:starRatingView
                                   attribute:NSLayoutAttributeHeight
                                   relatedBy:NSLayoutRelationEqual
@@ -228,6 +248,7 @@
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1
                                    constant:28] setActive:YES];
+     */
     [[NSLayoutConstraint constraintWithItem:starRatingView
                                   attribute:NSLayoutAttributeWidth
                                   relatedBy:NSLayoutRelationEqual
@@ -324,7 +345,7 @@
     aRect.size.height -= kbSize.height;
     
     // Get upper left corner (origin) of the current view
-    CGPoint point = activeField.superview.superview.frame.origin; // All of the three text fields have the same level
+    CGPoint point = activeField.superview.superview.frame.origin; // All of the three text fields do have the same level
     
     // If active text field is hidden by keyboard, scroll it so it's visible
     if (!CGRectContainsPoint(aRect, point) ) {

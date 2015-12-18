@@ -7,6 +7,7 @@
 //
 
 #import "MapViewController.h"
+//#import "MainPageViewController.h"
 
 //CLLocationManager *locationManager;
 
@@ -43,7 +44,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"MapView appeared");
-    
 }
 
 - (void)didReceiveMemoryWarning {
