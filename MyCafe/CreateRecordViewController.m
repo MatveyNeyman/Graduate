@@ -45,6 +45,7 @@
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *type;
 @property (nonatomic) NSString *address;
+@property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger rating;
 @property (nonatomic) NSInteger price;
 @property (nonatomic) NSMutableArray<UIImage *> *photos;
@@ -117,6 +118,7 @@
     Record *newRecord = [[Record alloc] initWithName:self.name
                                                 type:self.type
                                              address:self.address
+                                            location:self.location
                                               rating:self.rating
                                                price:self.price
                                               photos:self.photos
@@ -134,6 +136,10 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.addressTextField) {
+        NSLog(@"Address text field called textFieldShouldReturn");
+        [self getLocationFromAddress];
+    }
     [textField resignFirstResponder];
     return YES;
 }
@@ -147,6 +153,21 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 0.001;
+}
+
+- (void)getLocationFromAddress {
+    // Initialize Geocoder object to get coordinates from location address (forward geocoding)
+    if (!self.geocoder) {
+        self.geocoder = [[CLGeocoder alloc] init];
+    }
+    [self.geocoder geocodeAddressString:self.address
+                      completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+                          if ([placemarks count] > 0) {
+                              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
+                              self.location = currentPlacemark.location;
+                              NSLog(@"New Record Location: %@", self.location);
+                          }
+                      }];
 }
 
 - (IBAction)useCurrentLocationSwitchTriggered:(id)sender {
@@ -178,7 +199,7 @@
          if ([placemarks count] > 0) {
              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
              
-             // placemarks array contains addressDictionary dictionary with tge following array as one of the values
+             // Placemarks array contains addressDictionary dictionary with the following array as one of the values
              NSArray *currentAddressArray = [currentPlacemark.addressDictionary objectForKey:@"FormattedAddressLines"];
              
              // Navigate array and build final address
@@ -192,6 +213,8 @@
              }
              // Feed address field
              self.addressTextField.text = currentAddress;
+             // Initialize record's location property
+             self.location = currentLocation;
          }
      }];
 }

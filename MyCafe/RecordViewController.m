@@ -9,6 +9,7 @@
 #import "RecordViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "SharedData.h"
 
 @interface RecordViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 {
@@ -34,19 +35,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Setup icons size
     iconSize = 18;
-    mainView = [self.view viewWithTag:3];
+    // Recognize the view to add icons
+    mainView = [self.view viewWithTag:2];
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
     
-
-    
     //[self showRecordLocation:self.location];
-    
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,7 +59,8 @@
     
     // Check wether address is not set
     if ([self.record.address isEqualToString:@""]) {
-        self.addressLabel.text = @" "; // In order to stay active constraints
+        // Check address availability in order to stay active constraints between addreess field and map
+        self.addressLabel.text = @" ";
         self.distanceLabel.text = @" ";
     } else {
         self.addressLabel.text = self.record.address;
@@ -71,7 +70,6 @@
     self.notesView.text = self.record.notes;
     
     [self getLocationFromAddress];
-    
 }
 
 - (void)addRatingAndPriceIcons {
@@ -99,24 +97,28 @@
 }
 */
 
-
 - (void)getLocationFromAddress {
     // Initialize Geocoder object to get coordinates from location address (forward geocoding)
     if (!self.geocoder) {
         self.geocoder = [[CLGeocoder alloc] init];
     }
-    [self.geocoder geocodeAddressString:self.record.address
-                      completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
-                          if ([placemarks count] > 0) {
-                              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
-                              self.location = currentPlacemark.location;
-                              NSLog(@"Record Location: %@", self.location);
-                              [self showRecordLocation:self.location];
-                          }
-                      }];
+    if (self.record.location) {
+        self.location = self.record.location;
+        [self showRecordLocation:self.record.location];
+    } else {
+        [self.geocoder geocodeAddressString:self.record.address
+                          completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+                              if ([placemarks count] > 0) {
+                                  CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
+                                  self.location = currentPlacemark.location;
+                                  NSLog(@"Record Location: %@", self.location);
+                                  [self showRecordLocation:self.location];
+                              }
+        }];
+    }
 }
 
--   (void)showRecordLocation:(CLLocation *)location {
+- (void)showRecordLocation:(CLLocation *)location {
     //NSLog(@"Location coordinate: %@", location.coordinate);
     MKCoordinateRegion coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 800, 800);
     [self.mapView setRegion:coordinateRegion animated:YES];
@@ -141,5 +143,8 @@
     return aView;
 }
 
+- (IBAction)temporaryRemoveAction:(id)sender {
+    [[SharedData sharedData] removeRecord:self.record];
+}
 
 @end

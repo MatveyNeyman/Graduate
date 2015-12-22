@@ -7,18 +7,12 @@
 //
 
 #import "ListViewCell.h"
-#import <HCSStarRatingView/HCSStarRatingView.h>
+//#import <HCSStarRatingView/HCSStarRatingView.h>
 
 @interface ListViewCell ()
-{
-    CGFloat iconSize;
-}
-
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *addressLabel;
-@property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
-
+//{
+//    CGFloat iconSize;
+//}
 @end
 
 @implementation ListViewCell
@@ -38,16 +32,16 @@
 - (void)awakeFromNib {
     // Initialization code
     NSLog(@"Custom Cell awaked from NIB");
-    iconSize = 14;
+    //iconSize = 14;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-    NSLog(@"Custom Cell ListViewCell selected");
+    //NSLog(@"Custom Cell ListViewCell selected");
 }
-
+/*
 - (void)fillData {
     for (int i = 0; i < self.cellRecord.rating; i++) {
         CGFloat originY = self.contentView.frame.origin.y + 10;
@@ -66,5 +60,5 @@
     self.typeLabel.text = self.cellRecord.type;
     self.addressLabel.text = self.cellRecord.address;
 }
-
+*/
 @end

@@ -18,6 +18,7 @@
 + (instancetype)sharedData;
 
 - (void)addRecord:(Record *)record;
+- (void)removeRecord:(Record *)record;
 - (BOOL)saveList;
 
 @end

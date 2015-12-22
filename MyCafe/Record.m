@@ -18,6 +18,7 @@
     return [self initWithName:@""
                          type:@""
                       address:@""
+                     location:nil
                        rating:0
                         price:0
                        photos:nil
@@ -28,6 +29,7 @@
 - (instancetype)initWithName:(NSString *)name
                         type:(NSString *)type
                      address:(NSString *)address
+                    location:(CLLocation *)location
                       rating:(NSInteger)rating
                        price:(NSInteger)price
                       photos:(NSMutableArray<UIImage *> *)photos
@@ -37,6 +39,7 @@
         self.name = name;
         self.type = type;
         self.address = address;
+        self.location = location;
         self.rating = rating;
         self.price = price;
         self.photos = photos;
@@ -47,10 +50,11 @@
 
 //Overriding NSObject's description method
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@, %@, %@, %d, %d, %@, %@",
+    return [NSString stringWithFormat:@"%@, %@, %@, %@, %d, %d, %@, %@",
             self.name,
             self.type,
             self.address,
+            self.location,
             (int) self.rating,
             (int) self.price,
             self.photos,
@@ -61,6 +65,7 @@
     [aCoder encodeObject:self.name forKey:@"name"];
     [aCoder encodeObject:self.type forKey:@"type"];
     [aCoder encodeObject:self.address forKey:@"address"];
+    [aCoder encodeObject:self.location forKey:@"location"];
     [aCoder encodeInteger:self.rating forKey:@"rating"];
     [aCoder encodeInteger:self.price forKey:@"price"];
     [aCoder encodeObject:self.photos forKey:@"photos"];
@@ -73,6 +78,7 @@
         _name = [aDecoder decodeObjectForKey:@"name"];
         _type = [aDecoder decodeObjectForKey:@"type"];
         _address = [aDecoder decodeObjectForKey:@"address"];
+        _location = [aDecoder decodeObjectForKey:@"location"];
         _rating = [aDecoder decodeIntegerForKey:@"rating"];
         _price = [aDecoder decodeIntegerForKey:@"price"];
         _photos = [aDecoder decodeObjectForKey:@"photos"];

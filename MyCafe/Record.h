@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Record : NSObject
 
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *type;
 @property (nonatomic) NSString *address;
+@property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger rating;
 @property (nonatomic) NSInteger price;
 @property (nonatomic) NSMutableArray<UIImage *> *photos;
@@ -21,6 +23,7 @@
 - (instancetype)initWithName:(NSString *)name
                         type:(NSString *)type
                      address:(NSString *)address
+                    location:(CLLocation *)location
                       rating:(NSInteger)rating
                        price:(NSInteger)price
                       photos:(NSMutableArray<UIImage *> *)photos

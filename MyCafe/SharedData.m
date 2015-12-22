@@ -45,6 +45,10 @@
     [self.privateList addObject:record];
 }
 
+- (void)removeRecord:(Record *)record {
+    [self.privateList removeObject:record];
+}
+
 - (NSString *)buildPath {
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [documentDirectories firstObject];
