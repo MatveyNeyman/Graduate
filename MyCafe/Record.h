@@ -11,14 +11,18 @@
 
 @interface Record : NSObject
 
-@property (nonatomic) NSString *name;
-@property (nonatomic) NSString *type;
-@property (nonatomic) NSString *address;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *address;
 @property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger rating;
 @property (nonatomic) NSInteger price;
-@property (nonatomic) NSMutableArray<UIImage *> *photos;
-@property (nonatomic) NSString *notes;
+@property (nonatomic) NSMutableArray<NSString *> *photosKeys;
+//@property (nonatomic) NSMutableArray<UIImage *> *photos;
+@property (nonatomic, copy) NSString *notes;
+
+//@property (nonatomic, copy) NSString *recordKey;
+
 
 - (instancetype)initWithName:(NSString *)name
                         type:(NSString *)type
@@ -26,7 +30,7 @@
                     location:(CLLocation *)location
                       rating:(NSInteger)rating
                        price:(NSInteger)price
-                      photos:(NSMutableArray<UIImage *> *)photos
+                      photosKeys:(NSMutableArray<NSString *> *) photosKeys
                        notes:(NSString *)notes;
 
 @end

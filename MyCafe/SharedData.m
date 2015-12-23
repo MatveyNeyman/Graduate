@@ -7,6 +7,7 @@
 //
 
 #import "SharedData.h"
+#import "PhotosStore.h"
 
 @interface SharedData ()
 
@@ -18,14 +19,18 @@
 
 + (instancetype)sharedData {
     static SharedData *sharedData;
-    
     if (!sharedData) {
-        sharedData = [[self alloc] init];
+        sharedData = [[self alloc] initPrivate];
     }
     return sharedData;
 }
 
 - (instancetype)init {
+    @throw [NSException exceptionWithName:@"Singleton" reason:@"Use +[SharedData sharedData]" userInfo:nil];
+    return nil;
+}
+
+- (instancetype)initPrivate {
     self = [super init];
     if (self) {
         _privateList = [NSKeyedUnarchiver unarchiveObjectWithFile:[self buildPath]];
@@ -46,7 +51,10 @@
 }
 
 - (void)removeRecord:(Record *)record {
-    [self.privateList removeObject:record];
+    for (NSString *key in record.photosKeys) {
+        [[PhotosStore photosStore] deleteImageForKey:key];
+    }
+    [self.privateList removeObjectIdenticalTo:record];
 }
 
 - (NSString *)buildPath {

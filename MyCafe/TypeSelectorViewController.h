@@ -10,6 +10,6 @@
 
 @interface TypeSelectorViewController : UITableViewController
 
-@property (strong, nonatomic) NSString *currentType;
+@property (nonatomic, copy) NSString *currentType;
 
 @end

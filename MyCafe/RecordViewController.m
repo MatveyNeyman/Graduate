@@ -10,11 +10,14 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "SharedData.h"
+#import "PhotosStore.h"
 
 @interface RecordViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 {
     CGFloat iconSize;
     UIView *mainView;
+    CGFloat pos; // Start position for the first photo
+    CGFloat gap; // Gap between photos and leading margin for the first photo
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
@@ -23,11 +26,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UIView *photosView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *photosViewWidthEqualConstraint;
 @property (strong, nonatomic) IBOutlet UITextView *notesView;
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation *currentLocation;
 @property (strong, nonatomic) CLGeocoder *geocoder;
-@property (strong, nonatomic) CLLocation *location;
 
 @end
 
@@ -37,12 +41,17 @@
     [super viewDidLoad];
     // Setup icons size
     iconSize = 18;
+    // Setup variables for positioning image gallery
+    pos = 8;
+    gap = 10;
+    
     // Recognize the view to add icons
     mainView = [self.view viewWithTag:2];
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
+    self.currentLocation = self.locationManager.location;
     
     //[self showRecordLocation:self.location];
 }
@@ -57,7 +66,7 @@
     self.nameLabel.text = self.record.name;
     self.typeLabel.text = self.record.type;
     
-    // Check wether address is not set
+    // Check whether address is not set
     if ([self.record.address isEqualToString:@""]) {
         // Check address availability in order to stay active constraints between addreess field and map
         self.addressLabel.text = @" ";
@@ -67,9 +76,14 @@
     }
     
     [self addRatingAndPriceIcons];
+    [self addImages];
+    
     self.notesView.text = self.record.notes;
     
-    [self getLocationFromAddress];
+    CLLocationDistance distance = [self.record.location distanceFromLocation:self.currentLocation];
+    self.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
+    
+    [self showRecordLocation:self.record.location];
 }
 
 - (void)addRatingAndPriceIcons {
@@ -87,47 +101,13 @@
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-- (void)getLocationFromAddress {
-    // Initialize Geocoder object to get coordinates from location address (forward geocoding)
-    if (!self.geocoder) {
-        self.geocoder = [[CLGeocoder alloc] init];
-    }
-    if (self.record.location) {
-        self.location = self.record.location;
-        [self showRecordLocation:self.record.location];
-    } else {
-        [self.geocoder geocodeAddressString:self.record.address
-                          completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
-                              if ([placemarks count] > 0) {
-                                  CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
-                                  self.location = currentPlacemark.location;
-                                  NSLog(@"Record Location: %@", self.location);
-                                  [self showRecordLocation:self.location];
-                              }
-        }];
-    }
-}
-
 - (void)showRecordLocation:(CLLocation *)location {
     //NSLog(@"Location coordinate: %@", location.coordinate);
     MKCoordinateRegion coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 800, 800);
     [self.mapView setRegion:coordinateRegion animated:YES];
-    [self makeAnnotation];
-}
-
-- (void)makeAnnotation {
+    //[self makeAnnotation:location];
     MKPointAnnotation *pin = [[MKPointAnnotation alloc] init];
-    pin.coordinate = self.location.coordinate;
+    pin.coordinate = location.coordinate;
     //NSLog(@"Pin coordinates: %@", pin.coordinate.latitude);
     pin.title = self.record.name;
     pin.subtitle = self.record.type;
@@ -146,5 +126,63 @@
 - (IBAction)temporaryRemoveAction:(id)sender {
     [[SharedData sharedData] removeRecord:self.record];
 }
+
+- (void)addImages {
+    for (NSString *key in self.record.photosKeys) {
+        UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+        CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
+        CGFloat thumbnailWidth;     // Placeholder's width
+        CGFloat thumbnailHeight;    // Placeholder's height
+        CGFloat originY;            // Placeholder's center point
+        
+        // Check portrait or landscape view
+        if (aspectRatio >= 1) {
+            // Portrait
+            thumbnailWidth = 118 / aspectRatio;
+            thumbnailHeight = 118;
+        } else {
+            // Landscape
+            thumbnailWidth = 118;
+            thumbnailHeight = 118 * aspectRatio;
+        }
+        // Create the ImageView for thumbnails
+        originY = (self.photosView.frame.size.height - thumbnailHeight) / 2;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos, originY, thumbnailWidth, thumbnailHeight)];
+        
+        // Resize the image
+        CGSize thumbnailSize;
+        thumbnailSize.width = thumbnailWidth;
+        thumbnailSize.height = thumbnailHeight;
+        UIGraphicsBeginImageContextWithOptions(thumbnailSize, YES, 0);
+        [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
+        UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        // Setup view's image using resized image
+        imageView.image = thumbnail;
+        
+        pos += thumbnailWidth + gap;
+
+        // Resize photosView via modifying constraint initially set to zero
+        self.photosViewWidthEqualConstraint.constant = pos;
+
+        [self.photosView addSubview:imageView];
+    }
+}
+
+
+
+
+
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

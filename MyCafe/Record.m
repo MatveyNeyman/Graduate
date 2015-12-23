@@ -21,7 +21,7 @@
                      location:nil
                        rating:0
                         price:0
-                       photos:nil
+                       photosKeys:nil
                         notes:@""];
 }
 
@@ -32,18 +32,24 @@
                     location:(CLLocation *)location
                       rating:(NSInteger)rating
                        price:(NSInteger)price
-                      photos:(NSMutableArray<UIImage *> *)photos
+                      photosKeys:(NSMutableArray<NSString *> *)photosKeys
                        notes:(NSString *)notes {
     self = [super init];
     if (self) {
-        self.name = name;
-        self.type = type;
-        self.address = address;
-        self.location = location;
-        self.rating = rating;
-        self.price = price;
-        self.photos = photos;
-        self.notes = notes;
+        _name = name;
+        _type = type;
+        _address = address;
+        _location = location;
+        _rating = rating;
+        _price = price;
+        _photosKeys = photosKeys;
+        _notes = notes;
+        
+        // Create NSUUID object and get its string representation
+        //NSUUID *uuid = [[NSUUID alloc] init];
+        //NSString *key = [uuid UUIDString];
+        //_recordKey = key;
+        
     }
     return self;
 }
@@ -57,7 +63,7 @@
             self.location,
             (int) self.rating,
             (int) self.price,
-            self.photos,
+            self.photosKeys,
             self.notes];
 }
 
@@ -68,7 +74,7 @@
     [aCoder encodeObject:self.location forKey:@"location"];
     [aCoder encodeInteger:self.rating forKey:@"rating"];
     [aCoder encodeInteger:self.price forKey:@"price"];
-    [aCoder encodeObject:self.photos forKey:@"photos"];
+    [aCoder encodeObject:self.photosKeys forKey:@"photosKeys"];
     [aCoder encodeObject:self.notes forKey:@"notes"];
 }
 
@@ -81,7 +87,7 @@
         _location = [aDecoder decodeObjectForKey:@"location"];
         _rating = [aDecoder decodeIntegerForKey:@"rating"];
         _price = [aDecoder decodeIntegerForKey:@"price"];
-        _photos = [aDecoder decodeObjectForKey:@"photos"];
+        _photosKeys = [aDecoder decodeObjectForKey:@"photosKeys"];
         _notes = [aDecoder decodeObjectForKey:@"notes"];
     }
     return self;

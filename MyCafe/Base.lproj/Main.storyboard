@@ -628,23 +628,15 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5aN-Tt-161">
-                                                <rect key="frame" x="8" y="95" width="584" height="200"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="200" id="WJ9-0E-NFX"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="delegate" destination="hyt-Po-bKp" id="rAZ-a7-O5S"/>
-                                                </connections>
-                                            </mapView>
                                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CBc-FS-cH9" userLabel="Scroll Photos View">
                                                 <rect key="frame" x="0.0" y="303" width="600" height="150"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i88-3G-DwT" userLabel="Photos View">
-                                                        <rect key="frame" x="0.0" y="8" width="600" height="134"/>
+                                                        <rect key="frame" x="0.0" y="8" width="0.0" height="134"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="134" id="Tfb-qy-Do1"/>
+                                                            <constraint firstAttribute="width" id="o3B-Fh-Zyn"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -653,7 +645,7 @@
                                                     <constraint firstAttribute="height" constant="150" id="2HI-7w-lda"/>
                                                     <constraint firstAttribute="topMargin" secondItem="i88-3G-DwT" secondAttribute="top" id="J6E-fs-wI5"/>
                                                     <constraint firstAttribute="bottomMargin" secondItem="i88-3G-DwT" secondAttribute="bottom" id="MFR-YU-ecf"/>
-                                                    <constraint firstItem="i88-3G-DwT" firstAttribute="trailing" secondItem="CBc-FS-cH9" secondAttribute="trailingMargin" id="OE3-Du-Dcp"/>
+                                                    <constraint firstAttribute="trailing" secondItem="i88-3G-DwT" secondAttribute="trailing" id="OE3-Du-Dcp"/>
                                                     <constraint firstItem="i88-3G-DwT" firstAttribute="leading" secondItem="CBc-FS-cH9" secondAttribute="leading" id="Pob-ZM-j6b"/>
                                                 </constraints>
                                             </scrollView>
@@ -667,6 +659,15 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
+                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5aN-Tt-161">
+                                                <rect key="frame" x="8" y="95" width="584" height="200"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="WJ9-0E-NFX"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="delegate" destination="hyt-Po-bKp" id="rAZ-a7-O5S"/>
+                                                </connections>
+                                            </mapView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -686,7 +687,6 @@
                                             <constraint firstItem="Dhv-DS-pUG" firstAttribute="top" secondItem="IHd-qy-0IR" secondAttribute="top" id="Yyp-Os-gdd"/>
                                             <constraint firstItem="5aN-Tt-161" firstAttribute="top" secondItem="IHd-qy-0IR" secondAttribute="bottom" constant="8" id="aPc-H0-3D2"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="XhP-xB-lCE" secondAttribute="trailing" id="eUL-Mw-wkF"/>
-                                            <constraint firstItem="i88-3G-DwT" firstAttribute="width" secondItem="VHB-R6-IW1" secondAttribute="width" id="fHA-tB-0yy"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="bLN-sE-XAX" secondAttribute="trailing" id="kRb-KH-Nkq"/>
                                             <constraint firstAttribute="leading" secondItem="CBc-FS-cH9" secondAttribute="leading" id="lhx-vh-7EQ"/>
                                             <constraint firstItem="aFU-BX-IPM" firstAttribute="top" secondItem="CBc-FS-cH9" secondAttribute="bottom" constant="8" id="m5g-xe-opQ"/>
@@ -726,6 +726,7 @@
                         <outlet property="nameLabel" destination="bLN-sE-XAX" id="rej-co-dpT"/>
                         <outlet property="notesView" destination="aFU-BX-IPM" id="M92-eO-weP"/>
                         <outlet property="photosView" destination="i88-3G-DwT" id="fZO-Wz-dwn"/>
+                        <outlet property="photosViewWidthEqualConstraint" destination="o3B-Fh-Zyn" id="4sl-Un-2Sg"/>
                         <outlet property="typeLabel" destination="XhP-xB-lCE" id="Ms4-dn-3MP"/>
                     </connections>
                 </viewController>

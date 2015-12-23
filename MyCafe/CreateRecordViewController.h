@@ -10,6 +10,6 @@
 
 @interface CreateRecordViewController : UITableViewController
 
-@property (strong, nonatomic) NSString *selectedType;
+@property (nonatomic, copy) NSString *selectedType;
 
 @end

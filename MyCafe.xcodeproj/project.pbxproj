@@ -18,6 +18,7 @@
 		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
+		CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */; };
 		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
 		CEE125451C22EECD009C5E1A /* SharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE125441C22EECD009C5E1A /* SharedData.m */; };
 		CEE125481C22FC9B009C5E1A /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE125471C22FC9B009C5E1A /* Record.m */; };
@@ -47,6 +48,8 @@
 		CE59C0451BFE5238005E414B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
+		CEBC3B211C2AD08B00BF10A8 /* PhotosStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosStore.h; sourceTree = "<group>"; };
+		CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosStore.m; sourceTree = "<group>"; };
 		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CEE125431C22EECD009C5E1A /* SharedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedData.h; sourceTree = "<group>"; };
 		CEE125441C22EECD009C5E1A /* SharedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedData.m; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */,
 				CEE125431C22EECD009C5E1A /* SharedData.h */,
 				CEE125441C22EECD009C5E1A /* SharedData.m */,
+				CEBC3B211C2AD08B00BF10A8 /* PhotosStore.h */,
+				CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */,
 				CEE125461C22FC9B009C5E1A /* Record.h */,
 				CEE125471C22FC9B009C5E1A /* Record.m */,
 				CE0F03AA1BFCD93600A785A9 /* Main.storyboard */,
@@ -297,6 +302,7 @@
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
 				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,
+				CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */,
 				CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

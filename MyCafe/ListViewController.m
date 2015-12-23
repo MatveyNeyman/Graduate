@@ -15,8 +15,9 @@
 
 @interface ListViewController () <CLLocationManagerDelegate>
 
-@property (nonatomic) NSArray *records;
 @property (strong, nonatomic) IBOutlet UITableView *listTableView;
+
+@property (nonatomic) NSArray<Record *> *records;
 @property (nonatomic) RecordViewController *recordViewController;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
@@ -49,7 +50,7 @@
     // Initializing SharedData singleton and array with records
     self.records = [SharedData sharedData].listOfRecords;
     
-    NSLog(@"Records array in ListViewController: %@", self.records);
+    //NSLog(@"Records array in ListViewController: %@", self.records);
     
     //Updatind table view sending message to the tableView property of UITableViewController superclass
     [self.tableView reloadData];
@@ -151,26 +152,12 @@
             break;
     }
 
-    NSLog(@"Return cell: %@ with rating %ld and price %ld", currentRecord.name, (long) currentRecord.rating, (long) currentRecord.price);
-    
-    /*
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    __block CLLocation *currentRecordLocation;
-    
-    [geocoder geocodeAddressString:currentRecord.address
-                 completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
-                     if ([placemarks count] > 0) {
-                         CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
-                         currentRecordLocation = currentPlacemark.location;
-                         NSLog(@"Record Location: %@", currentRecordLocation);
-                         CLLocationDistance distance = [currentRecordLocation distanceFromLocation:self.currentLocation];
-                         cell.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
-                     }
-    }];
-    */
-    
-    CLLocationDistance distance = [currentRecord.location distanceFromLocation:self.currentLocation];
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
+    if (currentRecord.location) {
+        CLLocationDistance distance = [currentRecord.location distanceFromLocation:self.currentLocation];
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
+    } else {
+        cell.distanceLabel.text = @"";
+    }
     
     return cell;
 }

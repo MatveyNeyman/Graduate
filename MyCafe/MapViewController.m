@@ -9,15 +9,18 @@
 #import "MapViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-//#import "MainPageViewController.h"
+#import "SharedData.h"
 
 //CLLocationManager *locationManager;
 
 @interface MapViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) IBOutlet UIButton *showMyLocation;
+
+@property (nonatomic) NSArray<Record *> *records;
+//@property (nonatomic) NSArray<MKPointAnnotation *> *pins;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -41,7 +44,23 @@
     
     CLLocation *currentLocation = self.locationManager.location;
     [self initialMapState:currentLocation];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+    // Initializing SharedData singleton and array with records
+    self.records = [SharedData sharedData].listOfRecords;
+    
+    NSMutableArray<MKPointAnnotation *> *pins = [NSMutableArray arrayWithCapacity:self.records.count];
+    for (Record *record in self.records) {
+        MKPointAnnotation *pin = [[MKPointAnnotation alloc] init];
+        pin.coordinate = record.location.coordinate;
+        pin.title = record.name;
+        pin.subtitle = record.type;
+        [pins addObject:pin];
+    }
+    [self.mapView addAnnotations:pins];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -95,6 +114,15 @@
 - (IBAction)showMyLocationClicked:(id)sender {
     CLLocationCoordinate2D currentLocationCoordinate = self.locationManager.location.coordinate;
     [self.mapView setCenterCoordinate:currentLocationCoordinate animated:YES];
+}
+
+#pragma mark - MKMapViewDelegate
+
+- (nullable MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MKUserLocation class]]) return nil;
+    MKPinAnnotationView *aView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+    aView.canShowCallout = YES;
+    return aView;
 }
 
 @end

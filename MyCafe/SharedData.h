@@ -9,7 +9,7 @@
 //Singleton object for data passing
 
 #import <Foundation/Foundation.h>
-@class Record;
+#import "Record.h"
 
 @interface SharedData : NSObject
 

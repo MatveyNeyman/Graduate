@@ -10,8 +10,9 @@
 #import "TypeSelectorViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <HCSStarRatingView/HCSStarRatingView.h>
-#import "Record.h"
 #import "SharedData.h"
+#import "Record.h"
+#import "PhotosStore.h"
 
 @interface CreateRecordViewController () <CLLocationManagerDelegate,
                                         UINavigationControllerDelegate, UIImagePickerControllerDelegate> // Both needed for image picker
@@ -20,20 +21,16 @@
     CGFloat gap; // Gap between photos and leading margin for the first photo
     UIView *activeField;
     UIEdgeInsets currentInsets;
+    BOOL doneButtonClicked;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @property (strong, nonatomic) IBOutlet UITableView *createRecordTableView;
-
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
-
 @property (strong, nonatomic) IBOutlet UILabel *typeLabel;
-
 @property (strong, nonatomic) IBOutlet UITextField *addressTextField;
-
 @property (strong, nonatomic) IBOutlet UISwitch *useCurrentLocationSwitch;
-
 @property (strong, nonatomic) IBOutlet UIButton *addPhotoButton;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollPhotosView;
 @property (strong, nonatomic) IBOutlet UITextView *notesTextView;
@@ -42,14 +39,17 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLGeocoder *geocoder;
 
-@property (nonatomic) NSString *name;
-@property (nonatomic) NSString *type;
-@property (nonatomic) NSString *address;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *address;
 @property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger rating;
 @property (nonatomic) NSInteger price;
-@property (nonatomic) NSMutableArray<UIImage *> *photos;
-@property (nonatomic) NSString *notes;
+@property (nonatomic) NSMutableArray<NSString *> *photosKeys;
+//@property (nonatomic) NSMutableArray<UIImage *> *photos;
+@property (nonatomic, copy) NSString *notes;
+
+
 
 @end
 
@@ -63,8 +63,9 @@
     self.selectedType = @"Restaurant";
     pos = 0;
     gap = 10;
+    doneButtonClicked = NO;
     [self registerForKeyboardNotifications];
-    self.photos = [[NSMutableArray alloc] init];
+    //self.photos = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -95,6 +96,7 @@
 }
 
 - (IBAction)doneButtonClicked:(id)sender {
+    doneButtonClicked = YES;
     self.name = self.nameTextField.text;
     self.type = self.selectedType;
     self.address = self.addressTextField.text;
@@ -110,38 +112,15 @@
                                                               handler:^(UIAlertAction * action) {}];
         [alert addAction:defaultAction];
         [self presentViewController:alert animated:YES completion:nil];
-        
         return;
     }
     
-    // Creating new Record object initialized by the corresponding properties and adding it to the array
-    Record *newRecord = [[Record alloc] initWithName:self.name
-                                                type:self.type
-                                             address:self.address
-                                            location:self.location
-                                              rating:self.rating
-                                               price:self.price
-                                              photos:self.photos
-                                               notes:self.notes];
-    NSLog(@"New record created: %@", newRecord);
-    
-    // Adding created object to the storage
-    [[SharedData sharedData] addRecord:newRecord];
-    
-    // Closing the view
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.addressTextField) {
-        NSLog(@"Address text field called textFieldShouldReturn");
-        [self getLocationFromAddress];
+    // This statement helpful in case of user pressed Done button just after entered address
+    if (!self.location) {
+        [self getLocationFromAddress:self.addressTextField.text];
+    } else {
+        [self createAndDismiss];
     }
-    [textField resignFirstResponder];
-    return YES;
 }
 
 
@@ -153,21 +132,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 0.001;
-}
-
-- (void)getLocationFromAddress {
-    // Initialize Geocoder object to get coordinates from location address (forward geocoding)
-    if (!self.geocoder) {
-        self.geocoder = [[CLGeocoder alloc] init];
-    }
-    [self.geocoder geocodeAddressString:self.address
-                      completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
-                          if ([placemarks count] > 0) {
-                              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
-                              self.location = currentPlacemark.location;
-                              NSLog(@"New Record Location: %@", self.location);
-                          }
-                      }];
 }
 
 - (IBAction)useCurrentLocationSwitchTriggered:(id)sender {
@@ -303,43 +267,81 @@
     [self presentViewController:picker animated:YES completion:nil];
 }
 
+
+#pragma mark - UIImagePickerControllerDelegate
 // Dealing with taken picture
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    //    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        //UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    //}
     
-    CGFloat ratio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
-    CGFloat imageWidth;     // Placeholder's width
-    CGFloat imageHeight;    // Placeholder's height
-    CGFloat originY;        // Placeholder's center point
+    // Create NSUUID object and get its string representation
+    NSUUID *uuid = [[NSUUID alloc] init];
+    NSString *key = [uuid UUIDString];
+    
+    if (!self.photosKeys) {
+        self.photosKeys = [[NSMutableArray alloc] init];
+    }
+    [self.photosKeys addObject:key];
+    [[PhotosStore photosStore] setImage:image forKey:key];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[picker dismissViewControllerAnimated:YES completion:nil];
+    
+    CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
+    CGFloat thumbnailWidth;     // Placeholder's width
+    CGFloat thumbnailHeight;    // Placeholder's height
+    CGFloat originY;            // Placeholder's center point
     
     // Check portrait or landscape view
-    if (ratio >= 1) {
-        imageWidth = 70 / ratio;
-        imageHeight = 70;
+    if (aspectRatio >= 1) {
+        thumbnailWidth = 70 / aspectRatio;
+        thumbnailHeight = 70;
     } else {
-        imageWidth = 70;
-        imageHeight = 70 * ratio;
+        thumbnailWidth = 70;
+        thumbnailHeight = 70 * aspectRatio;
     }
-    originY = (self.scrollPhotosView.frame.size.height - imageHeight) / 2;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, imageWidth, imageHeight)];
+    // Create the ImageView for thumbnails
+    originY = (self.scrollPhotosView.frame.size.height - thumbnailHeight) / 2;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, thumbnailWidth, thumbnailHeight)];
 
-    imageView.image = image;
+    //CGFloat scale = image.scale;
+    //CGSize size = image.size;
+    
+    // Resize the image
+    CGSize thumbnailSize;
+    thumbnailSize.width = thumbnailWidth;
+    thumbnailSize.height = thumbnailHeight;
+    UIGraphicsBeginImageContextWithOptions(thumbnailSize, YES, 0);
+    [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
+    UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //CGFloat newScale = thumbnail.scale;
+    //CGSize newSize = thumbnail.size;
+    
+    // Set resized image for the view
+    imageView.image = thumbnail;
+    //imageView.image = image;
+    
     [self.scrollPhotosView addSubview:imageView];
 
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.5 animations:^ {
         CGRect frame = self.addPhotoButton.frame;
-        frame.origin.x = self.addPhotoButton.frame.origin.x + imageWidth + gap;
-        pos += imageWidth + gap;
+        frame.origin.x = self.addPhotoButton.frame.origin.x + thumbnailWidth + gap;
+        pos += thumbnailWidth + gap;
         self.addPhotoButton.translatesAutoresizingMaskIntoConstraints = YES;
         self.addPhotoButton.frame = frame;
     }];
-    [self.photos addObject:image];
+    
+    //[self.photos addObject:image];
+    
 }
 
+
+#pragma mark - Move view above keyboard
 // Called in view controller setup code.
 - (void)registerForKeyboardNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -392,15 +394,33 @@
     self.createRecordTableView.scrollIndicatorInsets = currentInsets;
 }
 
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.addressTextField) {
+        NSLog(@"Address text field called textFieldShouldReturn");
+        [self getLocationFromAddress:self.addressTextField.text];
+    }
+    [textField resignFirstResponder];
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     //NSLog(@"TextFieldDidBeginEditing");
     activeField = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    //NSLog(@"TextFieldDidEndEditing");
+    NSLog(@"TextFieldDidEndEditing");
     activeField = nil;
+    if (textField == self.addressTextField) {
+        [self getLocationFromAddress:self.addressTextField.text];
+    }
 }
+
+
+#pragma mark - UITextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     //NSLog(@"TextViewDidBeginEditing");
@@ -410,6 +430,44 @@
 - (void)textViewDidEndEditing:(UITextView *)textView {
     //NSLog(@"TextViewDidEndEditing");
     activeField = nil;
+}
+
+
+- (void)getLocationFromAddress:(NSString *)address {
+    // Initialize Geocoder object to get coordinates from location address (forward geocoding)
+    if (!self.geocoder) {
+        self.geocoder = [[CLGeocoder alloc] init];
+    }
+    [self.geocoder geocodeAddressString:address
+                      completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+                          if ([placemarks count] > 0) {
+                              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
+                              self.location = currentPlacemark.location;
+                              NSLog(@"New Record Location: %@", self.location);
+                          }
+                          if (doneButtonClicked) {
+                              [self createAndDismiss];
+                          }
+                      }];
+}
+
+- (void)createAndDismiss {
+    // Creating new Record object initialized by the corresponding properties and adding it to the array
+    Record *newRecord = [[Record alloc] initWithName:self.name
+                                                type:self.type
+                                             address:self.address
+                                            location:self.location
+                                              rating:self.rating
+                                               price:self.price
+                                          photosKeys:self.photosKeys
+                                               notes:self.notes];
+    NSLog(@"New record created: %@", newRecord);
+    
+    // Adding created object to the storage
+    [[SharedData sharedData] addRecord:newRecord];
+    
+    // Closing the view
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

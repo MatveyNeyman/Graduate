@@ -10,10 +10,9 @@
 #import "SharedData.h"
 
 @interface MainPageViewController ()
-
 {
-    NSString *_zeroSegmentName; //initial zero segment's name in UISegmentedControl
-    BOOL _isMapTitle;           //initial flag
+    NSString *zeroSegmentName; //initial zero segment's name in UISegmentedControl
+    BOOL isMapTitle;           //initial flag
 }
 
 // Outlets for containers which contain Map or List scenes
@@ -33,8 +32,8 @@
     NSLog(@"MainPage loaded");
     // Do any additional setup after loading the view.
     [self.mapView setHidden:YES];
-    _zeroSegmentName = @"Map";
-    _isMapTitle = YES;
+    zeroSegmentName = @"Map";
+    isMapTitle = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,10 +54,10 @@
     UISegmentedControl *mapSortFilter = (UISegmentedControl *) sender;
     switch (mapSortFilter.selectedSegmentIndex) {
         case 0:
-            NSLog(@"%@ pressed", _zeroSegmentName);
+            NSLog(@"%@ pressed", zeroSegmentName);
             [self swapView];
-            [mapSortFilter setTitle:_zeroSegmentName forSegmentAtIndex:0];
-            if ([_zeroSegmentName  isEqual: @"List"]) {
+            [mapSortFilter setTitle:zeroSegmentName forSegmentAtIndex:0];
+            if ([zeroSegmentName  isEqual: @"List"]) {
                 [mapSortFilter removeSegmentAtIndex:1 animated:YES];
             } else {
                 [mapSortFilter insertSegmentWithTitle:@"Sort" atIndex:1 animated:YES];
@@ -81,16 +80,16 @@
 }
 
 - (void)swapView {
-    if (_isMapTitle) {
-        _zeroSegmentName = @"List";
+    if (isMapTitle) {
+        zeroSegmentName = @"List";
         [self.listView setHidden:YES];
         [self.mapView setHidden:NO];
-        _isMapTitle = NO;
+        isMapTitle = NO;
     } else {
-        _zeroSegmentName = @"Map";
+        zeroSegmentName = @"Map";
         [self.mapView setHidden:YES];
         [self.listView setHidden:NO];
-        _isMapTitle = YES;
+        isMapTitle = YES;
     }
 }
 
