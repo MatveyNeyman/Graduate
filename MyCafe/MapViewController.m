@@ -10,6 +10,8 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "SharedData.h"
+#import "RecordAnnotation.h"
+#import "RecordViewController.h"
 
 //CLLocationManager *locationManager;
 
@@ -21,6 +23,7 @@
 @property (nonatomic) NSArray<Record *> *records;
 //@property (nonatomic) NSArray<MKPointAnnotation *> *pins;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) RecordViewController *recordViewController;
 
 @end
 
@@ -54,7 +57,8 @@
     
     NSMutableArray<MKPointAnnotation *> *pins = [NSMutableArray arrayWithCapacity:self.records.count];
     for (Record *record in self.records) {
-        MKPointAnnotation *pin = [[MKPointAnnotation alloc] init];
+        RecordAnnotation *pin = [[RecordAnnotation alloc] init];
+        pin.record = record;
         pin.coordinate = record.location.coordinate;
         pin.title = record.name;
         pin.subtitle = record.type;
@@ -119,10 +123,42 @@
 #pragma mark - MKMapViewDelegate
 
 - (nullable MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MKUserLocation class]]) return nil;
-    MKPinAnnotationView *aView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-    aView.canShowCallout = YES;
-    return aView;
+    // If the annotation is the user location, just return nil.
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        return nil;   
+    }
+    if ([annotation isKindOfClass:[RecordAnnotation class]]) {
+        // Try to dequeue an existing pin view first.
+        MKPinAnnotationView *pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:@"PinAnnotationView"];
+        
+        if (!pinView) {
+            // If an existing pin view was not available, create one.
+            pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PinAnnotationView"];
+            
+            //pinView.pinColor = MKPinAnnotationColorRed;
+            pinView.animatesDrop = YES;
+            pinView.canShowCallout = YES;
+            
+            // Add the detail disclosure button to display details about the annotation in another view.
+            UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            pinView.rightCalloutAccessoryView = rightButton;
+            
+        } else {
+            pinView.annotation = annotation;
+        }
+        return pinView;
+    }
+    return nil;
 }
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    NSLog(@"calloutAccessoryControlTapped");
+    RecordAnnotation *pin = view.annotation;
+    NSLog(@"Record: %@", pin.record);
+    self.recordViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordViewController"];
+    self.recordViewController.record = pin.record;
+    [self.navigationController pushViewController:self.recordViewController animated:YES];
+}
+
 
 @end

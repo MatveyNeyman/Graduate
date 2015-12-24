@@ -589,7 +589,7 @@
         <!--Record View Controller-->
         <scene sceneID="th8-8f-8Rc">
             <objects>
-                <viewController id="hyt-Po-bKp" customClass="RecordViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RecordViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hyt-Po-bKp" customClass="RecordViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ikI-eh-sht"/>
                         <viewControllerLayoutGuide type="bottom" id="EPN-d8-rQm"/>
