@@ -11,7 +11,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import <HCSStarRatingView/HCSStarRatingView.h>
 #import "SharedData.h"
-#import "Record.h"
 #import "PhotosStore.h"
 
 @interface CreateRecordViewController () <CLLocationManagerDelegate,
@@ -56,6 +55,10 @@
 
 @implementation CreateRecordViewController
 
+- (void)awakeFromNib {
+    self.isEditingMode = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -66,6 +69,20 @@
     doneButtonClicked = NO;
     [self registerForKeyboardNotifications];
     //self.photos = [[NSMutableArray alloc] init];
+    
+    if (self.isEditingMode && self.record) {
+        self.nameTextField.text = self.record.name;
+        self.selectedType = self.record.type;
+        self.addressTextField.text = self.record.address;
+        self.rating = self.record.rating;
+        self.price = self.record.price;
+        self.photosKeys = self.record.photosKeys;
+        for (NSString *key in self.photosKeys) {
+            UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+            [self addImage:image];
+        }
+        self.notesTextView.text = self.record.notes;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -127,12 +144,30 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        [[SharedData sharedData] removeRecord:self.record];
+        // Closing the view
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    //tableView.nu
     return 0.001;
 }
+
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.isEditingMode) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
 
 - (IBAction)useCurrentLocationSwitchTriggered:(id)sender {
     //NSLog(@"Current Location Switch Triggered");
@@ -207,7 +242,16 @@
     HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] init];
     starRatingView.maximumValue = 5;
     starRatingView.minimumValue = 0;
-    starRatingView.value = 0;
+    if (self.isEditingMode && self.record) {
+        if ([cell.reuseIdentifier isEqual:@"Rating"]) {
+            starRatingView.value = self.record.rating;
+        }
+        if ([cell.reuseIdentifier isEqual:@"Price"]) {
+            starRatingView.value = self.record.price;
+        }
+    } else {
+        starRatingView.value = 0;
+    }
     starRatingView.emptyStarImage = [UIImage imageNamed:emptyImage];
     starRatingView.filledStarImage = [UIImage imageNamed:filledImage];
     [starRatingView addTarget:self action:action forControlEvents:UIControlEventValueChanged];
@@ -290,6 +334,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     //[picker dismissViewControllerAnimated:YES completion:nil];
     
+    [self addImage:image];
+    
+    //[self.photos addObject:image];
+}
+
+- (void)addImage:(UIImage *)image {
     CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
     CGFloat thumbnailWidth;     // Placeholder's width
     CGFloat thumbnailHeight;    // Placeholder's height
@@ -306,7 +356,7 @@
     // Create the ImageView for thumbnails
     originY = (self.scrollPhotosView.frame.size.height - thumbnailHeight) / 2;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, thumbnailWidth, thumbnailHeight)];
-
+    
     //CGFloat scale = image.scale;
     //CGSize size = image.size;
     
@@ -327,7 +377,7 @@
     //imageView.image = image;
     
     [self.scrollPhotosView addSubview:imageView];
-
+    
     [UIView animateWithDuration:0.5 animations:^ {
         CGRect frame = self.addPhotoButton.frame;
         frame.origin.x = self.addPhotoButton.frame.origin.x + thumbnailWidth + gap;
@@ -335,10 +385,8 @@
         self.addPhotoButton.translatesAutoresizingMaskIntoConstraints = YES;
         self.addPhotoButton.frame = frame;
     }];
-    
-    //[self.photos addObject:image];
-    
 }
+
 
 
 #pragma mark - Move view above keyboard

@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "SharedData.h"
 #import "PhotosStore.h"
+#import "CreateRecordViewController.h"
 
 @interface RecordViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 {
@@ -32,6 +33,7 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (strong, nonatomic) CLGeocoder *geocoder;
+@property (nonatomic) CreateRecordViewController *createRecordViewController;
 
 @end
 
@@ -124,7 +126,11 @@
 }
 
 - (IBAction)temporaryRemoveAction:(id)sender {
-    [[SharedData sharedData] removeRecord:self.record];
+    self.createRecordViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateRecordViewController"];
+    self.createRecordViewController.isEditingMode =  YES;
+    self.createRecordViewController.navigationItem.title = nil;
+    self.createRecordViewController.record = self.record;
+    [self.navigationController pushViewController:self.createRecordViewController animated:NO];
 }
 
 - (void)addImages {

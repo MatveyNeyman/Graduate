@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Record.h"
 
 @interface CreateRecordViewController : UITableViewController
 
 @property (nonatomic, copy) NSString *selectedType;
+@property (nonatomic) BOOL isEditingMode;
+@property (nonatomic) Record *record;
 
 @end

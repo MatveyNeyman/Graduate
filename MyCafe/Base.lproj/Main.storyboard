@@ -329,13 +329,13 @@
         <!--Create Record-->
         <scene sceneID="w4h-c2-GXX">
             <objects>
-                <tableViewController id="R7U-2E-ZBN" userLabel="Create Record" customClass="CreateRecordViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CreateRecordViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="R7U-2E-ZBN" userLabel="Create Record" customClass="CreateRecordViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="oa8-nU-LGx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection id="D4b-Bi-GyL">
+                            <tableViewSection id="D4b-Bi-GyL" userLabel="Main Section">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="m4z-Yn-yZ0" userLabel="Name">
                                         <rect key="frame" x="0.0" y="99" width="600" height="44"/>
@@ -546,6 +546,30 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="5Gn-JT-WmN" secondAttribute="trailing" constant="10" id="W7e-Cb-j5z"/>
                                                 <constraint firstItem="5Gn-JT-WmN" firstAttribute="top" secondItem="P0m-TM-pyo" secondAttribute="top" id="abc-NH-z0N"/>
                                                 <constraint firstItem="5Gn-JT-WmN" firstAttribute="leading" secondItem="P0m-TM-pyo" secondAttribute="leadingMargin" constant="10" id="qpP-fH-hhf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="F1Z-7Y-XEX" userLabel="Delete Section">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="eWu-FC-AVB" userLabel="Delete">
+                                        <rect key="frame" x="0.0" y="575" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eWu-FC-AVB" id="JgV-Kd-Hd6">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Record" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NS2-IX-Pz6">
+                                                    <rect key="frame" x="18" y="11" width="109" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="NS2-IX-Pz6" firstAttribute="centerY" secondItem="JgV-Kd-Hd6" secondAttribute="centerY" id="5CD-FJ-Eoi"/>
+                                                <constraint firstItem="NS2-IX-Pz6" firstAttribute="leading" secondItem="JgV-Kd-Hd6" secondAttribute="leadingMargin" constant="10" id="mjv-K4-KLM"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
