@@ -430,10 +430,12 @@
     NSNumber *tag = @(intTag);
     NSString *key = self.tagPhotoKey[tag];
     
-    UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+    //UIImage *image = [[PhotosStore photosStore] imageForKey:key];
     
     ImageViewController *ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
-    ivc.image = image;
+    //ivc.image = image;
+    ivc.photosKeys = self.photosKeys;
+    ivc.startKey = key;
     [self.navigationController pushViewController:ivc animated:YES];
 }
 

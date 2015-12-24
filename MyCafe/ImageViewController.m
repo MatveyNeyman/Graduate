@@ -7,8 +7,12 @@
 //
 
 #import "ImageViewController.h"
+#import "PhotosStore.h"
 
 @interface ImageViewController ()
+{
+    NSUInteger index;
+}
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
@@ -28,8 +32,45 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.imageView.image = self.image;
+    //self.imageView.image = self.image;
+    self.imageView.image = [[PhotosStore photosStore] imageForKey:self.startKey];
+    index = [self.photosKeys indexOfObject:self.startKey];
 }
+
+- (IBAction)swipeRight:(id)sender {
+    if (index >= 1) {
+        --index;
+        NSString *key = [self.photosKeys objectAtIndex:index];
+        self.imageView.image = [[PhotosStore photosStore] imageForKey:key];
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.5f;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+        transition.type = kCATransitionFromLeft;
+        [self.imageView.layer addAnimation:transition forKey:nil];
+        
+    } else {
+        return;
+    }
+}
+
+- (IBAction)swipeLeft:(id)sender {
+    if (index < ([self.photosKeys count] - 1)) {
+        ++index;
+        NSString *key = [self.photosKeys objectAtIndex:index];
+        self.imageView.image = [[PhotosStore photosStore] imageForKey:key];
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.5f;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFromRight;
+        [self.imageView.layer addAnimation:transition forKey:nil];
+        
+    } else {
+        return;
+    }
+}
+
 
 /*
 #pragma mark - Navigation

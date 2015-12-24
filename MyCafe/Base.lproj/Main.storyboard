@@ -869,7 +869,7 @@
         <!--Navigation Controller-->
         <scene sceneID="kJH-fi-qQF">
             <objects>
-                <navigationController id="Twr-Qh-tgP" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ImageNavigationController" id="Twr-Qh-tgP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="idw-NA-bhD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -894,8 +894,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhh-Y5-cIz">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhh-Y5-cIz">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="qzn-k1-f6J" appends="YES" id="TgS-fR-qwS"/>
+                                    <outletCollection property="gestureRecognizers" destination="iKt-mb-PdK" appends="YES" id="gy5-bn-h3M"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -912,8 +917,28 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fmK-1k-OZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="qzn-k1-f6J" userLabel="Swipe Right">
+                    <connections>
+                        <action selector="swipeRight:" destination="2F1-eL-zsr" id="b27-d3-AGY"/>
+                        <outlet property="delegate" destination="yhh-Y5-cIz" id="94J-I5-Qw2"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="iKt-mb-PdK" userLabel="Swipe Left">
+                    <connections>
+                        <action selector="swipeLeft:" destination="2F1-eL-zsr" id="vEc-Nm-oAE"/>
+                        <outlet property="delegate" destination="yhh-Y5-cIz" id="KFe-aO-6sI"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2017" y="859"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="qn4-Uh-Okh">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="NkM-X1-lSG" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xnm-dL-vZm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2698" y="872"/>
         </scene>
     </scenes>
     <resources>

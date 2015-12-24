@@ -10,6 +10,8 @@
 
 @interface ImageViewController : UIViewController
 
-@property (strong, nonatomic) UIImage *image;
+//@property (strong, nonatomic) UIImage *image;
+@property (nonatomic) NSMutableArray<NSString *> *photosKeys;
+@property (nonatomic, copy) NSString *startKey;
 
 @end
