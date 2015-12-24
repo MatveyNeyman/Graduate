@@ -12,9 +12,11 @@
 #import <HCSStarRatingView/HCSStarRatingView.h>
 #import "SharedData.h"
 #import "PhotosStore.h"
+#import "ImageViewController.h"
 
 @interface CreateRecordViewController () <CLLocationManagerDelegate,
-                                        UINavigationControllerDelegate, UIImagePickerControllerDelegate> // Both needed for image picker
+                                        UINavigationControllerDelegate, UIImagePickerControllerDelegate, // Both are needed for image picker
+                                        UIPopoverControllerDelegate>
 {
     CGFloat pos; // Start position for the first photo
     CGFloat gap; // Gap between photos and leading margin for the first photo
@@ -45,6 +47,9 @@
 @property (nonatomic) NSInteger rating;
 @property (nonatomic) NSInteger price;
 @property (nonatomic) NSMutableArray<NSString *> *photosKeys;
+@property (nonatomic) NSMutableDictionary<NSNumber *, NSString *> *tagPhotoKey;
+@property (strong, nonatomic) UIViewController *imagePresenter;
+
 //@property (nonatomic) NSMutableArray<UIImage *> *photos;
 @property (nonatomic, copy) NSString *notes;
 
@@ -79,7 +84,7 @@
         self.photosKeys = self.record.photosKeys;
         for (NSString *key in self.photosKeys) {
             UIImage *image = [[PhotosStore photosStore] imageForKey:key];
-            [self addImage:image];
+            [self addImage:image withKey:key];
         }
         self.notesTextView.text = self.record.notes;
     }
@@ -119,14 +124,15 @@
     self.address = self.addressTextField.text;
     self.notes = self.notesTextView.text;
 
-    // Checking for empty name and showing an alert message if it is
+    // Check for empty name and show an alert message
     if ([[self.name stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Please input name of the place"
-                                                               message:nil
-                                                        preferredStyle:UIAlertControllerStyleAlert];
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {}];
         [alert addAction:defaultAction];
         [self presentViewController:alert animated:YES completion:nil];
         return;
@@ -145,9 +151,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        [[SharedData sharedData] removeRecord:self.record];
-        // Closing the view
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete Record"
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction *action) {
+                                                                  // Delete object
+                                                                  [[SharedData sharedData] removeRecord:self.record];
+                                                                  // Close the view
+                                                                  [self.navigationController popToRootViewControllerAnimated:YES];
+                                                              }];
+        [alert addAction:deleteAction];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action) {}];
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
@@ -334,12 +356,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     //[picker dismissViewControllerAnimated:YES completion:nil];
     
-    [self addImage:image];
+    [self addImage:image withKey:key];
     
     //[self.photos addObject:image];
 }
 
-- (void)addImage:(UIImage *)image {
+- (void)addImage:(UIImage *)image withKey:(NSString *)key {
     CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
     CGFloat thumbnailWidth;     // Placeholder's width
     CGFloat thumbnailHeight;    // Placeholder's height
@@ -357,6 +379,21 @@
     originY = (self.scrollPhotosView.frame.size.height - thumbnailHeight) / 2;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, thumbnailWidth, thumbnailHeight)];
     
+    imageView.userInteractionEnabled = YES;
+    
+    imageView.tag = pos;
+    NSNumber *tag = @(imageView.tag);
+    
+    if (!self.tagPhotoKey) {
+        self.tagPhotoKey = [[NSMutableDictionary alloc] init];
+    }
+    self.tagPhotoKey[tag] = key;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImage:)];
+    tap.numberOfTapsRequired = 1;
+    
+    [imageView addGestureRecognizer:tap];
+    
     //CGFloat scale = image.scale;
     //CGSize size = image.size;
     
@@ -364,7 +401,7 @@
     CGSize thumbnailSize;
     thumbnailSize.width = thumbnailWidth;
     thumbnailSize.height = thumbnailHeight;
-    UIGraphicsBeginImageContextWithOptions(thumbnailSize, YES, 0);
+    UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0);
     [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
     UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -387,6 +424,18 @@
     }];
 }
 
+- (void)tapImage:(UIGestureRecognizer *)gestureRecognizer {
+    UIImageView *imageView = (UIImageView *)gestureRecognizer.view;
+    NSInteger intTag = imageView.tag;
+    NSNumber *tag = @(intTag);
+    NSString *key = self.tagPhotoKey[tag];
+    
+    UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+    
+    ImageViewController *ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
+    ivc.image = image;
+    [self.navigationController pushViewController:ivc animated:YES];
+}
 
 
 #pragma mark - Move view above keyboard

@@ -19,6 +19,7 @@
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
 		CE690DB31C2BD7AB00F3CD2B /* RecordAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE690DB21C2BD7AB00F3CD2B /* RecordAnnotation.m */; };
+		CE690DB61C2C53C800F3CD2B /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE690DB51C2C53C800F3CD2B /* ImageViewController.m */; };
 		CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */; };
 		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
 		CEE125451C22EECD009C5E1A /* SharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE125441C22EECD009C5E1A /* SharedData.m */; };
@@ -51,6 +52,8 @@
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
 		CE690DB11C2BD7AB00F3CD2B /* RecordAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordAnnotation.h; sourceTree = "<group>"; };
 		CE690DB21C2BD7AB00F3CD2B /* RecordAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordAnnotation.m; sourceTree = "<group>"; };
+		CE690DB41C2C53C800F3CD2B /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		CE690DB51C2C53C800F3CD2B /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		CEBC3B211C2AD08B00BF10A8 /* PhotosStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosStore.h; sourceTree = "<group>"; };
 		CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosStore.m; sourceTree = "<group>"; };
 		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -137,6 +140,8 @@
 				CEE1254D1C231492009C5E1A /* ListViewCell.m */,
 				CEE622C11C24567400E5173E /* RecordViewController.h */,
 				CEE622C21C24567400E5173E /* RecordViewController.m */,
+				CE690DB41C2C53C800F3CD2B /* ImageViewController.h */,
+				CE690DB51C2C53C800F3CD2B /* ImageViewController.m */,
 				CEECA79A1C1A0B2100A9F84E /* CreateRecordViewController.h */,
 				CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */,
 				CE58ECE61C1ADCEB00B82FEB /* TypeSelectorViewController.h */,
@@ -296,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE690DB61C2C53C800F3CD2B /* ImageViewController.m in Sources */,
 				CEE1254B1C230D1B009C5E1A /* ListViewController.m in Sources */,
 				CEE125451C22EECD009C5E1A /* SharedData.m in Sources */,
 				CEE125481C22FC9B009C5E1A /* Record.m in Sources */,

@@ -19,9 +19,13 @@
 
 + (instancetype)sharedData {
     static SharedData *sharedData;
-    if (!sharedData) {
+    //if (!sharedData) {
+    //    sharedData = [[self alloc] initPrivate];
+    //}
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedData = [[self alloc] initPrivate];
-    }
+    });
     return sharedData;
 }
 

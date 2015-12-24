@@ -18,9 +18,13 @@
 
 + (instancetype)photosStore {
     static PhotosStore *photosStore = nil;
-    if (!photosStore) {
+    //if (!photosStore) {
+    //    photosStore = [[self alloc] initPrivate];
+    //}
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         photosStore = [[self alloc] initPrivate];
-    }
+    });
     return photosStore;
 }
 

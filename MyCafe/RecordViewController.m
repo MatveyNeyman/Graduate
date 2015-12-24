@@ -159,7 +159,7 @@
         CGSize thumbnailSize;
         thumbnailSize.width = thumbnailWidth;
         thumbnailSize.height = thumbnailHeight;
-        UIGraphicsBeginImageContextWithOptions(thumbnailSize, YES, 0);
+        UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0);
         [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
         UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
