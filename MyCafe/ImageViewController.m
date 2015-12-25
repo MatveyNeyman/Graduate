@@ -15,14 +15,25 @@
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *trashButton;
 
 @end
 
 @implementation ImageViewController
 
+- (void)awakeFromNib {
+    NSLog(@"Awake from nib image view controller started");
+    NSLog(@"isEditingMode flag in the image view controller 'awake from nib' %hhd", self.isEditingMode);
+    self.isEditingMode = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"isEditingMode flag in the image view controller 'view did load' %hhd", self.isEditingMode);
+    if (!self.isEditingMode) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,7 +43,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    //self.imageView.image = self.image;
     self.imageView.image = [[PhotosStore photosStore] imageForKey:self.startKey];
     index = [self.photosKeys indexOfObject:self.startKey];
 }
@@ -42,13 +52,7 @@
         --index;
         NSString *key = [self.photosKeys objectAtIndex:index];
         self.imageView.image = [[PhotosStore photosStore] imageForKey:key];
-        
-        CATransition *transition = [CATransition animation];
-        transition.duration = 0.5f;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
-        transition.type = kCATransitionFromLeft;
-        [self.imageView.layer addAnimation:transition forKey:nil];
-        
+        [self animateFrom:kCATransitionFromLeft];
     } else {
         return;
     }
@@ -59,18 +63,48 @@
         ++index;
         NSString *key = [self.photosKeys objectAtIndex:index];
         self.imageView.image = [[PhotosStore photosStore] imageForKey:key];
-        
-        CATransition *transition = [CATransition animation];
-        transition.duration = 0.5f;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        transition.type = kCATransitionFromRight;
-        [self.imageView.layer addAnimation:transition forKey:nil];
-        
+        [self animateFrom:kCATransitionFromRight];
     } else {
         return;
     }
 }
 
+- (void)animateFrom:(NSString *)direction {
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.5f;
+    //transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    transition.subtype = direction;
+    [self.imageView.layer addAnimation:transition forKey:nil];
+}
+
+- (IBAction)trashButtonClicked:(id)sender {
+    NSString *key = [self.photosKeys objectAtIndex:index];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete Photo"
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction *action) {
+                                                             // Delete photo
+                                                             [[PhotosStore photosStore] deleteImageForKey:key];
+                                                             [self.photosKeys removeObjectAtIndex:index];
+                                                             if (index == 0) {
+                                                                 [self.navigationController popViewControllerAnimated:YES];
+                                                             } else {
+                                                                 NSString *newKey = [self.photosKeys objectAtIndex:--index];
+                                                                 self.imageView.image = [[PhotosStore photosStore] imageForKey:newKey];
+                                                             }
+                                                         }];
+    [alert addAction:deleteAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {}];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 /*
 #pragma mark - Navigation

@@ -12,6 +12,7 @@
 #import "SharedData.h"
 #import "PhotosStore.h"
 #import "CreateRecordViewController.h"
+#import "ImageViewController.h"
 
 @interface RecordViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
 {
@@ -34,6 +35,7 @@
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (strong, nonatomic) CLGeocoder *geocoder;
 @property (nonatomic) CreateRecordViewController *createRecordViewController;
+@property (nonatomic) NSMutableDictionary<NSNumber *, NSString *> *tagPhotoKey;
 
 @end
 
@@ -55,16 +57,8 @@
     [self.locationManager requestWhenInUseAuthorization];
     self.currentLocation = self.locationManager.location;
     
-    //[self showRecordLocation:self.location];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [self showRecordLocation:self.record.location];
+    
     self.nameLabel.text = self.record.name;
     self.typeLabel.text = self.record.type;
     
@@ -82,10 +76,38 @@
     
     self.notesView.text = self.record.notes;
     
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    /*
+    self.nameLabel.text = self.record.name;
+    self.typeLabel.text = self.record.type;
+    
+    // Check whether address is not set
+    if ([self.record.address isEqualToString:@""]) {
+        // Check address availability in order to stay active constraints between addreess field and map
+        self.addressLabel.text = @" ";
+        self.distanceLabel.text = @" ";
+    } else {
+        self.addressLabel.text = self.record.address;
+    }
+    
+    [self addRatingAndPriceIcons];
+    [self addImages];
+    
+    self.notesView.text = self.record.notes;
+    */
     CLLocationDistance distance = [self.record.location distanceFromLocation:self.currentLocation];
     self.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
     
-    [self showRecordLocation:self.record.location];
+    //[self showRecordLocation:self.record.location];
 }
 
 - (void)addRatingAndPriceIcons {
@@ -155,6 +177,21 @@
         originY = (self.photosView.frame.size.height - thumbnailHeight) / 2;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos, originY, thumbnailWidth, thumbnailHeight)];
         
+        imageView.userInteractionEnabled = YES;
+        
+        imageView.tag = pos;
+        NSNumber *tag = @(imageView.tag);
+        
+        if (!self.tagPhotoKey) {
+            self.tagPhotoKey = [[NSMutableDictionary alloc] init];
+        }
+        self.tagPhotoKey[tag] = key;
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImage:)];
+        tap.numberOfTapsRequired = 1;
+        
+        [imageView addGestureRecognizer:tap];
+        
         // Resize the image
         CGSize thumbnailSize;
         thumbnailSize.width = thumbnailWidth;
@@ -173,10 +210,26 @@
         self.photosViewWidthEqualConstraint.constant = pos;
 
         [self.photosView addSubview:imageView];
+        
+        NSLog(@"self.record.photosKeys %@", self.record.photosKeys);
     }
 }
 
-
+- (void)tapImage:(UIGestureRecognizer *)gestureRecognizer {
+    NSLog(@"self.record.photosKeys %@", self.record.photosKeys);
+    UIImageView *imageView = (UIImageView *)gestureRecognizer.view;
+    NSInteger intTag = imageView.tag;
+    NSNumber *tag = @(intTag);
+    NSString *key = self.tagPhotoKey[tag];
+    
+    //UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+    
+    ImageViewController *ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
+    //ivc.image = image;
+    ivc.photosKeys = self.record.photosKeys;
+    ivc.startKey = key;
+    [self.navigationController pushViewController:ivc animated:YES];
+}
 
 
 

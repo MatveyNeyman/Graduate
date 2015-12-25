@@ -50,7 +50,7 @@
     // Initializing SharedData singleton and array with records
     self.records = [SharedData sharedData].listOfRecords;
     
-    //NSLog(@"Records array in ListViewController: %@", self.records);
+    NSLog(@"Records array in ListViewController: %@", self.records);
     
     //Updatind table view sending message to the tableView property of UITableViewController superclass
     [self.tableView reloadData];

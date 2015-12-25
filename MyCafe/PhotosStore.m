@@ -51,6 +51,7 @@
     NSString *imagePath = [self imagePathForKey:key];
     NSData *data = UIImageJPEGRepresentation(image, 0.5);
     [data writeToFile:imagePath atomically:YES];
+    NSLog(@"Image saved to path: %@", [self imagePathForKey:key]);
 }
 
 - (UIImage *)imageForKey:(NSString *)key {
@@ -60,6 +61,7 @@
         result = [UIImage imageWithContentsOfFile:imagePath];
         if (result) {
             self.dictionary[key] = result;
+            NSLog(@"Image found by path %@", [self imagePathForKey:key]);
         } else {
             NSLog(@"Error: unable to find %@", [self imagePathForKey:key]);
         }

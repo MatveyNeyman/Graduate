@@ -23,6 +23,8 @@
     UIView *activeField;
     UIEdgeInsets currentInsets;
     BOOL doneButtonClicked;
+    BOOL isViewExpired;
+    CGFloat aPos; // Initial constant value vor addPhotoLeadingConstraint
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -35,10 +37,12 @@
 @property (strong, nonatomic) IBOutlet UIButton *addPhotoButton;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollPhotosView;
 @property (strong, nonatomic) IBOutlet UITextView *notesTextView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *addPhotoLeadingConstraint;
 
 @property (nonatomic) TypeSelectorViewController *typeSelectorViewController;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLGeocoder *geocoder;
+@property (nonatomic) ImageViewController *ivc;
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *type;
@@ -71,7 +75,9 @@
     self.selectedType = @"Restaurant";
     pos = 0;
     gap = 10;
+    aPos = 10;
     doneButtonClicked = NO;
+    //isViewExpired = NO;
     [self registerForKeyboardNotifications];
     //self.photos = [[NSMutableArray alloc] init];
     
@@ -79,6 +85,7 @@
         self.nameTextField.text = self.record.name;
         self.selectedType = self.record.type;
         self.addressTextField.text = self.record.address;
+        self.location = self.record.location;
         self.rating = self.record.rating;
         self.price = self.record.price;
         self.photosKeys = self.record.photosKeys;
@@ -95,6 +102,47 @@
         self.selectedType = self.typeSelectorViewController.currentType;
     }
     self.typeLabel.text = self.selectedType;
+    
+    if (self.ivc.photosKeys /*|| isViewExpired == YES*/) {
+        self.addPhotoLeadingConstraint.constant = aPos;
+        pos = 0;
+        gap = 10;
+        [self reloadPhotoView];
+        //isViewExpired = YES;
+    }
+}
+
+- (void)reloadPhotoView {
+    
+    // Clear scroll view
+    for (NSNumber *tag in self.tagPhotoKey) {
+        [[self.scrollPhotosView viewWithTag:[tag integerValue]] removeFromSuperview];
+    }
+    self.photosKeys = self.ivc.photosKeys;
+    self.tagPhotoKey = nil;
+    
+    /*
+     // Find deleted tags
+     for (NSNumber *tag in self.tagPhotoKey) {
+     NSString *key = self.tagPhotoKey[tag];
+     if (![self.photosKeys containsObject:key]) {
+     // Delete view with this tag
+     [[self.scrollPhotosView viewWithTag:[tag integerValue]] removeFromSuperview];
+     }
+     }
+     */
+    /*
+     for (UIView *view in self.scrollPhotosView.subviews) {
+     NSLog(@"self.scrollPhotosView.subviews contains view with tag %d and with origin x=%f, y=%f", view.tag, view.frame.origin.x, view.frame.origin.y);
+     }
+     */
+    
+    // Rearrange photos in the scroll view
+    
+    for (NSString *key in self.photosKeys) {
+        UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+        [self addImage:image withKey:key];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,9 +187,12 @@
     }
     
     // This statement helpful in case of user pressed Done button just after entered address
-    if (!self.location) {
+    if (!self.location || self.address != self.record.address) {
         [self getLocationFromAddress:self.addressTextField.text];
     } else {
+        if (self.isEditingMode && self.record) {
+            [self saveChanges];
+        }
         [self createAndDismiss];
     }
 }
@@ -381,7 +432,8 @@
     
     imageView.userInteractionEnabled = YES;
     
-    imageView.tag = pos;
+    // We make +1 in order to distinct this tag from 0 tag which all other views have
+    imageView.tag = pos + 1;
     NSNumber *tag = @(imageView.tag);
     
     if (!self.tagPhotoKey) {
@@ -415,6 +467,10 @@
     
     [self.scrollPhotosView addSubview:imageView];
     
+    pos += thumbnailWidth + gap;
+    self.addPhotoLeadingConstraint.constant = pos + aPos;
+    
+    /*
     [UIView animateWithDuration:0.5 animations:^ {
         CGRect frame = self.addPhotoButton.frame;
         frame.origin.x = self.addPhotoButton.frame.origin.x + thumbnailWidth + gap;
@@ -422,6 +478,7 @@
         self.addPhotoButton.translatesAutoresizingMaskIntoConstraints = YES;
         self.addPhotoButton.frame = frame;
     }];
+    */
 }
 
 - (void)tapImage:(UIGestureRecognizer *)gestureRecognizer {
@@ -430,13 +487,11 @@
     NSNumber *tag = @(intTag);
     NSString *key = self.tagPhotoKey[tag];
     
-    //UIImage *image = [[PhotosStore photosStore] imageForKey:key];
-    
-    ImageViewController *ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
-    //ivc.image = image;
-    ivc.photosKeys = self.photosKeys;
-    ivc.startKey = key;
-    [self.navigationController pushViewController:ivc animated:YES];
+    self.ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
+    self.ivc.photosKeys = self.photosKeys;
+    self.ivc.startKey = key;
+    self.ivc.isEditingMode = YES;
+    [self.navigationController pushViewController:self.ivc animated:YES];
 }
 
 
@@ -544,8 +599,11 @@
                               self.location = currentPlacemark.location;
                               NSLog(@"New Record Location: %@", self.location);
                           }
-                          if (doneButtonClicked) {
+                          if (doneButtonClicked && !self.isEditingMode) {
                               [self createAndDismiss];
+                          }
+                          if (doneButtonClicked && self.isEditingMode) {
+                              [self saveChanges];
                           }
                       }];
 }
@@ -565,8 +623,22 @@
     // Adding created object to the storage
     [[SharedData sharedData] addRecord:newRecord];
     
-    // Closing the view
+    // Close the view
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)saveChanges {
+    Record *modifiedRecord = [[Record alloc] initWithName:self.name
+                                                     type:self.type
+                                                  address:self.address
+                                                 location:self.location
+                                                   rating:self.rating
+                                                    price:self.price
+                                               photosKeys:self.photosKeys
+                                                    notes:self.notes];
+    [[SharedData sharedData] replaceRecord:self.record withRecord:modifiedRecord];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

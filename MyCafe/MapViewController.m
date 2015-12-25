@@ -136,7 +136,7 @@
             pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PinAnnotationView"];
             
             //pinView.pinColor = MKPinAnnotationColorRed;
-            pinView.animatesDrop = YES;
+            //pinView.animatesDrop = YES;
             pinView.canShowCallout = YES;
             
             // Add the detail disclosure button to display details about the annotation in another view.

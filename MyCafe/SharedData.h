@@ -19,6 +19,7 @@
 
 - (void)addRecord:(Record *)record;
 - (void)removeRecord:(Record *)record;
+- (void)replaceRecord:(Record *)oldRecord withRecord:(Record *)newRecord;
 - (BOOL)saveList;
 
 @end

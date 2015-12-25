@@ -595,6 +595,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addPhotoButton" destination="wh9-G7-qjP" id="PfV-Ax-Ods"/>
+                        <outlet property="addPhotoLeadingConstraint" destination="jxn-38-qTg" id="KSW-4R-2qa"/>
                         <outlet property="addressTextField" destination="VKq-KK-kRO" id="5xA-mS-mEr"/>
                         <outlet property="cancelButton" destination="SFH-1L-ZzE" id="DjV-es-Hst"/>
                         <outlet property="createRecordTableView" destination="oa8-nU-LGx" id="jPr-sA-Kl1"/>
@@ -657,7 +658,7 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i88-3G-DwT" userLabel="Photos View">
                                                         <rect key="frame" x="0.0" y="8" width="0.0" height="134"/>
-                                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="134" id="Tfb-qy-Do1"/>
                                                             <constraint firstAttribute="width" id="o3B-Fh-Zyn"/>
@@ -911,9 +912,16 @@
                             <constraint firstAttribute="bottomMargin" secondItem="yhh-Y5-cIz" secondAttribute="bottom" id="l2q-Mj-ysz"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="sj5-8V-Lak"/>
+                    <navigationItem key="navigationItem" id="sj5-8V-Lak">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="mNm-u1-w2u">
+                            <connections>
+                                <action selector="trashButtonClicked:" destination="2F1-eL-zsr" id="r5a-ys-ZAe"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="yhh-Y5-cIz" id="cmN-SV-x4j"/>
+                        <outlet property="trashButton" destination="mNm-u1-w2u" id="3Dy-9d-TWw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fmK-1k-OZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -931,14 +939,6 @@
                 </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2017" y="859"/>
-        </scene>
-        <!--Page View Controller-->
-        <scene sceneID="qn4-Uh-Okh">
-            <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="NkM-X1-lSG" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xnm-dL-vZm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2698" y="872"/>
         </scene>
     </scenes>
     <resources>

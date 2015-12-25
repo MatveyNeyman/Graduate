@@ -13,5 +13,6 @@
 //@property (strong, nonatomic) UIImage *image;
 @property (nonatomic) NSMutableArray<NSString *> *photosKeys;
 @property (nonatomic, copy) NSString *startKey;
+@property (nonatomic) BOOL isEditingMode;
 
 @end

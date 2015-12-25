@@ -61,6 +61,11 @@
     [self.privateList removeObjectIdenticalTo:record];
 }
 
+- (void)replaceRecord:(Record *)oldRecord withRecord:(Record *)newRecord {
+    NSUInteger index = [self.privateList indexOfObject:oldRecord];
+    [self.privateList replaceObjectAtIndex:index withObject:newRecord];
+}
+
 - (NSString *)buildPath {
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [documentDirectories firstObject];
