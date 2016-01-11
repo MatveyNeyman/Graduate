@@ -116,7 +116,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eog-2U-tg6">
+                            <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eog-2U-tg6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
                                 <connections>
                                     <outlet property="delegate" destination="ffS-Zi-Jxl" id="nay-dO-j8W"/>
@@ -684,7 +684,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
-                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5aN-Tt-161">
+                                            <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5aN-Tt-161">
                                                 <rect key="frame" x="8" y="95" width="584" height="200"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="WJ9-0E-NFX"/>
@@ -693,12 +693,21 @@
                                                     <outlet property="delegate" destination="hyt-Po-bKp" id="rAZ-a7-O5S"/>
                                                 </connections>
                                             </mapView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3EA-aE-usv" userLabel="Google Map" customClass="GMSMapView">
+                                                <rect key="frame" x="8" y="95" width="584" height="200"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="zkW-ZU-aTE"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="CBc-FS-cH9" secondAttribute="trailing" id="1K9-zc-e8b"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="3EA-aE-usv" secondAttribute="trailing" id="2g9-0w-kMk"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="IHd-qy-0IR" secondAttribute="trailing" id="7FJ-Tu-EVf"/>
                                             <constraint firstAttribute="leadingMargin" secondItem="5aN-Tt-161" secondAttribute="leading" id="Da4-uh-bss"/>
+                                            <constraint firstAttribute="leadingMargin" secondItem="3EA-aE-usv" secondAttribute="leading" id="DuR-Nl-WbH"/>
                                             <constraint firstItem="IHd-qy-0IR" firstAttribute="leading" secondItem="XhP-xB-lCE" secondAttribute="leading" id="E6k-Yn-fCF"/>
                                             <constraint firstItem="CBc-FS-cH9" firstAttribute="top" secondItem="5aN-Tt-161" secondAttribute="bottom" constant="8" id="GO7-HM-nsw"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="5aN-Tt-161" secondAttribute="trailing" id="Iap-9n-6o2"/>
@@ -709,6 +718,7 @@
                                             <constraint firstAttribute="bottomMargin" secondItem="aFU-BX-IPM" secondAttribute="bottom" id="POU-me-Cez"/>
                                             <constraint firstAttribute="topMargin" secondItem="bLN-sE-XAX" secondAttribute="top" id="Qci-8n-hBy"/>
                                             <constraint firstAttribute="leadingMargin" secondItem="aFU-BX-IPM" secondAttribute="leading" id="WiQ-tX-Msf"/>
+                                            <constraint firstItem="3EA-aE-usv" firstAttribute="top" secondItem="IHd-qy-0IR" secondAttribute="bottom" constant="8" id="XAm-WC-PaQ"/>
                                             <constraint firstItem="Dhv-DS-pUG" firstAttribute="top" secondItem="IHd-qy-0IR" secondAttribute="top" id="Yyp-Os-gdd"/>
                                             <constraint firstItem="5aN-Tt-161" firstAttribute="top" secondItem="IHd-qy-0IR" secondAttribute="bottom" constant="8" id="aPc-H0-3D2"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="XhP-xB-lCE" secondAttribute="trailing" id="eUL-Mw-wkF"/>
@@ -716,6 +726,7 @@
                                             <constraint firstAttribute="leading" secondItem="CBc-FS-cH9" secondAttribute="leading" id="lhx-vh-7EQ"/>
                                             <constraint firstItem="aFU-BX-IPM" firstAttribute="top" secondItem="CBc-FS-cH9" secondAttribute="bottom" constant="8" id="m5g-xe-opQ"/>
                                             <constraint firstItem="XhP-xB-lCE" firstAttribute="top" secondItem="bLN-sE-XAX" secondAttribute="bottom" constant="8" id="pmf-w0-uQl"/>
+                                            <constraint firstItem="CBc-FS-cH9" firstAttribute="top" secondItem="3EA-aE-usv" secondAttribute="bottom" constant="8" id="s3s-CX-asX"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="aFU-BX-IPM" secondAttribute="trailing" id="uQb-LU-wRM"/>
                                         </constraints>
                                     </view>
@@ -740,13 +751,14 @@
                     <navigationItem key="navigationItem" id="0n7-pb-STR">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="pYY-Ex-qAu">
                             <connections>
-                                <action selector="temporaryRemoveAction:" destination="hyt-Po-bKp" id="KX7-1u-PVT"/>
+                                <action selector="editButtonClicked:" destination="hyt-Po-bKp" id="OLh-S3-4wi"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addressLabel" destination="IHd-qy-0IR" id="q2s-eJ-aRW"/>
                         <outlet property="distanceLabel" destination="Dhv-DS-pUG" id="R90-RT-93v"/>
+                        <outlet property="googleMapView" destination="3EA-aE-usv" id="Abl-gt-IU6"/>
                         <outlet property="mapView" destination="5aN-Tt-161" id="Lw8-bK-Mqg"/>
                         <outlet property="nameLabel" destination="bLN-sE-XAX" id="rej-co-dpT"/>
                         <outlet property="notesView" destination="aFU-BX-IPM" id="M92-eO-weP"/>

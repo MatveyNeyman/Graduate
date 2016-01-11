@@ -12,23 +12,35 @@
 #import "SharedData.h"
 #import "RecordAnnotation.h"
 #import "RecordViewController.h"
+@import GoogleMaps;
+#import "SMCalloutView.h"
+
+
 
 //CLLocationManager *locationManager;
 
-@interface MapViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
+@interface MapViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate, SMCalloutViewDelegate> {
+    GMSMapView *mapView_;
+    CGFloat CalloutYOffset;
+    CGFloat iconSize;
+}
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UIButton *showMyLocation;
 
 @property (nonatomic) NSArray<Record *> *records;
+
 //@property (nonatomic) NSArray<MKPointAnnotation *> *pins;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) RecordViewController *recordViewController;
 
+@property (strong, nonatomic) SMCalloutView *calloutView;
+@property (strong, nonatomic) UIView *emptyCalloutView;
+
 @end
 
-@implementation MapViewController
 
+@implementation MapViewController
 
 - (void)awakeFromNib {
     NSLog(@"MapView awaked from nib");
@@ -39,14 +51,40 @@
     // Do any additional setup after loading the view.
     NSLog(@"MapView loaded");
     
+    CalloutYOffset = 40.0f;
+    iconSize = 12.0f;
+    
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
     
-    //self.mapView.delegate = self;
-    
+    /*
+    self.mapView.delegate = self;
     CLLocation *currentLocation = self.locationManager.location;
     [self initialMapState:currentLocation];
+    */
+    
+    //Google Map starts here
+    CLLocationCoordinate2D target = self.locationManager.location.coordinate;
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithTarget:target zoom:10];
+    mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView_.myLocationEnabled = YES;
+    mapView_.settings.myLocationButton = YES;
+    mapView_.delegate = self;
+    self.view = mapView_;
+    
+    self.calloutView = [[SMCalloutView alloc] init];
+    self.emptyCalloutView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.calloutView.delegate = self;
+   
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    [button addTarget:self
+               action:@selector(calloutViewClicked:)
+     forControlEvents:UIControlEventTouchUpInside];
+    self.calloutView.rightAccessoryView = button;
+    
+    [self registerOrientationNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -55,6 +93,8 @@
     // Initializing SharedData singleton and array with records
     self.records = [SharedData sharedData].listOfRecords;
     
+    /*
+    // Apple Map annotations
     NSMutableArray<MKPointAnnotation *> *pins = [NSMutableArray arrayWithCapacity:self.records.count];
     for (Record *record in self.records) {
         RecordAnnotation *pin = [[RecordAnnotation alloc] init];
@@ -65,10 +105,23 @@
         [pins addObject:pin];
     }
     [self.mapView addAnnotations:pins];
+    */
+     
+    // Google Map markers
+    for (Record *record in self.records) {
+        GMSMarker *marker = [[GMSMarker alloc] init];
+        marker.position = record.location.coordinate;
+        NSLog(@"Marker position: %f %f", marker.position.latitude, marker.position.longitude);
+        marker.title = record.name;
+        marker.snippet = record.type;
+        marker.map = mapView_;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"MapView appeared");
+    // We have to update the infoWindow if user left the view then rotated device and came back 
+    [self updateInfoWindow];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -109,6 +162,7 @@
 }
 */
 
+/*
 -(void)initialMapState:(CLLocation *)locationParameter {
     MKCoordinateRegion coordinateRegion = MKCoordinateRegionMakeWithDistance(locationParameter.coordinate, 2000, 2000);
     [self.mapView setRegion:coordinateRegion animated:YES];
@@ -159,6 +213,127 @@
     self.recordViewController.record = pin.record;
     [self.navigationController pushViewController:self.recordViewController animated:YES];
 }
+*/
 
+
+#pragma mark - GMSMapViewDelegate
+
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
+    
+    CLLocationCoordinate2D anchor = marker.position;
+ 
+    CGPoint point = [mapView.projection pointForCoordinate:anchor];
+ 
+    self.calloutView.title = marker.title;
+    self.calloutView.subtitle = marker.snippet;
+    
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectZero];
+    //leftView.backgroundColor = [UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];
+    Record *recordForMarker = [self recordForMarker:marker];
+    for (int i = 0; i < recordForMarker.rating; i++) {
+        CGFloat originY = 10.0f;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8.0f + iconSize * i, originY, iconSize, iconSize)];
+        imageView.image = [UIImage imageNamed:@"filledStar"];
+        [leftView addSubview:imageView];
+    }
+    for (int i = 0; i < recordForMarker.price; i++) {
+        CGFloat originY = 30.0f;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8.0f + iconSize * i, originY, iconSize, iconSize)];
+        imageView.image = [UIImage imageNamed:@"filledCoin"];
+        [leftView addSubview:imageView];
+    }
+    
+    leftView.frame = CGRectMake(0.0f, 0.0f, iconSize * MAX(recordForMarker.rating, recordForMarker.price) + 16.0f, 52.0f);
+    self.calloutView.leftAccessoryView = leftView;
+    
+    self.calloutView.calloutOffset = CGPointMake(0.0f, -CalloutYOffset);
+    self.calloutView.hidden = NO;
+ 
+    CGRect calloutRect = CGRectZero;
+    calloutRect.origin = point;
+    calloutRect.size = CGSizeZero;
+ 
+    [self.calloutView presentCalloutFromRect:calloutRect
+                                      inView:mapView
+                           constrainedToView:mapView
+                                    animated:YES];
+ 
+    return self.emptyCalloutView;
+}
+
+- (void)mapView:(GMSMapView *)pMapView didChangeCameraPosition:(GMSCameraPosition *)position {
+    [self updateInfoWindow];
+}
+
+- (void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
+    self.calloutView.hidden = YES;
+}
+
+
+#pragma mark - SMCalloutViewDelegate
+
+- (void)calloutViewClicked:(SMCalloutView *)calloutView {
+    if (mapView_.selectedMarker) {
+        GMSMarker *marker = mapView_.selectedMarker;
+        self.recordViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordViewController"];
+        self.recordViewController.record = [self recordForMarker:marker];
+        [self.navigationController pushViewController:self.recordViewController animated:YES];
+    }
+}
+
+
+#pragma mark - Update infoWindow after orientation changed
+
+// Called in view controller setup code.
+- (void)registerOrientationNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateInfoWindow)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+}
+
+- (void)updateInfoWindow {
+    // Move callout with map drag or orientation change
+    if (mapView_.selectedMarker != nil && !self.calloutView.hidden) {
+        CLLocationCoordinate2D anchor = mapView_.selectedMarker.position;
+        CGPoint arrowPt = self.calloutView.backgroundView.arrowPoint;
+        CGPoint pt = [mapView_.projection pointForCoordinate:anchor];
+        pt.x -= arrowPt.x;
+        pt.y -= arrowPt.y + CalloutYOffset;
+        self.calloutView.frame = (CGRect) {.origin = pt, .size = self.calloutView.frame.size };
+    } else {
+        self.calloutView.hidden = YES;
+    }
+}
+
+/*
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
+    CLLocationCoordinate2D markerCoordinate = marker.position;
+    for (Record *record in self.records) {
+        CLLocationCoordinate2D recordCoordinate = record.location.coordinate;
+        if (recordCoordinate.latitude == markerCoordinate.latitude &&
+                recordCoordinate.longitude == markerCoordinate.longitude &&
+                record.name == marker.title && record.type == marker.snippet) {
+            self.recordViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordViewController"];
+            self.recordViewController.record = record;
+            [self.navigationController pushViewController:self.recordViewController animated:YES];
+            return;
+        }
+    }
+}
+*/
+
+- (Record *)recordForMarker:(GMSMarker *)marker {
+    CLLocationCoordinate2D markerCoordinate = marker.position;
+    for (Record *record in self.records) {
+        CLLocationCoordinate2D recordCoordinate = record.location.coordinate;
+        if (recordCoordinate.latitude == markerCoordinate.latitude &&
+            recordCoordinate.longitude == markerCoordinate.longitude &&
+            record.name == marker.title && record.type == marker.snippet) {
+            return record;
+        }
+    }
+    return nil;
+}
 
 @end

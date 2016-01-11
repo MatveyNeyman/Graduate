@@ -14,6 +14,8 @@
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
@@ -30,6 +32,11 @@
 	<string></string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

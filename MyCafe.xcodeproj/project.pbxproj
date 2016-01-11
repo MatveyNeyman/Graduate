@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A640527702B213AB5D05FEE5 /* Pods_MyCafe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */; };
+		7166CE40C167543A8CABBA17 /* libPods-MyCafe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6ED4761B99202D050CBA70 /* libPods-MyCafe.a */; };
 		CE0F03A31BFCD93600A785A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0F03A21BFCD93600A785A9 /* main.m */; };
 		CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0F03A51BFCD93600A785A9 /* AppDelegate.m */; };
 		CE0F03AC1BFCD93600A785A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AA1BFCD93600A785A9 /* Main.storyboard */; };
@@ -17,6 +17,7 @@
 		CE58ECEF1C1AFA3C00B82FEB /* TypesOfPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58ECEE1C1AFA3C00B82FEB /* TypesOfPlace.m */; };
 		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
 		CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE59C0451BFE5238005E414B /* MapKit.framework */; };
+		CE63C4541C43E09B0099A350 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE63C4531C43E09B0099A350 /* SMCalloutView.m */; };
 		CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6457C91BFDD83E004B59AC /* MainPageViewController.m */; };
 		CE690DB31C2BD7AB00F3CD2B /* RecordAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE690DB21C2BD7AB00F3CD2B /* RecordAnnotation.m */; };
 		CE690DB61C2C53C800F3CD2B /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE690DB51C2C53C800F3CD2B /* ImageViewController.m */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		2132DFB9B65855E8FAE9337D /* Pods-MyCafe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCafe.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe.release.xcconfig"; sourceTree = "<group>"; };
 		4A1EFE8A885BE84DA1BAF82E /* Pods-MyCafe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCafe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyCafe/Pods-MyCafe.debug.xcconfig"; sourceTree = "<group>"; };
+		CA6ED4761B99202D050CBA70 /* libPods-MyCafe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyCafe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0F039E1BFCD93600A785A9 /* MyCafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0F03A21BFCD93600A785A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE0F03A41BFCD93600A785A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,6 +50,8 @@
 		CE59C0421BFE517F005E414B /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		CE59C0431BFE517F005E414B /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		CE59C0451BFE5238005E414B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CE63C4521C43E08B0099A350 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
+		CE63C4531C43E09B0099A350 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		CE6457C81BFDD83E004B59AC /* MainPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainPageViewController.h; sourceTree = "<group>"; };
 		CE6457C91BFDD83E004B59AC /* MainPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainPageViewController.m; sourceTree = "<group>"; };
 		CE690DB11C2BD7AB00F3CD2B /* RecordAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordAnnotation.h; sourceTree = "<group>"; };
@@ -69,7 +73,6 @@
 		CEE622C21C24567400E5173E /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordViewController.m; sourceTree = "<group>"; };
 		CEECA79A1C1A0B2100A9F84E /* CreateRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateRecordViewController.h; sourceTree = "<group>"; };
 		CEECA79B1C1A0B2100A9F84E /* CreateRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateRecordViewController.m; sourceTree = "<group>"; };
-		F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyCafe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +82,7 @@
 			files = (
 				CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */,
 				CE59C0461BFE5238005E414B /* MapKit.framework in Frameworks */,
-				A640527702B213AB5D05FEE5 /* Pods_MyCafe.framework in Frameworks */,
+				7166CE40C167543A8CABBA17 /* libPods-MyCafe.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +101,7 @@
 		AE9A90A6B2144D83FEE55B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F6172E382610F84B97CFAB2E /* Pods_MyCafe.framework */,
+				CA6ED4761B99202D050CBA70 /* libPods-MyCafe.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,6 +135,8 @@
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
 				CE59C0421BFE517F005E414B /* MapViewController.h */,
 				CE59C0431BFE517F005E414B /* MapViewController.m */,
+				CE63C4521C43E08B0099A350 /* SMCalloutView.h */,
+				CE63C4531C43E09B0099A350 /* SMCalloutView.m */,
 				CE690DB11C2BD7AB00F3CD2B /* RecordAnnotation.h */,
 				CE690DB21C2BD7AB00F3CD2B /* RecordAnnotation.m */,
 				CEE125491C230D1B009C5E1A /* ListViewController.h */,
@@ -310,6 +315,7 @@
 				CE6457CA1BFDD83E004B59AC /* MainPageViewController.m in Sources */,
 				CEE1254E1C231492009C5E1A /* ListViewCell.m in Sources */,
 				CEECA79C1C1A0B2100A9F84E /* CreateRecordViewController.m in Sources */,
+				CE63C4541C43E09B0099A350 /* SMCalloutView.m in Sources */,
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
 				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,

@@ -13,8 +13,9 @@
 #import "PhotosStore.h"
 #import "CreateRecordViewController.h"
 #import "ImageViewController.h"
+@import GoogleMaps;
 
-@interface RecordViewController () <CLLocationManagerDelegate, MKMapViewDelegate>
+@interface RecordViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate>
 {
     CGFloat iconSize;
     UIView *mainView;
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet UIView *photosView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *photosViewWidthEqualConstraint;
 @property (strong, nonatomic) IBOutlet UITextView *notesView;
+@property (strong, nonatomic) IBOutlet GMSMapView *googleMapView;
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
@@ -44,10 +46,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Setup icons size
-    iconSize = 18;
+    iconSize = 18.0f;
     // Setup variables for positioning image gallery
-    pos = 8;
-    gap = 10;
+    pos = 8.0f;
+    gap = 10.0f;
     
     // Recognize the view to add icons
     mainView = [self.view viewWithTag:2];
@@ -112,20 +114,21 @@
 
 - (void)addRatingAndPriceIcons {
     for (int i = 0; i < self.record.rating; i++) {
-        CGFloat originY = mainView.frame.origin.y + 10;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8 + iconSize * i, originY, iconSize, iconSize)];
+        CGFloat originY = mainView.frame.origin.y + 10.0f;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8.0f + iconSize * i, originY, iconSize, iconSize)];
         imageView.image = [UIImage imageNamed:@"filledStar"];
         [mainView addSubview:imageView];
     }
     for (int i = 0; i < self.record.price; i++) {
-        CGFloat originY = mainView.frame.origin.y + 10 + iconSize + 10;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8 + iconSize * i, originY, iconSize, iconSize)];
+        CGFloat originY = mainView.frame.origin.y + 10.0f + iconSize + 10.0f;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8.0f + iconSize * i, originY, iconSize, iconSize)];
         imageView.image = [UIImage imageNamed:@"filledCoin"];
         [mainView addSubview:imageView];
     }
 }
 
 - (void)showRecordLocation:(CLLocation *)location {
+    /*
     //NSLog(@"Location coordinate: %@", location.coordinate);
     MKCoordinateRegion coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 800, 800);
     [self.mapView setRegion:coordinateRegion animated:YES];
@@ -136,9 +139,16 @@
     pin.title = self.record.name;
     pin.subtitle = self.record.type;
     [self.mapView addAnnotation:pin];
+    */
+    
+    CLLocationCoordinate2D target = location.coordinate;
+    self.googleMapView.camera = [GMSCameraPosition cameraWithTarget:target zoom:15];
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = location.coordinate;
+    marker.map = self.googleMapView;
 }
 
-
+/*
 #pragma mark - MKMapViewDelegate
 
 - (nullable MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
@@ -146,8 +156,9 @@
     aView.canShowCallout = YES;
     return aView;
 }
+*/
 
-- (IBAction)temporaryRemoveAction:(id)sender {
+- (IBAction)editButtonClicked:(id)sender {
     self.createRecordViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateRecordViewController"];
     self.createRecordViewController.isEditingMode =  YES;
     self.createRecordViewController.navigationItem.title = nil;
@@ -164,17 +175,17 @@
         CGFloat originY;            // Placeholder's center point
         
         // Check portrait or landscape view
-        if (aspectRatio >= 1) {
+        if (aspectRatio >= 1.0f) {
             // Portrait
-            thumbnailWidth = 118 / aspectRatio;
-            thumbnailHeight = 118;
+            thumbnailWidth = 118.0f / aspectRatio;
+            thumbnailHeight = 118.0f;
         } else {
             // Landscape
-            thumbnailWidth = 118;
-            thumbnailHeight = 118 * aspectRatio;
+            thumbnailWidth = 118.0f;
+            thumbnailHeight = 118.0f * aspectRatio;
         }
         // Create the ImageView for thumbnails
-        originY = (self.photosView.frame.size.height - thumbnailHeight) / 2;
+        originY = (self.photosView.frame.size.height - thumbnailHeight) / 2.0f;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos, originY, thumbnailWidth, thumbnailHeight)];
         
         imageView.userInteractionEnabled = YES;
@@ -196,8 +207,8 @@
         CGSize thumbnailSize;
         thumbnailSize.width = thumbnailWidth;
         thumbnailSize.height = thumbnailHeight;
-        UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0);
-        [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
+        UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0f);
+        [image drawInRect:CGRectMake(0.0f, 0.0f, thumbnailWidth, thumbnailHeight)];
         UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
 

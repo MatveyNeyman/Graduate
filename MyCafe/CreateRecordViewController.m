@@ -73,9 +73,9 @@
     // Do any additional setup after loading the view.
     //NSLog(@"New Record loaded");
     self.selectedType = @"Restaurant";
-    pos = 0;
-    gap = 10;
-    aPos = 10;
+    pos = 0.0f;
+    gap = 10.0f;
+    aPos = 10.0f;
     doneButtonClicked = NO;
     //isViewExpired = NO;
     [self registerForKeyboardNotifications];
@@ -105,8 +105,8 @@
     
     if (self.ivc.photosKeys /*|| isViewExpired == YES*/) {
         self.addPhotoLeadingConstraint.constant = aPos;
-        pos = 0;
-        gap = 10;
+        pos = 0.0f;
+        gap = 10.0f;
         [self reloadPhotoView];
         //isViewExpired = YES;
     }
@@ -227,7 +227,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     //tableView.nu
-    return 0.001;
+    return 0.001f;
 }
 
 
@@ -420,14 +420,14 @@
     
     // Check portrait or landscape view
     if (aspectRatio >= 1) {
-        thumbnailWidth = 70 / aspectRatio;
-        thumbnailHeight = 70;
+        thumbnailWidth = 70.0f / aspectRatio;
+        thumbnailHeight = 70.0f;
     } else {
-        thumbnailWidth = 70;
-        thumbnailHeight = 70 * aspectRatio;
+        thumbnailWidth = 70.0f;
+        thumbnailHeight = 70.0f * aspectRatio;
     }
     // Create the ImageView for thumbnails
-    originY = (self.scrollPhotosView.frame.size.height - thumbnailHeight) / 2;
+    originY = (self.scrollPhotosView.frame.size.height - thumbnailHeight) / 2.0f;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos + gap, originY, thumbnailWidth, thumbnailHeight)];
     
     imageView.userInteractionEnabled = YES;
@@ -453,8 +453,8 @@
     CGSize thumbnailSize;
     thumbnailSize.width = thumbnailWidth;
     thumbnailSize.height = thumbnailHeight;
-    UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0);
-    [image drawInRect:CGRectMake(0, 0, thumbnailWidth, thumbnailHeight)];
+    UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0f);
+    [image drawInRect:CGRectMake(0.0f, 0.0f, thumbnailWidth, thumbnailHeight)];
     UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -529,10 +529,10 @@
     // If active text field is hidden by keyboard, scroll it so it's visible
     if (!CGRectContainsPoint(aRect, point) ) {
         // Construct new insets
-        UIEdgeInsets newInsets = UIEdgeInsetsMake(currentInsets.top + 0.0,
-                                                  currentInsets.left + 0.0,
+        UIEdgeInsets newInsets = UIEdgeInsetsMake(currentInsets.top + 0.0f,
+                                                  currentInsets.left + 0.0f,
                                                   currentInsets.bottom + kbSize.height,
-                                                  currentInsets.right + 0.0);
+                                                  currentInsets.right + 0.0f);
         
         self.createRecordTableView.contentInset = newInsets;
         self.createRecordTableView.scrollIndicatorInsets = newInsets;
