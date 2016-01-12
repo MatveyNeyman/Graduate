@@ -15,8 +15,8 @@
 
 @interface MainPageViewController () <FilterDelegate, SortDelegate>
 {
-    NSString *zeroSegmentName; //initial zero segment's name in UISegmentedControl
-    BOOL isMapTitle;           //initial flag
+    //NSString *zeroSegmentName; //initial zero segment's name in UISegmentedControl
+    BOOL isMap;           //initial flag
 }
 
 // Outlets for containers which contain Map or List scenes
@@ -50,8 +50,8 @@
     NSLog(@"MainPage loaded");
     // Do any additional setup after loading the view.
     [self.mapView setHidden:YES];
-    zeroSegmentName = @"Map";
-    isMapTitle = YES;
+    //zeroSegmentName = @"Map";
+    isMap = NO;
     self.showRestaurant = YES;
     self.showCafe = YES;
     self.showBar = YES;
@@ -147,46 +147,42 @@
 
 
 - (IBAction)segmentTriggered:(id)sender {
-    UISegmentedControl *mapSortFilter = (UISegmentedControl *) sender;
-    switch (mapSortFilter.selectedSegmentIndex) {
+    UISegmentedControl *mapList = (UISegmentedControl *) sender;
+    switch (mapList.selectedSegmentIndex) {
         case 0:
-            NSLog(@"%@ pressed", zeroSegmentName);
-            [self swapView];
-            [mapSortFilter setTitle:zeroSegmentName forSegmentAtIndex:0];
-            if ([zeroSegmentName  isEqual: @"List"]) {
-                [mapSortFilter removeSegmentAtIndex:1 animated:YES];
-            } else {
-                [mapSortFilter insertSegmentWithTitle:@"Sort" atIndex:1 animated:YES];
-            }
+            [self.listView setHidden:NO];
+            [self.mapView setHidden:YES];
+            //[mapSortFilter setTitle:zeroSegmentName forSegmentAtIndex:0];
+            //if ([zeroSegmentName  isEqual: @"List"]) {
+            //    [mapSortFilter removeSegmentAtIndex:1 animated:YES];
+            //} else {
+            //    [mapSortFilter insertSegmentWithTitle:@"Sort" atIndex:1 animated:YES];
+            //}
             break;
         case 1:
-            if ([mapSortFilter numberOfSegments] == 3) {
-                NSLog(@"sort pressed");
-                [self performSegueWithIdentifier:@"Sort" sender:nil];
-            } else {
-                NSLog(@"filter pressed");
-                [self performSegueWithIdentifier:@"Filter" sender:nil];
-            }
+            [self.listView setHidden:YES];
+            [self.mapView setHidden:NO];
+            //if ([mapSortFilter numberOfSegments] == 3) {
+            //    NSLog(@"sort pressed");
+            //    [self performSegueWithIdentifier:@"Sort" sender:nil];
+            //} else {
+            //    NSLog(@"filter pressed");
+            //    [self performSegueWithIdentifier:@"Filter" sender:nil];
+            //}
             break;
-        case 2:
-            NSLog(@"filter pressed");
-            [self performSegueWithIdentifier:@"Filter" sender:nil];
-            break;
+        //case 2:
+        //    NSLog(@"filter pressed");
+        //    [self performSegueWithIdentifier:@"Filter" sender:nil];
+        //    break;
     }
 }
 
-- (void)swapView {
-    if (isMapTitle) {
-        zeroSegmentName = @"List";
-        [self.listView setHidden:YES];
-        [self.mapView setHidden:NO];
-        isMapTitle = NO;
-    } else {
-        zeroSegmentName = @"Map";
-        [self.mapView setHidden:YES];
-        [self.listView setHidden:NO];
-        isMapTitle = YES;
-    }
+- (IBAction)filterButtonClicked:(id)sender {
+    [self performSegueWithIdentifier:@"Filter" sender:nil];
+}
+
+- (IBAction)sortButtonClicked:(id)sender {
+    [self performSegueWithIdentifier:@"Sort" sender:nil];
 }
 
 @end

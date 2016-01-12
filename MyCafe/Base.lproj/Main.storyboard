@@ -88,48 +88,72 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xdt-CG-DzN" userLabel="Container ListView">
-                                <rect key="frame" x="0.0" y="138" width="600" height="462"/>
+                                <rect key="frame" x="0.0" y="108" width="600" height="444"/>
                                 <connections>
                                     <segue destination="zUo-EP-mlb" kind="embed" id="1Os-X9-njt"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ll6-iF-LB0" userLabel="Container MapView">
-                                <rect key="frame" x="0.0" y="138" width="600" height="462"/>
+                                <rect key="frame" x="0.0" y="108" width="600" height="444"/>
                                 <connections>
                                     <segue destination="ffS-Zi-Jxl" kind="embed" id="blD-oi-hF1"/>
                                 </connections>
                             </containerView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" momentary="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-uL-Lqg">
-                                <rect key="frame" x="0.0" y="108" width="600" height="30"/>
+                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkk-q8-uzv">
+                                <rect key="frame" x="0.0" y="551" width="600" height="49"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items/>
+                            </tabBar>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-uL-Lqg">
+                                <rect key="frame" x="245" y="562" width="110" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="29" id="rI7-nD-ZW2"/>
+                                    <constraint firstAttribute="width" constant="110" id="wZh-bZ-Bq3"/>
                                 </constraints>
                                 <segments>
+                                    <segment title="List"/>
                                     <segment title="Map"/>
-                                    <segment title="Sort"/>
-                                    <segment title="Filter"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentTriggered:" destination="Wqz-es-cWa" eventType="valueChanged" id="2pT-Ay-28C"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uut-pE-kcM">
+                                <rect key="frame" x="20" y="561" width="35" height="30"/>
+                                <state key="normal" title="Filter"/>
+                                <connections>
+                                    <action selector="filterButtonClicked:" destination="Wqz-es-cWa" eventType="touchUpInside" id="OEp-wf-v8O"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRX-lz-aks">
+                                <rect key="frame" x="550" y="561" width="30" height="30"/>
+                                <state key="normal" title="Sort"/>
+                                <connections>
+                                    <action selector="sortButtonClicked:" destination="Wqz-es-cWa" eventType="touchUpInside" id="fmH-DY-8iG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ll6-iF-LB0" secondAttribute="trailing" id="2q9-6p-MIu"/>
                             <constraint firstItem="Ap9-15-zZ1" firstAttribute="leading" secondItem="Vah-JN-GhT" secondAttribute="leading" id="3Jf-vr-LKo"/>
                             <constraint firstItem="Ap9-15-zZ1" firstAttribute="top" secondItem="7Bb-Hy-sIO" secondAttribute="bottom" id="6oy-Mq-Whq"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Ll6-iF-LB0" secondAttribute="bottom" id="GRB-kh-ccl"/>
+                            <constraint firstItem="pkk-q8-uzv" firstAttribute="trailing" secondItem="BRX-lz-aks" secondAttribute="trailing" constant="20" id="Fds-35-Hqr"/>
+                            <constraint firstItem="pkk-q8-uzv" firstAttribute="leading" secondItem="Vah-JN-GhT" secondAttribute="leading" id="IHp-7A-loq"/>
+                            <constraint firstItem="Xdt-CG-DzN" firstAttribute="bottom" secondItem="Ll6-iF-LB0" secondAttribute="bottom" id="K9P-Cq-aVh"/>
                             <constraint firstItem="Xdt-CG-DzN" firstAttribute="leading" secondItem="Vah-JN-GhT" secondAttribute="leading" id="Khb-K7-svf"/>
-                            <constraint firstItem="Ll6-iF-LB0" firstAttribute="top" secondItem="I6g-uL-Lqg" secondAttribute="bottom" constant="1" id="Lfo-Jc-lwf"/>
-                            <constraint firstItem="Xdt-CG-DzN" firstAttribute="top" secondItem="I6g-uL-Lqg" secondAttribute="bottom" constant="1" id="Lzb-Uu-LZS"/>
+                            <constraint firstItem="RKB-NG-QW9" firstAttribute="top" secondItem="I6g-uL-Lqg" secondAttribute="bottom" constant="10" id="Kkx-vw-DaV"/>
+                            <constraint firstItem="BRX-lz-aks" firstAttribute="centerY" secondItem="I6g-uL-Lqg" secondAttribute="centerY" id="KpK-9S-pnh"/>
+                            <constraint firstItem="pkk-q8-uzv" firstAttribute="width" secondItem="Vah-JN-GhT" secondAttribute="width" id="Llq-Vb-SMp"/>
                             <constraint firstAttribute="trailing" secondItem="Xdt-CG-DzN" secondAttribute="trailing" id="M2v-k1-ZAi"/>
-                            <constraint firstItem="I6g-uL-Lqg" firstAttribute="top" secondItem="Ap9-15-zZ1" secondAttribute="bottom" id="PdS-IM-T0Y"/>
+                            <constraint firstItem="Xdt-CG-DzN" firstAttribute="top" secondItem="Ap9-15-zZ1" secondAttribute="bottom" id="OqO-PY-5lr"/>
+                            <constraint firstItem="Xdt-CG-DzN" firstAttribute="top" secondItem="Ll6-iF-LB0" secondAttribute="top" id="Pc1-83-gPL"/>
                             <constraint firstItem="Ll6-iF-LB0" firstAttribute="leading" secondItem="Vah-JN-GhT" secondAttribute="leading" id="R3D-RO-3a7"/>
-                            <constraint firstItem="RKB-NG-QW9" firstAttribute="top" secondItem="Xdt-CG-DzN" secondAttribute="bottom" id="VMO-WG-0Hi"/>
-                            <constraint firstItem="I6g-uL-Lqg" firstAttribute="leading" secondItem="Vah-JN-GhT" secondAttribute="leading" id="W6K-gK-KWA"/>
+                            <constraint firstItem="RKB-NG-QW9" firstAttribute="top" secondItem="pkk-q8-uzv" secondAttribute="bottom" id="UVb-jo-QZ6"/>
+                            <constraint firstItem="Uut-pE-kcM" firstAttribute="centerY" secondItem="I6g-uL-Lqg" secondAttribute="centerY" id="V0u-GX-92c"/>
+                            <constraint firstItem="I6g-uL-Lqg" firstAttribute="top" secondItem="Ll6-iF-LB0" secondAttribute="bottom" constant="10" id="d91-vu-cgJ"/>
                             <constraint firstAttribute="trailing" secondItem="Ap9-15-zZ1" secondAttribute="trailing" id="fQi-Qg-B96"/>
-                            <constraint firstAttribute="trailing" secondItem="I6g-uL-Lqg" secondAttribute="trailing" id="lvl-18-KdP"/>
+                            <constraint firstItem="Uut-pE-kcM" firstAttribute="leading" secondItem="pkk-q8-uzv" secondAttribute="leading" constant="20" id="lQ4-id-d0Q"/>
+                            <constraint firstItem="I6g-uL-Lqg" firstAttribute="centerX" secondItem="Vah-JN-GhT" secondAttribute="centerX" id="nRf-Nz-cqn"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MyCafé" id="QUt-9b-9Dp">
@@ -461,17 +485,17 @@
                         <viewControllerLayoutGuide type="bottom" id="4pw-sv-IVJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bwM-sc-4tc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="444"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eog-2U-tg6">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="444"/>
                                 <connections>
                                     <outlet property="delegate" destination="ffS-Zi-Jxl" id="nay-dO-j8W"/>
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rIs-mu-2iB">
-                                <rect key="frame" x="522" y="412" width="58" height="30"/>
+                                <rect key="frame" x="522" y="394" width="58" height="30"/>
                                 <state key="normal" title="CENTER"/>
                                 <connections>
                                     <action selector="showMyLocationClicked:" destination="ffS-Zi-Jxl" eventType="touchUpInside" id="cll-Jv-ucC"/>
@@ -502,7 +526,7 @@
             <objects>
                 <tableViewController title="List" id="zUo-EP-mlb" customClass="ListViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="88" sectionHeaderHeight="28" sectionFooterHeight="28" id="apW-9A-Ujy">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="462"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="444"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
