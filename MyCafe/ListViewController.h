@@ -11,5 +11,7 @@
 @interface ListViewController : UITableViewController
 
 @property (nonatomic) BOOL isFilterEnabled;
+@property (nonatomic) NSSortDescriptor *descriptor;
+
 
 @end

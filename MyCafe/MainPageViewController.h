@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Record.h"
-#import "FilterViewController.h"
 
 @interface MainPageViewController : UIViewController
 

@@ -12,8 +12,6 @@
 
 @interface FilterViewController ()
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *applyButton;
 @property (strong, nonatomic) IBOutlet UISwitch *restaurantSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *cafeSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *barSwitch;
@@ -21,13 +19,6 @@
 
 @property (strong, nonatomic) IBOutlet MultiSelectSegmentedControl *starsSegmentedControl;
 @property (strong, nonatomic) IBOutlet MultiSelectSegmentedControl *coinsSegmentedControl;
-
-@property (nonatomic) NSIndexSet *selectedStars;
-@property (nonatomic) NSIndexSet *selectedCoins;
-@property (nonatomic) BOOL showRestaurant;
-@property (nonatomic) BOOL showCafe;
-@property (nonatomic) BOOL showBar;
-@property (nonatomic) BOOL showFastFood;
 
 @property (nonatomic) NSMutableArray<Record *> *filteredRecords;
 
@@ -55,6 +46,26 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     self.filteredRecords = [NSMutableArray arrayWithArray:[SharedData sharedData].listOfRecords];
+    
+    if (!self.showRestaurant) {
+        self.restaurantSwitch.on = NO;
+    }
+    if (!self.showCafe) {
+        self.cafeSwitch.on = NO;
+    }
+    if (!self.showBar) {
+        self.barSwitch.on = NO;
+    }
+    if (!self.showFastFood) {
+        self.fastFoodSwitch.on = NO;
+    }
+    if (self.selectedStars) {
+        self.starsSegmentedControl.selectedSegmentIndexes = self.selectedStars;
+    }
+    if (self.selectedCoins) {
+        NSLog(@"self.selectedCoins %@", self.selectedCoins);
+        self.coinsSegmentedControl.selectedSegmentIndexes = self.selectedCoins;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -250,8 +261,14 @@
         }
     }
     
-    if([self.filterDelegate respondsToSelector:@selector(filterViewControllerDismissed:)] /*&& records.count != self.filteredRecords.count*/) {
-        [self.filterDelegate filterViewControllerDismissed:self.filteredRecords];
+    if([self.filterDelegate respondsToSelector:@selector(filterViewControllerDismissed:selectedStars:selectedCoins:showRestaurant:showCafe:showBar:showFastFood:)]) {
+        [self.filterDelegate filterViewControllerDismissed:self.filteredRecords
+                                             selectedStars:self.selectedStars
+                                             selectedCoins:self.selectedCoins
+                                            showRestaurant:self.showRestaurant
+                                                  showCafe:self.showCafe
+                                                   showBar:self.showBar
+                                              showFastFood:self.showFastFood];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }

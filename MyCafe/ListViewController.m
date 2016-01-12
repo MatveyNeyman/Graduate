@@ -53,14 +53,50 @@
     
     //NSLog(@"Records array in ListViewController: %@", self.records);
     
-    MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
-    if (mpvc.filteredRecords && self.isFilterEnabled) {
-        self.records = mpvc.filteredRecords;
+    if (self.isFilterEnabled) {
+        MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
+        if (mpvc.filteredRecords) {
+            self.records = mpvc.filteredRecords;
+        }
     }
+
     // Reset filter flag
     //self.isFilterEnabled = NO;
     
-    //Updatind table view sending message to the tableView property of UITableViewController superclass
+    NSLog(@"ListView Sort Descriptor: %@", self.descriptor);
+    
+    // Sort array using descriptor got from MainPageViewController
+    if (self.descriptor && ![self.descriptor.key isEqualToString:@"distance"]) {
+        NSArray *sortDescriptors = @[self.descriptor];
+        NSArray<Record*> *sortedArray = [self.records sortedArrayUsingDescriptors:sortDescriptors];
+        self.records = sortedArray;
+        //NSLog(@"ListView Sorted Array: %@", sortedArray);
+    }
+    
+    // Sort array manually by locations
+    if ([self.descriptor.key isEqualToString:@"distance"]) {
+        NSArray<Record*> *sortedArray = [self.records sortedArrayUsingComparator:^NSComparisonResult(Record *a, Record *b) {
+            NSInteger distanceA = [a.location distanceFromLocation:self.currentLocation];
+            NSInteger distanceB = [b.location distanceFromLocation:self.currentLocation];
+            if (distanceA < distanceB) {
+                return NSOrderedAscending;
+            }
+            if (distanceA > distanceB) {
+                return NSOrderedDescending;
+            }
+            if (distanceA == distanceB) {
+                return NSOrderedSame;
+            }
+            else {
+                return NSOrderedSame;
+            }
+        }];
+        
+        self.records = sortedArray;
+        //NSLog(@"ListView Sorted Array: %@", sortedArray);
+    }
+
+    // Updatind table view sending message to the tableView property of UITableViewController superclass
     [self.tableView reloadData];
 }
 

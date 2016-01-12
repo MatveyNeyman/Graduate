@@ -122,7 +122,7 @@
     for (Record *record in self.records) {
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = record.location.coordinate;
-        NSLog(@"Marker position: %f %f", marker.position.latitude, marker.position.longitude);
+        //NSLog(@"Marker position: %f %f", marker.position.latitude, marker.position.longitude);
         marker.title = record.name;
         marker.snippet = record.type;
         marker.map = mapView_;

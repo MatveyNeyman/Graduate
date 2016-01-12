@@ -7,6 +7,66 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="5d7-hx-uFo">
+            <objects>
+                <navigationController id="uGT-Vz-8Za" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="x8j-Oj-bjw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="VHB-qY-Vkp" kind="relationship" relationship="rootViewController" id="LeK-SM-wXP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Wa-0R-2zG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1516" y="-576"/>
+        </scene>
+        <!--Sort-->
+        <scene sceneID="mLu-55-Npk">
+            <objects>
+                <viewController id="VHB-qY-Vkp" customClass="SortViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="W1C-E4-OXo"/>
+                        <viewControllerLayoutGuide type="bottom" id="1h2-DV-rn5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TCH-ez-P4c">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GBI-gV-woG">
+                                <rect key="frame" x="20" y="64" width="560" height="536"/>
+                            </pickerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="GBI-gV-woG" firstAttribute="leading" secondItem="TCH-ez-P4c" secondAttribute="leadingMargin" id="9g9-8n-DZ2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GBI-gV-woG" secondAttribute="trailing" id="W5J-AV-OfY"/>
+                            <constraint firstItem="GBI-gV-woG" firstAttribute="top" secondItem="W1C-E4-OXo" secondAttribute="bottom" id="a5k-1s-lAr"/>
+                            <constraint firstItem="1h2-DV-rn5" firstAttribute="top" secondItem="GBI-gV-woG" secondAttribute="bottom" id="bnC-nI-i2m"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Sort" id="RbJ-Sn-md1">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ikx-02-8EL">
+                            <connections>
+                                <action selector="cancelButtonClicked:" destination="VHB-qY-Vkp" id="U9p-AG-QWf"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Apply" id="PNI-yP-T30">
+                            <connections>
+                                <action selector="applyButtonClicked:" destination="VHB-qY-Vkp" id="qE0-UD-WNC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="pickerView" destination="GBI-gV-woG" id="8VC-On-Op0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eou-bq-TTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-802" y="-576"/>
+        </scene>
         <!--MyCafé-->
         <scene sceneID="YBS-0s-j5l">
             <objects>
@@ -83,11 +143,12 @@
                         <outlet property="listView" destination="Xdt-CG-DzN" id="Qew-WL-gB4"/>
                         <outlet property="mapView" destination="Ll6-iF-LB0" id="n43-Bm-E8C"/>
                         <segue destination="WaO-D3-cmr" kind="presentation" identifier="Filter" id="rql-lW-ANF"/>
+                        <segue destination="uGT-Vz-8Za" kind="presentation" identifier="Sort" id="RC8-Bf-hrU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9OP-Ns-9ii" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-745" y="193"/>
+            <point key="canvasLocation" x="-753" y="187"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="efg-W5-udb">
@@ -311,10 +372,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="applyButton" destination="SQM-aI-msJ" id="qX5-XZ-RKi"/>
                         <outlet property="barSwitch" destination="T7i-Vr-GCF" id="t6I-AA-dr0"/>
                         <outlet property="cafeSwitch" destination="8sd-8s-UIw" id="Zcc-YG-lDy"/>
-                        <outlet property="cancelButton" destination="CxE-8Y-0I8" id="han-ba-ahK"/>
                         <outlet property="coinsSegmentedControl" destination="Fp6-Z0-1fu" id="6hX-Ed-INF"/>
                         <outlet property="fastFoodSwitch" destination="XdX-M4-MW4" id="ulg-fj-Ztg"/>
                         <outlet property="restaurantSwitch" destination="iZR-Dr-zBC" id="WNX-Mp-bzt"/>
