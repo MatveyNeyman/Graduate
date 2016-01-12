@@ -57,8 +57,6 @@
 //@property (nonatomic) NSMutableArray<UIImage *> *photos;
 @property (nonatomic, copy) NSString *notes;
 
-
-
 @end
 
 
@@ -568,7 +566,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSLog(@"TextFieldDidEndEditing");
     activeField = nil;
-    if (textField == self.addressTextField) {
+    if (textField == self.addressTextField && !doneButtonClicked) {
         [self getLocationFromAddress:self.addressTextField.text];
     }
 }

@@ -8,8 +8,10 @@
 
 #import "MainPageViewController.h"
 #import "SharedData.h"
+#import "ListViewController.h"
+#import "MapViewController.h"
 
-@interface MainPageViewController ()
+@interface MainPageViewController () <FilterDelegate>
 {
     NSString *zeroSegmentName; //initial zero segment's name in UISegmentedControl
     BOOL isMapTitle;           //initial flag
@@ -18,6 +20,9 @@
 // Outlets for containers which contain Map or List scenes
 @property (nonatomic) IBOutlet UIView *mapView;
 @property (nonatomic) IBOutlet UIView *listView;
+
+@property (nonatomic) FilterViewController *filterViewController;
+//@property (nonatomic) NSArray<Record *> *filteredRecords;
 
 @end
 
@@ -36,6 +41,10 @@
     isMapTitle = YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"Filtered records: %@", self.filteredRecords);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -44,11 +53,41 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"Filter"]) {
+        UINavigationController *navigationController = segue.destinationViewController;
+        self.filterViewController = (FilterViewController *) [navigationController topViewController];
+        self.filterViewController.filterDelegate = self;
+    }
 }
+
+
+#pragma mark - FilterDelegate
+
+- (void)filterViewControllerDismissed:(NSArray<Record *> *)filteredRecords {
+    ListViewController *lvc;
+    MapViewController *mvc;
+    
+    for (UIViewController *vc in self.childViewControllers) {
+        if ([vc isKindOfClass:[ListViewController class]]) {
+            lvc = (ListViewController *) vc;
+        }
+        if ([vc isKindOfClass:[MapViewController class]]) {
+            mvc = (MapViewController *) vc;
+        }
+    }
+    
+    if (filteredRecords.count != [SharedData sharedData].listOfRecords.count) {
+        self.filteredRecords = filteredRecords;
+        lvc.isFilterEnabled = YES;
+        mvc.isFilterEnabled = YES;
+    } else {
+        lvc.isFilterEnabled = NO;
+        mvc.isFilterEnabled = NO;
+    }
+
+}
+
 
 - (IBAction)segmentTriggered:(id)sender {
     UISegmentedControl *mapSortFilter = (UISegmentedControl *) sender;
@@ -70,11 +109,13 @@
             } else {
                 NSLog(@"filter pressed");
                 //filter map method
+                [self performSegueWithIdentifier:@"Filter" sender:nil];
             }
             break;
         case 2:
             NSLog(@"filter pressed");
             //filter list method
+            [self performSegueWithIdentifier:@"Filter" sender:nil];
             break;
     }
 }

@@ -23,6 +23,8 @@
 		CE690DB61C2C53C800F3CD2B /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE690DB51C2C53C800F3CD2B /* ImageViewController.m */; };
 		CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */; };
 		CEDA14A41C19A9BF00360B11 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */; };
+		CEDD0A6C1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDD0A6B1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m */; };
+		CEDD0A6F1C44CB8E00A3B44D /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDD0A6E1C44CB8E00A3B44D /* FilterViewController.m */; };
 		CEE125451C22EECD009C5E1A /* SharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE125441C22EECD009C5E1A /* SharedData.m */; };
 		CEE125481C22FC9B009C5E1A /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE125471C22FC9B009C5E1A /* Record.m */; };
 		CEE1254B1C230D1B009C5E1A /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE1254A1C230D1B009C5E1A /* ListViewController.m */; };
@@ -61,6 +63,10 @@
 		CEBC3B211C2AD08B00BF10A8 /* PhotosStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosStore.h; sourceTree = "<group>"; };
 		CEBC3B221C2AD08B00BF10A8 /* PhotosStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosStore.m; sourceTree = "<group>"; };
 		CEDA14A31C19A9BF00360B11 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CEDD0A6A1C44CB1000A3B44D /* MultiSelectSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectSegmentedControl.h; sourceTree = "<group>"; };
+		CEDD0A6B1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectSegmentedControl.m; sourceTree = "<group>"; };
+		CEDD0A6D1C44CB8E00A3B44D /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		CEDD0A6E1C44CB8E00A3B44D /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		CEE125431C22EECD009C5E1A /* SharedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedData.h; sourceTree = "<group>"; };
 		CEE125441C22EECD009C5E1A /* SharedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedData.m; sourceTree = "<group>"; };
 		CEE125461C22FC9B009C5E1A /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
@@ -133,6 +139,10 @@
 				CE0F03A51BFCD93600A785A9 /* AppDelegate.m */,
 				CE6457C81BFDD83E004B59AC /* MainPageViewController.h */,
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
+				CEDD0A6D1C44CB8E00A3B44D /* FilterViewController.h */,
+				CEDD0A6E1C44CB8E00A3B44D /* FilterViewController.m */,
+				CEDD0A6A1C44CB1000A3B44D /* MultiSelectSegmentedControl.h */,
+				CEDD0A6B1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m */,
 				CE59C0421BFE517F005E414B /* MapViewController.h */,
 				CE59C0431BFE517F005E414B /* MapViewController.m */,
 				CE63C4521C43E08B0099A350 /* SMCalloutView.h */,
@@ -316,12 +326,14 @@
 				CEE1254E1C231492009C5E1A /* ListViewCell.m in Sources */,
 				CEECA79C1C1A0B2100A9F84E /* CreateRecordViewController.m in Sources */,
 				CE63C4541C43E09B0099A350 /* SMCalloutView.m in Sources */,
+				CEDD0A6F1C44CB8E00A3B44D /* FilterViewController.m in Sources */,
 				CE0F03A61BFCD93600A785A9 /* AppDelegate.m in Sources */,
 				CE0F03A31BFCD93600A785A9 /* main.m in Sources */,
 				CE59C0441BFE517F005E414B /* MapViewController.m in Sources */,
 				CE690DB31C2BD7AB00F3CD2B /* RecordAnnotation.m in Sources */,
 				CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */,
 				CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */,
+				CEDD0A6C1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

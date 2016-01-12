@@ -7,11 +7,12 @@
 //
 
 #import "ListViewController.h"
-//#import "MainPageViewController.h"
+#import "MainPageViewController.h"
 #import "SharedData.h"
 #import "ListViewCell.h"
 #import "RecordViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "FilterViewController.h"
 
 @interface ListViewController () <CLLocationManagerDelegate>
 
@@ -40,17 +41,24 @@
     [self.locationManager requestWhenInUseAuthorization];
     self.currentLocation = self.locationManager.location;
     
-    NSLog(@"ListView loaded");
+    //NSLog(@"ListView loaded");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"ListView appeared");
+    //NSLog(@"ListView appeared");
 
     // Initializing SharedData singleton and array with records
     self.records = [SharedData sharedData].listOfRecords;
     
-    NSLog(@"Records array in ListViewController: %@", self.records);
+    //NSLog(@"Records array in ListViewController: %@", self.records);
+    
+    MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
+    if (mpvc.filteredRecords && self.isFilterEnabled) {
+        self.records = mpvc.filteredRecords;
+    }
+    // Reset filter flag
+    //self.isFilterEnabled = NO;
     
     //Updatind table view sending message to the tableView property of UITableViewController superclass
     [self.tableView reloadData];
@@ -72,6 +80,17 @@
     //[tableView registerClass:[ListViewCell class] forCellReuseIdentifier:@"ListCell"];
     
     ListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
+
+    cell.star1.image = nil;
+    cell.star2.image = nil;
+    cell.star3.image = nil;
+    cell.star4.image = nil;
+    cell.star5.image = nil;
+    cell.coin1.image = nil;
+    cell.coin2.image = nil;
+    cell.coin3.image = nil;
+    cell.coin4.image = nil;
+    cell.coin5.image = nil;
     
     //cell.cellRecord = self.records[indexPath.row];
     //[cell fillData];

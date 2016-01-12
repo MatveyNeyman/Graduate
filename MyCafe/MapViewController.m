@@ -10,16 +10,18 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "SharedData.h"
-#import "RecordAnnotation.h"
+//#import "RecordAnnotation.h"
 #import "RecordViewController.h"
 @import GoogleMaps;
 #import "SMCalloutView.h"
+#import "MainPageViewController.h"
 
 
 
 //CLLocationManager *locationManager;
 
-@interface MapViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate, SMCalloutViewDelegate> {
+@interface MapViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate, SMCalloutViewDelegate>
+{
     GMSMapView *mapView_;
     CGFloat CalloutYOffset;
     CGFloat iconSize;
@@ -106,7 +108,16 @@
     }
     [self.mapView addAnnotations:pins];
     */
-     
+    
+    MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
+    if (mpvc.filteredRecords && self.isFilterEnabled) {
+        self.records = mpvc.filteredRecords;
+    }
+    // Reset filter flag
+    //self.isFilterEnabled = NO;
+    
+    [mapView_ clear];
+    
     // Google Map markers
     for (Record *record in self.records) {
         GMSMarker *marker = [[GMSMarker alloc] init];

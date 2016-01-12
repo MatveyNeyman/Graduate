@@ -10,4 +10,6 @@
 
 @interface MapViewController : UIViewController
 
+@property (nonatomic) BOOL isFilterEnabled;
+
 @end

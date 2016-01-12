@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Record.h"
+#import "FilterViewController.h"
 
 @interface MainPageViewController : UIViewController
+
+@property (nonatomic) NSArray<Record *> *filteredRecords;
 
 @end

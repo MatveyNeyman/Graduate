@@ -42,7 +42,6 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row == [self.types indexOfObject:self.currentType]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
