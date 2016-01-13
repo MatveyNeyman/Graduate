@@ -18,7 +18,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *listTableView;
 
-@property (nonatomic) NSArray<Record *> *records;
+@property (nonatomic, copy) NSArray<Record *> *records;
 @property (nonatomic) RecordViewController *recordViewController;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
@@ -41,6 +41,15 @@
     [self.locationManager requestWhenInUseAuthorization];
     self.currentLocation = self.locationManager.location;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchProvide:)
+                                                 name:@"searchBegin"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchDismiss:)
+                                                 name:@"searchCancel"
+                                               object:nil];
+    
     //NSLog(@"ListView loaded");
 }
 
@@ -53,8 +62,8 @@
     
     //NSLog(@"Records array in ListViewController: %@", self.records);
     
+    MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
     if (self.isFilterEnabled) {
-        MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
         if (mpvc.filteredRecords) {
             self.records = mpvc.filteredRecords;
         }
@@ -233,6 +242,41 @@
     NSLog(@"Click!");
     self.recordViewController.record = [self.records objectAtIndex:indexPath.row];
 }
+
+
+- (void)searchProvide:(NSNotification *)notification {
+    NSString *searchString = notification.userInfo[@"searchString"];
+    NSLog(@"String for search in List: %@", searchString);
+    
+    NSMutableArray *searchResults = [NSMutableArray array];
+    
+    for (Record *record in self.records) {
+        if ([record.name localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.type localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.address localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.notes localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+    }
+    self.records = searchResults;
+    [self.tableView reloadData];
+}
+
+- (void)searchDismiss:(NSNotification *)notification {
+    self.records = [SharedData sharedData].listOfRecords;
+    [self.tableView reloadData];
+}
+
 
 /*
 // Override to support conditional editing of the table view.

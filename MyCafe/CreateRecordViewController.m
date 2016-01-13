@@ -22,7 +22,8 @@
     CGFloat pos; // Start position for the first photo
     CGFloat gap; // Gap between photos and leading margin for the first photo
     UIView *activeField;
-    UIEdgeInsets currentInsets;
+    UIEdgeInsets initialTableInsets;
+    UIEdgeInsets initialScrollInsets;
     BOOL doneButtonClicked;
     BOOL isViewExpired;
     CGFloat aPos; // Initial constant value vor addPhotoLeadingConstraint
@@ -112,6 +113,13 @@
         [self reloadPhotoView];
         //isViewExpired = YES;
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // Initialize initialInsets varyable by start table view's insets
+    initialTableInsets = self.createRecordTableView.contentInset;
+    initialScrollInsets = self.createRecordTableView.scrollIndicatorInsets;
 }
 
 - (void)reloadPhotoView {
@@ -228,7 +236,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    //tableView.nu
     return 0.001f;
 }
 
@@ -549,37 +556,37 @@
     
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-    // Initialize currentInsets varyable by current table view's insets
-    currentInsets = self.createRecordTableView.contentInset;
     
     // Construct visible rectangle
     CGRect aRect = self.createRecordTableView.frame;
     aRect.size.height -= kbSize.height;
-    
-    // Get upper left corner (origin) of the current view
-    CGPoint point = activeField.superview.superview.frame.origin; // All of the three text fields do have the same level
+
+    // Get the Rect of the cell in Table View coordinate system
+    CGRect cellRect = [activeField.superview convertRect:activeField.superview.frame toView:self.createRecordTableView];
+    // Get upper left corner (origin) of the current cell's Rect in Table View coordinate system
+    CGPoint point = cellRect.origin;
     
     // If active text field is hidden by keyboard, scroll it so it's visible
     if (!CGRectContainsPoint(aRect, point) ) {
         // Construct new insets
-        UIEdgeInsets newInsets = UIEdgeInsetsMake(currentInsets.top + 0.0f,
-                                                  currentInsets.left + 0.0f,
-                                                  currentInsets.bottom + kbSize.height,
-                                                  currentInsets.right + 0.0f);
+        UIEdgeInsets newInsets = UIEdgeInsetsMake(initialTableInsets.top + 0.0f,
+                                                  initialTableInsets.left + 0.0f,
+                                                  initialTableInsets.bottom + kbSize.height,
+                                                  initialTableInsets.right + 0.0f);
         
         self.createRecordTableView.contentInset = newInsets;
         self.createRecordTableView.scrollIndicatorInsets = newInsets;
         
-        [self.createRecordTableView scrollRectToVisible:activeField.superview.superview.frame animated:YES];
+        //[self.createRecordTableView scrollRectToVisible:activeField.superview.superview.frame animated:YES];
+        [self.createRecordTableView scrollRectToVisible:cellRect animated:YES];
     }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     //NSLog(@"Keybord will be hidden");
-    self.createRecordTableView.contentInset = currentInsets;
-    self.createRecordTableView.scrollIndicatorInsets = currentInsets;
+   // self.createRecordTableView.contentInset = initialTableInsets;
+    //self.createRecordTableView.scrollIndicatorInsets = initialScrollInsets;
 }
 
 

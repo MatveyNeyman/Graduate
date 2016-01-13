@@ -87,7 +87,20 @@
      forControlEvents:UIControlEventTouchUpInside];
     self.calloutView.rightAccessoryView = button;
     
-    [self registerOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateInfoWindow)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchProvide:)
+                                                 name:@"searchBegin"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchDismiss:)
+                                                 name:@"searchCancel"
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,9 +129,11 @@
     }
     // Reset filter flag
     //self.isFilterEnabled = NO;
-    
+    [self updateMap];
+}
+
+- (void)updateMap {
     [mapView_ clear];
-    
     // Google Map markers
     for (Record *record in self.records) {
         GMSMarker *marker = [[GMSMarker alloc] init];
@@ -301,14 +316,6 @@
 
 #pragma mark - Update infoWindow after orientation changed
 
-// Called in view controller setup code.
-- (void)registerOrientationNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateInfoWindow)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-}
-
 - (void)updateInfoWindow {
     // Move callout with map drag or orientation change
     if (mapView_.selectedMarker != nil && !self.calloutView.hidden) {
@@ -351,6 +358,51 @@
         }
     }
     return nil;
+}
+
+- (void)searchProvide:(NSNotification *)notification {
+    NSString *searchString = notification.userInfo[@"searchString"];
+    NSLog(@"String for search in List: %@", searchString);
+    
+    NSMutableArray *searchResults = [NSMutableArray array];
+    
+    for (Record *record in self.records) {
+        if ([record.name localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.type localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.address localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+        if ([record.notes localizedCaseInsensitiveContainsString:searchString]) {
+            [searchResults addObject:record];
+            continue;
+        }
+    }
+    self.records = searchResults;
+    if (self.records.count == 1) {
+        [mapView_ clear];
+        CLLocationCoordinate2D target = self.records.firstObject.location.coordinate;
+        mapView_.camera = [GMSCameraPosition cameraWithTarget:target zoom:15];
+        GMSMarker *marker = [[GMSMarker alloc] init];
+        marker.title = self.records.firstObject.name;
+        marker.snippet = self.records.firstObject.type;
+        marker.position = target;
+        marker.map = mapView_;
+        [mapView_ setSelectedMarker:marker];
+    } else {
+       [self updateMap];
+    }
+}
+
+- (void)searchDismiss:(NSNotification *)notification {
+    self.records = [SharedData sharedData].listOfRecords;
+    [self updateMap];
 }
 
 @end

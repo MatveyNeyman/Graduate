@@ -27,7 +27,6 @@
 
 @property (nonatomic) FilterViewController *filterViewController;
 @property (nonatomic) SortViewController *sortViewController;
-//@property (nonatomic) NSArray<Record *> *filteredRecords;
 
 @property (nonatomic) NSIndexSet *selectedStars;
 @property (nonatomic) NSIndexSet *selectedCoins;
@@ -36,7 +35,6 @@
 @property (nonatomic) BOOL showBar;
 @property (nonatomic) BOOL showFastFood;
 
-//@property (nonatomic) NSString *sortDescriptor;
 @property (nonatomic) NSSortDescriptor *descriptor;
 
 @end
@@ -58,28 +56,6 @@
     self.showCafe = YES;
     self.showBar = YES;
     self.showFastFood = YES;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    
-    MapViewController *mvc;
-    
-    for (UIViewController *vc in self.childViewControllers) {
-        if ([vc isKindOfClass:[MapViewController class]]) {
-            mvc = (MapViewController *) vc;
-            //for (UIView *view in mvc.view.subviews) {
-                //if ([view isKindOfClass:[GMSMapView class]]) {
-                    [mvc.view addGestureRecognizer:tap];
-                //}
-            //}
-        }
-    }
-    
-    
-    //[self.listView addGestureRecognizer:tap];
-}
-
--(void)dismissKeyboard {
-    [self.searchBar resignFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -214,6 +190,43 @@
 
 
 #pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    searchBar.showsCancelButton = YES;
+    return YES;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    if (![searchBar.text isEqualToString:@""]) {
+        [self performSelector:@selector(enableCancelButton:) withObject:searchBar afterDelay:0.001];
+    } else {
+        searchBar.showsCancelButton = NO;
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    [self enableCancelButton:searchBar];
+    NSString *stringForSearch = searchBar.text;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchBegin" object:self userInfo:@{@"searchString":stringForSearch}];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    searchBar.showsCancelButton = NO;
+    searchBar.text = @"";
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchCancel" object:self];
+}
+
+- (void)enableCancelButton:(UIView *)view {
+    if ([view isKindOfClass:[UIButton class]]) {
+        [(UIButton *)view setEnabled:YES];
+    } else {
+        for (UIView *subview in view.subviews) {
+            [self enableCancelButton:subview];
+        }
+    }
+}
 
 /*
 @protocol UISearchBarDelegate <UIBarPositioningDelegate>
