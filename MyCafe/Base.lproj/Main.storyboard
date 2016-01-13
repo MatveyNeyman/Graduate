@@ -37,6 +37,10 @@
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GBI-gV-woG">
                                 <rect key="frame" x="20" y="64" width="560" height="536"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="VHB-qY-Vkp" id="x96-fn-92I"/>
+                                    <outlet property="delegate" destination="VHB-qY-Vkp" id="Cru-jy-fLr"/>
+                                </connections>
                             </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,6 +90,13 @@
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <connections>
+                                    <outlet property="delegate" destination="Wqz-es-cWa" id="Niw-dG-fTO"/>
+                                </connections>
                             </searchBar>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xdt-CG-DzN" userLabel="Container ListView">
                                 <rect key="frame" x="0.0" y="108" width="600" height="444"/>
@@ -166,6 +177,8 @@
                     <connections>
                         <outlet property="listView" destination="Xdt-CG-DzN" id="Qew-WL-gB4"/>
                         <outlet property="mapView" destination="Ll6-iF-LB0" id="n43-Bm-E8C"/>
+                        <outlet property="searchBar" destination="Ap9-15-zZ1" id="hDN-9S-VOs"/>
+                        <outlet property="sortButton" destination="BRX-lz-aks" id="Wau-3z-q3M"/>
                         <segue destination="WaO-D3-cmr" kind="presentation" identifier="Filter" id="rql-lW-ANF"/>
                         <segue destination="uGT-Vz-8Za" kind="presentation" identifier="Sort" id="RC8-Bf-hrU"/>
                     </connections>
@@ -525,7 +538,7 @@
         <scene sceneID="xgd-Nq-9gB">
             <objects>
                 <tableViewController title="List" id="zUo-EP-mlb" customClass="ListViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="88" sectionHeaderHeight="28" sectionFooterHeight="28" id="apW-9A-Ujy">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="88" sectionHeaderHeight="28" sectionFooterHeight="28" id="apW-9A-Ujy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="444"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -902,10 +915,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="87"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" text="Add your notes here" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-JT-WmN">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" text="Notes" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-JT-WmN">
                                                     <rect key="frame" x="18" y="0.0" width="564" height="87"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="R7U-2E-ZBN" id="DZI-Dy-Tjx"/>

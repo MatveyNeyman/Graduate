@@ -12,5 +12,6 @@
 @interface MainPageViewController : UIViewController
 
 @property (nonatomic) NSArray<Record *> *filteredRecords;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end

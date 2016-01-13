@@ -35,6 +35,7 @@
 //@property (nonatomic) NSArray<MKPointAnnotation *> *pins;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) RecordViewController *recordViewController;
+@property (nonatomic) MainPageViewController *mpvc;
 
 @property (strong, nonatomic) SMCalloutView *calloutView;
 @property (strong, nonatomic) UIView *emptyCalloutView;
@@ -109,9 +110,9 @@
     [self.mapView addAnnotations:pins];
     */
     
-    MainPageViewController *mpvc = (MainPageViewController *) self.parentViewController;
-    if (mpvc.filteredRecords && self.isFilterEnabled) {
-        self.records = mpvc.filteredRecords;
+    self.mpvc = (MainPageViewController *) self.parentViewController;
+    if (self.mpvc.filteredRecords && self.isFilterEnabled) {
+        self.records = self.mpvc.filteredRecords;
     }
     // Reset filter flag
     //self.isFilterEnabled = NO;
@@ -130,6 +131,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     NSLog(@"MapView appeared");
     // We have to update the infoWindow if user left the view then rotated device and came back 
     [self updateInfoWindow];
@@ -274,10 +276,14 @@
 
 - (void)mapView:(GMSMapView *)pMapView didChangeCameraPosition:(GMSCameraPosition *)position {
     [self updateInfoWindow];
+    self.mpvc = (MainPageViewController *) self.parentViewController;
+    [self.mpvc.searchBar resignFirstResponder];
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     self.calloutView.hidden = YES;
+    self.mpvc = (MainPageViewController *) self.parentViewController;
+    [self.mpvc.searchBar resignFirstResponder];
 }
 
 

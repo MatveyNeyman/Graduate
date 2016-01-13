@@ -35,7 +35,7 @@
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
-@property (strong, nonatomic) CLGeocoder *geocoder;
+//@property (strong, nonatomic) CLGeocoder *geocoder;
 @property (nonatomic) CreateRecordViewController *createRecordViewController;
 @property (nonatomic) NSMutableDictionary<NSNumber *, NSString *> *tagPhotoKey;
 

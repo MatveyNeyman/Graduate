@@ -8,7 +8,7 @@
 
 #import "SortViewController.h"
 
-@interface SortViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface SortViewController () //<UIPickerViewDelegate, UIPickerViewDataSource> // Realized in IB
 
 @property (strong, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (strong, nonatomic) NSMutableArray<NSString *> *sortOptions;
@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.pickerView.delegate = self;
+    //self.pickerView.delegate = self; // Realized in IB
     self.sortOptions = [[NSMutableArray alloc] initWithObjects:@"Default", @"Distance", @"Rating", @"Price", @"Name", @"Type", nil];
     [self.pickerView selectRow:0 inComponent:0 animated:YES];
 }

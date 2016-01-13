@@ -12,6 +12,7 @@
 #import "MapViewController.h"
 #import "FilterViewController.h"
 #import "SortViewController.h"
+@import GoogleMaps;
 
 @interface MainPageViewController () <FilterDelegate, SortDelegate>
 {
@@ -22,6 +23,7 @@
 // Outlets for containers which contain Map or List scenes
 @property (nonatomic) IBOutlet UIView *mapView;
 @property (nonatomic) IBOutlet UIView *listView;
+@property (strong, nonatomic) IBOutlet UIButton *sortButton;
 
 @property (nonatomic) FilterViewController *filterViewController;
 @property (nonatomic) SortViewController *sortViewController;
@@ -56,9 +58,32 @@
     self.showCafe = YES;
     self.showBar = YES;
     self.showFastFood = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    
+    MapViewController *mvc;
+    
+    for (UIViewController *vc in self.childViewControllers) {
+        if ([vc isKindOfClass:[MapViewController class]]) {
+            mvc = (MapViewController *) vc;
+            //for (UIView *view in mvc.view.subviews) {
+                //if ([view isKindOfClass:[GMSMapView class]]) {
+                    [mvc.view addGestureRecognizer:tap];
+                //}
+            //}
+        }
+    }
+    
+    
+    //[self.listView addGestureRecognizer:tap];
+}
+
+-(void)dismissKeyboard {
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     NSLog(@"Filtered records: %@", self.filteredRecords);
 }
 
@@ -152,6 +177,7 @@
         case 0:
             [self.listView setHidden:NO];
             [self.mapView setHidden:YES];
+            [self.sortButton setHidden:NO];
             //[mapSortFilter setTitle:zeroSegmentName forSegmentAtIndex:0];
             //if ([zeroSegmentName  isEqual: @"List"]) {
             //    [mapSortFilter removeSegmentAtIndex:1 animated:YES];
@@ -162,6 +188,7 @@
         case 1:
             [self.listView setHidden:YES];
             [self.mapView setHidden:NO];
+            [self.sortButton setHidden:YES];
             //if ([mapSortFilter numberOfSegments] == 3) {
             //    NSLog(@"sort pressed");
             //    [self performSegueWithIdentifier:@"Sort" sender:nil];
@@ -184,5 +211,31 @@
 - (IBAction)sortButtonClicked:(id)sender {
     [self performSegueWithIdentifier:@"Sort" sender:nil];
 }
+
+
+#pragma mark - UISearchBarDelegate
+
+/*
+@protocol UISearchBarDelegate <UIBarPositioningDelegate>
+
+@optional
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar;                      // return NO to not become first responder
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar;                     // called when text starts editing
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar;                        // return NO to not resign first responder
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;                       // called when text ends editing
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText;   // called when text changes (including clear)
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text NS_AVAILABLE_IOS(3_0); // called before text changes
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;                     // called when keyboard search button pressed
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar __TVOS_PROHIBITED; // called when bookmark button pressed
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar __TVOS_PROHIBITED;   // called when cancel button pressed
+- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar NS_AVAILABLE_IOS(3_2) __TVOS_PROHIBITED; // called when search results button pressed
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope NS_AVAILABLE_IOS(3_0);
+
+@end
+*/
+
 
 @end

@@ -13,6 +13,7 @@
 #import "SharedData.h"
 #import "PhotosStore.h"
 #import "ImageViewController.h"
+@import GoogleMaps;
 
 @interface CreateRecordViewController () <CLLocationManagerDelegate,
                                         UINavigationControllerDelegate, UIImagePickerControllerDelegate, // Both are needed for image picker
@@ -41,7 +42,9 @@
 
 @property (nonatomic) TypeSelectorViewController *typeSelectorViewController;
 @property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CLGeocoder *geocoder;
+@property (strong, nonatomic) CLGeocoder *geocoder; // Used for forward geocoding
+@property (strong, nonatomic) GMSGeocoder *googleGeocoder; // Used for reverse geocoding
+
 @property (nonatomic) ImageViewController *ivc;
 
 @property (nonatomic, copy) NSString *name;
@@ -96,6 +99,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (self.typeSelectorViewController.currentType) {
         self.selectedType = self.typeSelectorViewController.currentType;
     }
@@ -257,15 +261,17 @@
     self.locationManager.delegate = self;
     [self.locationManager requestWhenInUseAuthorization];
     
+    /*
+    // IOS Geocoder
+     
     CLLocation *currentLocation = self.locationManager.location;
     
     // Initialize Geocoder object to get address from location coordinates (reverse geocoding)
     if (!self.geocoder) {
         self.geocoder = [[CLGeocoder alloc] init];
     }
-    
-    [self.geocoder reverseGeocodeLocation:currentLocation completionHandler:
-     ^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+    [self.geocoder reverseGeocodeLocation:currentLocation
+                        completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
          if ([placemarks count] > 0) {
              CLPlacemark *currentPlacemark = [placemarks objectAtIndex:0];
              
@@ -287,6 +293,36 @@
              self.location = currentLocation;
          }
      }];
+    */
+    
+
+    // Google Geocoder
+    
+    CLLocationCoordinate2D currentLocation = self.locationManager.location.coordinate;
+    
+    // Initialize Geocoder object to get address from location coordinates (reverse geocoding)
+    if (!self.googleGeocoder) {
+        self.googleGeocoder = [[GMSGeocoder alloc] init];
+    }
+    [self.googleGeocoder reverseGeocodeCoordinate:currentLocation
+                                completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                                    GMSAddress *address = response.firstResult;
+                                    NSArray *addressArray = address.lines;
+                                    // Navigate array and build final address
+                                    NSString *currentAddress = @"";
+                                    for (int i = 0; i < addressArray.count; i++) {
+                                        NSString *str = addressArray[i];
+                                        currentAddress = [currentAddress stringByAppendingString:str];
+                                        if (i >= 0 && i < addressArray.count - 1) {
+                                            currentAddress = [currentAddress stringByAppendingString:@", "];
+                                        }
+                                    }
+                                    //NSLog(@"Current Address from Google: %@", currentAddress);
+                                    // Feed address field
+                                    self.addressTextField.text = currentAddress;
+                                    // Initialize record's location property
+                                    self.location = self.locationManager.location;
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
