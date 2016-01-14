@@ -21,5 +21,7 @@
 - (void)removeRecord:(Record *)record;
 - (void)replaceRecord:(Record *)oldRecord withRecord:(Record *)newRecord;
 - (BOOL)saveList;
+- (NSString *)distanceToRecord:(Record *)record;
+- (void)updateLocation;
 
 @end

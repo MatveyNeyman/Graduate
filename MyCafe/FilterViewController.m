@@ -142,7 +142,7 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         NSLog(@"Reset filter settings");
         [self.restaurantSwitch setOn:YES animated:YES];
         [self.cafeSwitch setOn:YES animated:YES];

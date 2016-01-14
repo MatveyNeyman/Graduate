@@ -77,8 +77,7 @@
     [self addImages];
     
     self.notesView.text = self.record.notes;
-    
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -106,8 +105,32 @@
     
     self.notesView.text = self.record.notes;
     */
-    CLLocationDistance distance = [self.record.location distanceFromLocation:self.currentLocation];
-    self.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
+    
+    /*
+    if (self.record.location) {
+        CLLocationDistance distance = [self.record.location distanceFromLocation:self.currentLocation];
+        if (distance > 0 && distance <= 950) {
+            NSInteger roundedDistanceTo50 = (NSInteger)ceil(distance / 50) * 50;
+            self.distanceLabel.text = [NSString stringWithFormat:@"%ld m", (long)roundedDistanceTo50];
+        }
+        if (distance > 950 && distance <= 9900) {
+            double roundedDistanceTo100 = (NSInteger)ceil(distance / 100);
+            roundedDistanceTo100 = roundedDistanceTo100 * 100 / 1000;
+            self.distanceLabel.text = [NSString stringWithFormat:@"%.1f km", roundedDistanceTo100];
+        }
+        if (distance > 9900) {
+            NSInteger roundedDistanceTo1000 = (NSInteger)ceil(distance / 1000);
+            self.distanceLabel.text = [NSString stringWithFormat:@"%ld km", (long)roundedDistanceTo1000];
+        }
+    } else {
+        self.distanceLabel.text = @"";
+    }
+    */
+    
+    self.distanceLabel.text = [[SharedData sharedData] distanceToRecord:self.record];
+    
+    //CLLocationDistance distance = [self.record.location distanceFromLocation:self.currentLocation];
+    //self.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
     
     //[self showRecordLocation:self.record.location];
 }

@@ -16,7 +16,36 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Matvey Neyman" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fUR-iW-zWq">
+                                <rect key="frame" x="227" y="559" width="147" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyCafé" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Phl-PX-ygD">
+                                <rect key="frame" x="249" y="40" width="103" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="18828-NS9NX5" translatesAutoresizingMaskIntoConstraints="NO" id="rFe-0J-KhT">
+                                <rect key="frame" x="150" y="150" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="GyX-z9-bae"/>
+                                    <constraint firstAttribute="height" constant="300" id="a5X-zq-bIq"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rFe-0J-KhT" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="DxE-iG-VNJ"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="fUR-iW-zWq" secondAttribute="bottom" constant="20" id="G47-uY-6Mh"/>
+                            <constraint firstItem="rFe-0J-KhT" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="K9j-gh-QOO"/>
+                            <constraint firstItem="Phl-PX-ygD" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="20" id="hSG-xk-vW1"/>
+                            <constraint firstItem="Phl-PX-ygD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="st9-hX-mB0"/>
+                            <constraint firstItem="fUR-iW-zWq" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="w0d-dW-TV5"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +53,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="18828-NS9NX5" width="720" height="712"/>
+    </resources>
 </document>

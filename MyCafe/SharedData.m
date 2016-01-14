@@ -9,9 +9,11 @@
 #import "SharedData.h"
 #import "PhotosStore.h"
 
-@interface SharedData ()
+@interface SharedData () <CLLocationManagerDelegate>
 
 @property (nonatomic) NSMutableArray *privateList;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation *currentLocation;
 
 @end
 
@@ -41,6 +43,10 @@
         if (!_privateList) {
             _privateList = [NSMutableArray array];
         }
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        [_locationManager requestWhenInUseAuthorization];
+        _currentLocation = self.locationManager.location;
     }
     return self;
 }
@@ -75,6 +81,33 @@
 - (BOOL)saveList {
     NSString *path = [self buildPath];
     return [NSKeyedArchiver archiveRootObject:self.privateList toFile:path];
+}
+
+- (NSString *)distanceToRecord:(Record *)record {
+    NSString *distanceString;
+    if (record.location) {
+        CLLocationDistance distance = [record.location distanceFromLocation:self.currentLocation];
+        if (distance > 0 && distance <= 950) {
+            NSInteger roundedDistanceTo50 = (NSInteger)ceil(distance / 50) * 50;
+            distanceString = [NSString stringWithFormat:@"%ld m", (long)roundedDistanceTo50];
+        }
+        if (distance > 950 && distance <= 9900) {
+            double roundedDistanceTo100 = (NSInteger)ceil(distance / 100);
+            roundedDistanceTo100 = roundedDistanceTo100 * 100 / 1000;
+            distanceString = [NSString stringWithFormat:@"%.1f km", roundedDistanceTo100];
+        }
+        if (distance > 9900) {
+            NSInteger roundedDistanceTo1000 = (NSInteger)ceil(distance / 1000);
+            distanceString = [NSString stringWithFormat:@"%ld km", (long)roundedDistanceTo1000];
+        }
+    } else {
+        distanceString = @"";
+    }
+    return distanceString;
+}
+
+- (void)updateLocation {
+    self.currentLocation = self.locationManager.location;
 }
 
 @end

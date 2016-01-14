@@ -105,6 +105,7 @@
         //NSLog(@"ListView Sorted Array: %@", sortedArray);
     }
 
+    [[SharedData sharedData] updateLocation];
     // Updatind table view sending message to the tableView property of UITableViewController superclass
     [self.tableView reloadData];
 }
@@ -216,12 +217,29 @@
             break;
     }
 
+    
+    cell.distanceLabel.text = [[SharedData sharedData] distanceToRecord:currentRecord];
+    
+    /*
     if (currentRecord.location) {
         CLLocationDistance distance = [currentRecord.location distanceFromLocation:self.currentLocation];
-        cell.distanceLabel.text = [NSString stringWithFormat:@"%.0f m", distance];
+        if (distance > 0 && distance <= 950) {
+            NSInteger roundedDistanceTo50 = (NSInteger)ceil(distance / 50) * 50;
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%ld m", (long)roundedDistanceTo50];
+        }
+        if (distance > 950 && distance <= 9900) {
+            double roundedDistanceTo100 = (NSInteger)ceil(distance / 100);
+            roundedDistanceTo100 = roundedDistanceTo100 * 100 / 1000;
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%.1f km", roundedDistanceTo100];
+        }
+        if (distance > 9900) {
+            NSInteger roundedDistanceTo1000 = (NSInteger)ceil(distance / 1000);
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%ld km", (long)roundedDistanceTo1000];
+        }
     } else {
         cell.distanceLabel.text = @"";
     }
+    */
     
     return cell;
 }
