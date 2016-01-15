@@ -415,14 +415,39 @@
 
 - (IBAction)addPhoto:(id)sender {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    // If the device has a camera, take a picture, otherwise, just pick from photo library
+    picker.delegate = self;
+    // If the device has a camera, show menu, otherwise, just pick from photo library
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *takePhotoAction = [UIAlertAction actionWithTitle:@"Take Photo"
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction *action) {
+                                                                 picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                                                 [self presentViewController:picker animated:YES completion:nil];
+                                                             }];
+        [alert addAction:takePhotoAction];
+        
+        UIAlertAction *chooseFromGalleryAction = [UIAlertAction actionWithTitle:@"Photo Gallery"
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction *action) {
+                                                                    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                                                    [self presentViewController:picker animated:YES completion:nil];
+                                                                }];
+        [alert addAction:chooseFromGalleryAction];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action) {}];
+        [alert addAction:cancelAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     } else {
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:picker animated:YES completion:nil];
     }
-    picker.delegate = self;
-    [self presentViewController:picker animated:YES completion:nil];
 }
 
 

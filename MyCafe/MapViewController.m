@@ -70,7 +70,7 @@
     //Google Map starts here
     CLLocationCoordinate2D target = self.locationManager.location.coordinate;
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithTarget:target zoom:10];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithTarget:target zoom:12];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = YES;
