@@ -33,4 +33,6 @@
                       photosKeys:(NSMutableArray<NSString *> *) photosKeys
                        notes:(NSString *)notes;
 
+- (BOOL)isEqual:(id)object;
+
 @end

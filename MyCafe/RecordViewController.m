@@ -14,6 +14,7 @@
 #import "CreateRecordViewController.h"
 #import "ImageViewController.h"
 @import GoogleMaps;
+#import <Parse/Parse.h>
 
 @interface RecordViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate>
 {
@@ -21,6 +22,7 @@
     UIView *mainView;
     CGFloat pos; // Start position for the first photo
     CGFloat gap; // Gap between photos and leading margin for the first photo
+    BOOL isExistOnServer;
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
@@ -265,8 +267,106 @@
     [self.navigationController pushViewController:ivc animated:YES];
 }
 
+- (IBAction)shareClicked:(id)sender {
+    NSLog(@" share Record button clicked");
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *shareAction = [UIAlertAction actionWithTitle:@"Upload to server"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                                [self sendToParseCom];
+                                                            }];
+    [alert addAction:shareAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {}];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
+- (void)sendToParseCom {
+    if ([self isAlreadyExist] == NO) {
+        PFObject *recordObject = [PFObject objectWithClassName:@"RecordObject"];
+        double latitude = self.record.location.coordinate.latitude;
+        double longitude = self.record.location.coordinate.longitude;
+        PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:latitude longitude:longitude];
+        
+        // Initialize CLLocation property of the Record in the following way:
+        //CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+        
+        recordObject[@"name"] = self.record.name;
+        recordObject[@"type"] = self.record.type;
+        recordObject[@"address"] = self.record.address;
+        recordObject[@"point"] = point;
+        recordObject[@"rating"] = @(self.record.rating);
+        recordObject[@"price"] = @(self.record.price);
+        recordObject[@"photosKeys"] = self.record.photosKeys;
+        recordObject[@"notes"] = self.record.notes;
+        [recordObject saveInBackground];
+        
+        for (NSString *key in self.record.photosKeys) {
+            PFObject *photoObject = [PFObject objectWithClassName:@"PhotoObject"];
+            UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+            NSData *imageData = UIImagePNGRepresentation(image);
+            PFFile *imageFile = [PFFile fileWithName:key data:imageData];
+            photoObject[@"photoName"] = key;
+            photoObject[@"photoFile"] = imageFile;
+            [photoObject saveInBackground];
+        }
+    }
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully uploaded"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {}];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
+- (BOOL)isAlreadyExist {
+    isExistOnServer = NO;
+    
+    double latitude = self.record.location.coordinate.latitude;
+    double longitude = self.record.location.coordinate.longitude;
+    PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:latitude longitude:longitude];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"RecordObject"];
+    [query whereKey:@"name" equalTo:self.record.name];
+    //[query whereKey:@"type" equalTo:self.record.type];
+    //[query whereKey:@"address" equalTo:self.record.address];
+    [query whereKey:@"point" equalTo:point];
+    //[query whereKey:@"rating" equalTo:@(self.record.rating)];
+    //[query whereKey:@"price" equalTo:@(self.record.price)];
+                    //[query whereKey:@"photosKeys" equalTo:self.record.photosKeys];
+    //[query whereKey:@"notes" equalTo:self.record.notes];
+    
+    NSArray* scoreArray = [query findObjects];
+    if ([scoreArray count] > 0) {
+        //for (PFObject *object in scoreArray) {
+            //if ([object[@"photosKeys"] isEqualToArray:self.record.photosKeys]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"This record is already exists on server"
+                                                                               message:nil
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction *action) {}];
+                [alert addAction:defaultAction];
+                [self presentViewController:alert animated:YES completion:nil];
+                isExistOnServer = YES;
+            //}
+        //}
+    } else {
+        isExistOnServer = NO;
+    }
+    return isExistOnServer;
+}
 
 /*
  #pragma mark - Navigation

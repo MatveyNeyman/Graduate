@@ -13,6 +13,7 @@
 		CE0F03AC1BFCD93600A785A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AA1BFCD93600A785A9 /* Main.storyboard */; };
 		CE0F03AE1BFCD93600A785A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */; };
 		CE0F03B11BFCD93600A785A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0F03AF1BFCD93600A785A9 /* LaunchScreen.storyboard */; };
+		CE50A5A51C494F2F00BECEAA /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE50A5A41C494F2F00BECEAA /* ServerViewController.m */; };
 		CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */; };
 		CE58ECEF1C1AFA3C00B82FEB /* TypesOfPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58ECEE1C1AFA3C00B82FEB /* TypesOfPlace.m */; };
 		CE59C0441BFE517F005E414B /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE59C0431BFE517F005E414B /* MapViewController.m */; };
@@ -46,6 +47,8 @@
 		CE0F03AD1BFCD93600A785A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0F03B01BFCD93600A785A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0F03B21BFCD93600A785A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE50A5A31C494F2F00BECEAA /* ServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerViewController.h; sourceTree = "<group>"; };
+		CE50A5A41C494F2F00BECEAA /* ServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerViewController.m; sourceTree = "<group>"; };
 		CE58ECE61C1ADCEB00B82FEB /* TypeSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeSelectorViewController.h; sourceTree = "<group>"; };
 		CE58ECE71C1ADCEB00B82FEB /* TypeSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeSelectorViewController.m; sourceTree = "<group>"; };
 		CE58ECED1C1AFA3C00B82FEB /* TypesOfPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesOfPlace.h; sourceTree = "<group>"; };
@@ -142,6 +145,8 @@
 				CE0F03A51BFCD93600A785A9 /* AppDelegate.m */,
 				CE6457C81BFDD83E004B59AC /* MainPageViewController.h */,
 				CE6457C91BFDD83E004B59AC /* MainPageViewController.m */,
+				CE50A5A31C494F2F00BECEAA /* ServerViewController.h */,
+				CE50A5A41C494F2F00BECEAA /* ServerViewController.m */,
 				CEDD0A6D1C44CB8E00A3B44D /* FilterViewController.h */,
 				CEDD0A6E1C44CB8E00A3B44D /* FilterViewController.m */,
 				CEDD0A701C4580FA00A3B44D /* SortViewController.h */,
@@ -340,6 +345,7 @@
 				CEBC3B231C2AD08B00BF10A8 /* PhotosStore.m in Sources */,
 				CE58ECE81C1ADCEB00B82FEB /* TypeSelectorViewController.m in Sources */,
 				CEDD0A6C1C44CB1D00A3B44D /* MultiSelectSegmentedControl.m in Sources */,
+				CE50A5A51C494F2F00BECEAA /* ServerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SharedData.h"
 @import GoogleMaps;
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -19,6 +20,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [GMSServices provideAPIKey:@"AIzaSyB2yEVNYr7tH-6UxW_WbyCbHluqa82pagE"];
+    [Parse setApplicationId:@"JOWPiX3QRGjO0qMBSYBAa3DOT8gJxaohEBJ8hYYh"
+                  clientKey:@"j8RnmyZHVadEgWtePGMNv3AguNTwJvHo0v1E9xOw"];
     return YES;
 }
 

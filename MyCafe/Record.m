@@ -93,4 +93,43 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object {
+    Record *record = (Record *)object;
+    if ([self.name isEqualToString:record.name] &&
+        [self.type isEqualToString:record.type] &&
+        [self.address isEqualToString:record.address] &&
+        (self.location.coordinate.latitude == record.location.coordinate.latitude) &&
+        /*(self.location.coordinate.longitude == record.location.coordinate.longitude) &&*/
+        (self.rating == record.rating) &&
+        (self.price == record.price) &&
+        [self.photosKeys isEqualToArray:record.photosKeys] &&
+        [self.notes isEqualToString:record.notes]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 @end
+
+/*
+ if ([self.name isEqualToString:record.name]) {
+ if ([self.type isEqualToString:record.type]) {
+ if ([self.address isEqualToString:record.address]) {
+ if ((self.location.coordinate.latitude == record.location.coordinate.latitude)) {
+ //if ((self.location.coordinate.longitude == record.location.coordinate.longitude)) {
+ if ((self.rating == record.rating)) {
+ if ( (self.price == record.price)) {
+ if ([self.photosKeys isEqualToArray:record.photosKeys]) {
+ if ([self.notes isEqualToString:record.notes]) {
+ return YES;
+ }
+ }
+ }
+ 
+ }
+ //}
+ }
+ }
+ }
+ */
