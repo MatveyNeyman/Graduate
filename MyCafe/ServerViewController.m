@@ -14,6 +14,8 @@
 
 @interface ServerViewController () {
     UIImage *image;
+    UIView *backgroundView;
+    UIActivityIndicatorView *activityView;
 }
 
 @property (nonatomic) NSMutableArray<Record *> *entries;
@@ -24,13 +26,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
+    CGFloat barHeight = self.navigationController.navigationBar.frame.size.height;
+    backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height - barHeight)];
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
+    backgroundView.alpha = 0.5;
+    activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.color = [UIColor blackColor];
+    CGPoint centerPoint = CGPointMake(backgroundView.center.x, backgroundView.center.y - barHeight);
+    activityView.center = centerPoint;
+    [activityView startAnimating];
+    [backgroundView addSubview:activityView];
+    [self.tableView addSubview:backgroundView];
+    
     self.entries = [NSMutableArray array];
     [self getFromParse];
     /*
@@ -116,6 +124,7 @@
                 [self.entries addObject:record];
                 
             }
+            [backgroundView removeFromSuperview];
             [self.tableView reloadData];
         } else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);

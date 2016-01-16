@@ -25,6 +25,7 @@
     BOOL isExistOnServer;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *typeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *addressLabel;
@@ -274,7 +275,7 @@
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *shareAction = [UIAlertAction actionWithTitle:@"Upload to server"
+    UIAlertAction *shareAction = [UIAlertAction actionWithTitle:@"Upload to Cloud"
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action) {
                                                                 [self sendToParseCom];
@@ -330,6 +331,27 @@
 }
 
 - (BOOL)isAlreadyExist {
+    
+    CGFloat barHeight = self.navigationController.navigationBar.frame.size.height;
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height +500)];
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
+    backgroundView.alpha = 0.5;
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.color = [UIColor blackColor];
+    CGPoint centerPoint = CGPointMake(backgroundView.center.x, backgroundView.center.y - barHeight);
+    activityView.center = centerPoint;
+    [activityView startAnimating];
+    [backgroundView addSubview:activityView];
+    
+    //UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
+    //UIView* view = mainWindow.subviews[0];
+    //[view addSubview:backgroundView];
+    
+
+    
+    [self.notesView addSubview:backgroundView];
+    [self.mainView bringSubviewToFront:backgroundView];
+
     isExistOnServer = NO;
     
     double latitude = self.record.location.coordinate.latitude;
@@ -365,6 +387,7 @@
     } else {
         isExistOnServer = NO;
     }
+    [backgroundView removeFromSuperview];
     return isExistOnServer;
 }
 
