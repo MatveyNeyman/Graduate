@@ -19,13 +19,13 @@
 @interface RecordViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate>
 {
     CGFloat iconSize;
-    UIView *mainView;
+    UIView *mainView; // View with stars and coins
     CGFloat pos; // Start position for the first photo
     CGFloat gap; // Gap between photos and leading margin for the first photo
-    BOOL isExistOnServer;
+    BOOL isExistOnServer; // Flag for availability record on server
+    UIView *backgroundView; // View for activity indicator
 }
 
-@property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *typeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *addressLabel;
@@ -278,6 +278,7 @@
     UIAlertAction *shareAction = [UIAlertAction actionWithTitle:@"Upload to Cloud"
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action) {
+                                                                [self showActivityIndicator];
                                                                 [self sendToParseCom];
                                                             }];
     [alert addAction:shareAction];
@@ -297,17 +298,43 @@
         double longitude = self.record.location.coordinate.longitude;
         PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:latitude longitude:longitude];
         
-        // Initialize CLLocation property of the Record in the following way:
-        //CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-        
+        NSNull *zeroValue = [NSNull null];
         recordObject[@"name"] = self.record.name;
-        recordObject[@"type"] = self.record.type;
-        recordObject[@"address"] = self.record.address;
-        recordObject[@"point"] = point;
-        recordObject[@"rating"] = @(self.record.rating);
-        recordObject[@"price"] = @(self.record.price);
-        recordObject[@"photosKeys"] = self.record.photosKeys;
-        recordObject[@"notes"] = self.record.notes;
+        if (self.record.type) {
+            recordObject[@"type"] = self.record.type;
+        } else {
+            recordObject[@"type"] = zeroValue;
+        }
+        if (self.record.address) {
+            recordObject[@"address"] = self.record.address;
+        } else {
+            recordObject[@"address"] = zeroValue;
+        }
+        if (self.record.location) {
+            recordObject[@"point"] = point;
+        } else {
+            recordObject[@"point"] = zeroValue;
+        }
+        if (self.record.rating) {
+            recordObject[@"rating"] = @(self.record.rating);
+        } else {
+            recordObject[@"rating"] = zeroValue;
+        }
+        if (self.record.price) {
+            recordObject[@"price"] = @(self.record.price);
+        } else {
+            recordObject[@"price"] = zeroValue;
+        }
+        if (self.record.photosKeys) {
+            recordObject[@"photosKeys"] = self.record.photosKeys;
+        } else {
+            recordObject[@"photosKeys"] = zeroValue;
+        }
+        if (self.record.notes) {
+            recordObject[@"notes"] = self.record.notes;
+        } else {
+            recordObject[@"notes"] = zeroValue;
+        }
         [recordObject saveInBackground];
         
         for (NSString *key in self.record.photosKeys) {
@@ -319,39 +346,20 @@
             photoObject[@"photoFile"] = imageFile;
             [photoObject saveInBackground];
         }
-    }
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully uploaded"
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
                                                             style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {}];
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self dropActivityIndicator];
+                                                          }];
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (BOOL)isAlreadyExist {
-    
-    CGFloat barHeight = self.navigationController.navigationBar.frame.size.height;
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height +500)];
-    backgroundView.backgroundColor = [UIColor lightGrayColor];
-    backgroundView.alpha = 0.5;
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityView.color = [UIColor blackColor];
-    CGPoint centerPoint = CGPointMake(backgroundView.center.x, backgroundView.center.y - barHeight);
-    activityView.center = centerPoint;
-    [activityView startAnimating];
-    [backgroundView addSubview:activityView];
-    
-    //UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
-    //UIView* view = mainWindow.subviews[0];
-    //[view addSubview:backgroundView];
-    
-
-    
-    [self.notesView addSubview:backgroundView];
-    [self.mainView bringSubviewToFront:backgroundView];
-
     isExistOnServer = NO;
     
     double latitude = self.record.location.coordinate.latitude;
@@ -378,7 +386,9 @@
                 
                 UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
                                                                         style:UIAlertActionStyleDefault
-                                                                      handler:^(UIAlertAction *action) {}];
+                                                                      handler:^(UIAlertAction *action) {
+                                                                          [self dropActivityIndicator];
+                                                                      }];
                 [alert addAction:defaultAction];
                 [self presentViewController:alert animated:YES completion:nil];
                 isExistOnServer = YES;
@@ -387,8 +397,30 @@
     } else {
         isExistOnServer = NO;
     }
-    [backgroundView removeFromSuperview];
     return isExistOnServer;
+}
+
+- (void)showActivityIndicator {
+    backgroundView = [[UIView alloc] initWithFrame:self.view.frame];
+    backgroundView.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
+    backgroundView.alpha = 0.5;
+    
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    activityView.color = [UIColor blackColor];
+    CGPoint centerPoint = CGPointMake(backgroundView.center.x, backgroundView.center.y);
+    activityView.center = centerPoint;
+    [activityView startAnimating];
+    
+    [backgroundView addSubview:activityView];
+    
+    [self.view addSubview:backgroundView];
+    [self.view bringSubviewToFront:backgroundView];
+}
+
+-(void)dropActivityIndicator {
+    [backgroundView removeFromSuperview];
 }
 
 /*

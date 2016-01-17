@@ -1139,14 +1139,14 @@
                         <viewControllerLayoutGuide type="top" id="ikI-eh-sht"/>
                         <viewControllerLayoutGuide type="bottom" id="EPN-d8-rQm"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="v8I-xF-XrP" userLabel="Main View">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="v8I-xF-XrP" userLabel="Topmost View">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="663"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09u-V7-oNw">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="663"/>
                                 <subviews>
-                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VHB-R6-IW1">
+                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VHB-R6-IW1" userLabel="Main View">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="663"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label for name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLN-sE-XAX" userLabel="Name">
@@ -1306,7 +1306,6 @@
                         <outlet property="addressLabel" destination="IHd-qy-0IR" id="q2s-eJ-aRW"/>
                         <outlet property="distanceLabel" destination="Dhv-DS-pUG" id="R90-RT-93v"/>
                         <outlet property="googleMapView" destination="3EA-aE-usv" id="Abl-gt-IU6"/>
-                        <outlet property="mainView" destination="v8I-xF-XrP" id="eol-Ui-GLc"/>
                         <outlet property="mapView" destination="5aN-Tt-161" id="Lw8-bK-Mqg"/>
                         <outlet property="nameLabel" destination="bLN-sE-XAX" id="rej-co-dpT"/>
                         <outlet property="notesView" destination="aFU-BX-IPM" id="M92-eO-weP"/>
