@@ -80,7 +80,6 @@
     [self addImages];
     
     self.notesView.text = self.record.notes;
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -279,7 +278,7 @@
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action) {
                                                                 [self showActivityIndicator];
-                                                                [self sendToParseCom];
+                                                                [self sendToParse];
                                                             }];
     [alert addAction:shareAction];
     
@@ -291,8 +290,61 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)sendToParseCom {
-    if ([self isAlreadyExist] == NO) {
+-(void)sendToParse {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkResult:)
+                                                 name:@"isAlreadyExist"
+                                               object:nil];
+    isExistOnServer = NO;
+    
+    double latitude = self.record.location.coordinate.latitude;
+    double longitude = self.record.location.coordinate.longitude;
+    PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:latitude longitude:longitude];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"RecordObject"];
+    [query whereKey:@"name" equalTo:self.record.name];
+    //[query whereKey:@"type" equalTo:self.record.type];
+    //[query whereKey:@"address" equalTo:self.record.address];
+    [query whereKey:@"point" equalTo:point];
+    //[query whereKey:@"rating" equalTo:@(self.record.rating)];
+    //[query whereKey:@"price" equalTo:@(self.record.price)];
+    //[query whereKey:@"photosKeys" equalTo:self.record.photosKeys];
+    //[query whereKey:@"notes" equalTo:self.record.notes];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objectsArray, NSError *error) {
+        NSString *isExistOnServerString;
+        if (!error) {
+            if ([objectsArray count] > 0) {
+                //for (PFObject *object in scoreArray) {
+                //if ([object[@"photosKeys"] isEqualToArray:self.record.photosKeys]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"This record is already exists on server"
+                                                                               message:nil
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction *action) {
+                                                                          [self dropActivityIndicator];
+                                                                      }];
+                [alert addAction:defaultAction];
+                [self presentViewController:alert animated:YES completion:nil];
+                isExistOnServerString = @"YES";
+                //}
+                //}
+            } else {
+                isExistOnServerString = @"NO";
+            }
+        } else {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isAlreadyExist" object:self userInfo:@{@"isAlreadyExist":isExistOnServerString}];
+    }];
+}
+
+- (void)checkResult:(NSNotification *)notification {
+    NSString *note = notification.userInfo[@"isAlreadyExist"];
+    if (![note isEqualToString:@"YES"]) {
         PFObject *recordObject = [PFObject objectWithClassName:@"RecordObject"];
         double latitude = self.record.location.coordinate.latitude;
         double longitude = self.record.location.coordinate.longitude;
@@ -346,58 +398,17 @@
             photoObject[@"photoFile"] = imageFile;
             [photoObject saveInBackground];
         }
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully uploaded"
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                              [self dropActivityIndicator];
-                                                          }];
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully uploaded"
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  [self dropActivityIndicator];
+                                                              }];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
-}
-
-- (BOOL)isAlreadyExist {
-    isExistOnServer = NO;
-    
-    double latitude = self.record.location.coordinate.latitude;
-    double longitude = self.record.location.coordinate.longitude;
-    PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:latitude longitude:longitude];
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"RecordObject"];
-    [query whereKey:@"name" equalTo:self.record.name];
-    //[query whereKey:@"type" equalTo:self.record.type];
-    //[query whereKey:@"address" equalTo:self.record.address];
-    [query whereKey:@"point" equalTo:point];
-    //[query whereKey:@"rating" equalTo:@(self.record.rating)];
-    //[query whereKey:@"price" equalTo:@(self.record.price)];
-                    //[query whereKey:@"photosKeys" equalTo:self.record.photosKeys];
-    //[query whereKey:@"notes" equalTo:self.record.notes];
-    
-    NSArray* scoreArray = [query findObjects];
-    if ([scoreArray count] > 0) {
-        //for (PFObject *object in scoreArray) {
-            //if ([object[@"photosKeys"] isEqualToArray:self.record.photosKeys]) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"This record is already exists on server"
-                                                                               message:nil
-                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
-                                                                        style:UIAlertActionStyleDefault
-                                                                      handler:^(UIAlertAction *action) {
-                                                                          [self dropActivityIndicator];
-                                                                      }];
-                [alert addAction:defaultAction];
-                [self presentViewController:alert animated:YES completion:nil];
-                isExistOnServer = YES;
-            //}
-        //}
-    } else {
-        isExistOnServer = NO;
-    }
-    return isExistOnServer;
 }
 
 - (void)showActivityIndicator {
@@ -422,15 +433,5 @@
 -(void)dropActivityIndicator {
     [backgroundView removeFromSuperview];
 }
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
