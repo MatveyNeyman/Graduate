@@ -84,12 +84,12 @@
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *uploadAction = [UIAlertAction actionWithTitle:@"Upload"
+    UIAlertAction *downloadAction = [UIAlertAction actionWithTitle:@"Download"
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action) {
                                                             [self uploadRecord:record atIndexPath:indexPath];
                                                         }];
-    [alert addAction:uploadAction];
+    [alert addAction:downloadAction];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel
@@ -202,7 +202,7 @@
         [self showActivityIndicatorForCell:cell atIndexPath:indexPath];
         //for (NSString *key in record.photosKeys) {
         for (int i = 0; i < record.photosKeys.count; i++) {
-            NSLog(@"record.photosKeys.count %d", record.photosKeys.count);
+            NSLog(@"record.photosKeys.count %lu", (unsigned long)record.photosKeys.count);
             NSString *key = record.photosKeys[i];
             if (![[PhotosStore photosStore] imageForKey:key]) {
                 PFQuery *query = [PFQuery queryWithClassName:@"PhotoObject"];

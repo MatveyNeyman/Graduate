@@ -16,7 +16,7 @@
 @import GoogleMaps;
 #import <Parse/Parse.h>
 
-@interface RecordViewController () <CLLocationManagerDelegate, /*MKMapViewDelegate,*/ GMSMapViewDelegate>
+@interface RecordViewController () </*CLLocationManagerDelegate, MKMapViewDelegate,*/ GMSMapViewDelegate>
 {
     CGFloat iconSize;
     UIView *mainView; // View with stars and coins
@@ -36,8 +36,8 @@
 @property (strong, nonatomic) IBOutlet UITextView *notesView;
 @property (strong, nonatomic) IBOutlet GMSMapView *googleMapView;
 
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CLLocation *currentLocation;
+//@property (strong, nonatomic) CLLocationManager *locationManager;
+//@property (strong, nonatomic) CLLocation *currentLocation;
 //@property (strong, nonatomic) CLGeocoder *geocoder;
 @property (nonatomic) CreateRecordViewController *createRecordViewController;
 @property (nonatomic) NSMutableDictionary<NSNumber *, NSString *> *tagPhotoKey;
@@ -57,10 +57,10 @@
     // Recognize the view to add icons
     mainView = [self.view viewWithTag:2];
     
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    [self.locationManager requestWhenInUseAuthorization];
-    self.currentLocation = self.locationManager.location;
+    //self.locationManager = [[CLLocationManager alloc] init];
+    //self.locationManager.delegate = self;
+    //[self.locationManager requestWhenInUseAuthorization];
+    //self.currentLocation = self.locationManager.location;
     
     [self showRecordLocation:self.record.location];
     
