@@ -93,7 +93,9 @@
         self.photosKeys = self.record.photosKeys;
         for (NSString *key in self.photosKeys) {
             UIImage *image = [[PhotosStore photosStore] imageForKey:key];
-            [self addImage:image withKey:key];
+            if (image) {
+                [self addImage:image withKey:key];
+            }
         }
         self.notesTextView.text = self.record.notes;
     }

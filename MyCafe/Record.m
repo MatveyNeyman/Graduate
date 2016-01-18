@@ -95,11 +95,26 @@
 
 - (BOOL)isEqual:(id)object {
     Record *record = (Record *)object;
+    /*
+    double latSelf = self.location.coordinate.latitude;
+    double lonSelf = self.location.coordinate.longitude;
+    double latRec = self.location.coordinate.latitude;
+    double lonRec = self.location.coordinate.longitude;
+    
+    NSNumber *latitudeSelf = @(self.location.coordinate.latitude);
+    NSNumber *longitudeSelf = @(self.location.coordinate.longitude);
+    
+    NSNumber *latitudeRecord = @(record.location.coordinate.latitude);
+    NSNumber *longitudeRecord = @(record.location.coordinate.longitude);
+    
+    double fabs1 = fabs(self.location.coordinate.latitude - record.location.coordinate.latitude);
+    double fabs2 = fabs(self.location.coordinate.longitude - record.location.coordinate.longitude);
+    */
     if ([self.name isEqualToString:record.name] &&
         [self.type isEqualToString:record.type] &&
         [self.address isEqualToString:record.address] &&
-        (self.location.coordinate.latitude == record.location.coordinate.latitude) &&
-        /*(self.location.coordinate.longitude == record.location.coordinate.longitude) &&*/
+        (fabs(self.location.coordinate.latitude - record.location.coordinate.latitude) < 0.000001) &&
+        (fabs(self.location.coordinate.longitude - record.location.coordinate.longitude) < 0.000001) &&
         (self.rating == record.rating) &&
         (self.price == record.price) &&
         [self.photosKeys isEqualToArray:record.photosKeys] &&
@@ -111,25 +126,3 @@
 }
 
 @end
-
-/*
- if ([self.name isEqualToString:record.name]) {
- if ([self.type isEqualToString:record.type]) {
- if ([self.address isEqualToString:record.address]) {
- if ((self.location.coordinate.latitude == record.location.coordinate.latitude)) {
- //if ((self.location.coordinate.longitude == record.location.coordinate.longitude)) {
- if ((self.rating == record.rating)) {
- if ( (self.price == record.price)) {
- if ([self.photosKeys isEqualToArray:record.photosKeys]) {
- if ([self.notes isEqualToString:record.notes]) {
- return YES;
- }
- }
- }
- 
- }
- //}
- }
- }
- }
- */

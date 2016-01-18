@@ -194,60 +194,62 @@
 - (void)addImages {
     for (NSString *key in self.record.photosKeys) {
         UIImage *image = [[PhotosStore photosStore] imageForKey:key];
-        CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
-        CGFloat thumbnailWidth;     // Placeholder's width
-        CGFloat thumbnailHeight;    // Placeholder's height
-        CGFloat originY;            // Placeholder's center point
-        
-        // Check portrait or landscape view
-        if (aspectRatio >= 1.0f) {
-            // Portrait
-            thumbnailWidth = 118.0f / aspectRatio;
-            thumbnailHeight = 118.0f;
-        } else {
-            // Landscape
-            thumbnailWidth = 118.0f;
-            thumbnailHeight = 118.0f * aspectRatio;
+        if (image) {
+            CGFloat aspectRatio = image.size.height / image.size.width; // Aspect ratio for taken/choosen image
+            CGFloat thumbnailWidth;     // Placeholder's width
+            CGFloat thumbnailHeight;    // Placeholder's height
+            CGFloat originY;            // Placeholder's center point
+            
+            // Check portrait or landscape view
+            if (aspectRatio >= 1.0f) {
+                // Portrait
+                thumbnailWidth = 118.0f / aspectRatio;
+                thumbnailHeight = 118.0f;
+            } else {
+                // Landscape
+                thumbnailWidth = 118.0f;
+                thumbnailHeight = 118.0f * aspectRatio;
+            }
+            // Create the ImageView for thumbnails
+            originY = (self.photosView.frame.size.height - thumbnailHeight) / 2.0f;
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos, originY, thumbnailWidth, thumbnailHeight)];
+            
+            imageView.userInteractionEnabled = YES;
+            
+            imageView.tag = pos;
+            NSNumber *tag = @(imageView.tag);
+            
+            if (!self.tagPhotoKey) {
+                self.tagPhotoKey = [[NSMutableDictionary alloc] init];
+            }
+            self.tagPhotoKey[tag] = key;
+            
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImage:)];
+            tap.numberOfTapsRequired = 1;
+            
+            [imageView addGestureRecognizer:tap];
+            
+            // Resize the image
+            CGSize thumbnailSize;
+            thumbnailSize.width = thumbnailWidth;
+            thumbnailSize.height = thumbnailHeight;
+            UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0f);
+            [image drawInRect:CGRectMake(0.0f, 0.0f, thumbnailWidth, thumbnailHeight)];
+            UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            // Setup view's image using resized image
+            imageView.image = thumbnail;
+            
+            pos += thumbnailWidth + gap;
+            
+            // Resize photosView via modifying constraint initially set to zero
+            self.photosViewWidthEqualConstraint.constant = pos;
+            
+            [self.photosView addSubview:imageView];
+            
+            NSLog(@"self.record.photosKeys %@", self.record.photosKeys);
         }
-        // Create the ImageView for thumbnails
-        originY = (self.photosView.frame.size.height - thumbnailHeight) / 2.0f;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pos, originY, thumbnailWidth, thumbnailHeight)];
-        
-        imageView.userInteractionEnabled = YES;
-        
-        imageView.tag = pos;
-        NSNumber *tag = @(imageView.tag);
-        
-        if (!self.tagPhotoKey) {
-            self.tagPhotoKey = [[NSMutableDictionary alloc] init];
-        }
-        self.tagPhotoKey[tag] = key;
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImage:)];
-        tap.numberOfTapsRequired = 1;
-        
-        [imageView addGestureRecognizer:tap];
-        
-        // Resize the image
-        CGSize thumbnailSize;
-        thumbnailSize.width = thumbnailWidth;
-        thumbnailSize.height = thumbnailHeight;
-        UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0f);
-        [image drawInRect:CGRectMake(0.0f, 0.0f, thumbnailWidth, thumbnailHeight)];
-        UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-
-        // Setup view's image using resized image
-        imageView.image = thumbnail;
-        
-        pos += thumbnailWidth + gap;
-
-        // Resize photosView via modifying constraint initially set to zero
-        self.photosViewWidthEqualConstraint.constant = pos;
-
-        [self.photosView addSubview:imageView];
-        
-        NSLog(@"self.record.photosKeys %@", self.record.photosKeys);
     }
 }
 
@@ -334,11 +336,10 @@
             } else {
                 isExistOnServerString = @"NO";
             }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"isAlreadyExist" object:self userInfo:@{@"isAlreadyExist":isExistOnServerString}];
         } else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isAlreadyExist" object:self userInfo:@{@"isAlreadyExist":isExistOnServerString}];
     }];
 }
 
@@ -387,17 +388,25 @@
         } else {
             recordObject[@"notes"] = zeroValue;
         }
-        [recordObject saveInBackground];
         
-        for (NSString *key in self.record.photosKeys) {
-            PFObject *photoObject = [PFObject objectWithClassName:@"PhotoObject"];
-            UIImage *image = [[PhotosStore photosStore] imageForKey:key];
-            NSData *imageData = UIImagePNGRepresentation(image);
-            PFFile *imageFile = [PFFile fileWithName:key data:imageData];
-            photoObject[@"photoName"] = key;
-            photoObject[@"photoFile"] = imageFile;
-            [photoObject saveInBackground];
+        if (self.record.photosKeys) {
+            for (NSString *key in self.record.photosKeys) {
+                PFObject *photoObject = [PFObject objectWithClassName:@"PhotoObject"];
+                UIImage *image = [[PhotosStore photosStore] imageForKey:key];
+                //NSData *imageData = UIImagePNGRepresentation(image); // Too big files
+                NSData *imageData = UIImageJPEGRepresentation(image, 1);
+                if (imageData.length < 10485760) { // Max file size allowed by Parse
+                    PFFile *imageFile = [PFFile fileWithName:key data:imageData];
+                    photoObject[@"photoName"] = key;
+                    photoObject[@"photoFile"] = imageFile;
+                    [photoObject saveInBackground];
+                }
+            }
+            [recordObject saveInBackground];
+        } else {
+            [recordObject saveInBackground];
         }
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully uploaded"
                                                                        message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];

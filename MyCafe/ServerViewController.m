@@ -16,9 +16,11 @@
     UIImage *image;
     UIView *backgroundView;
     UIActivityIndicatorView *activityView;
+    UITableViewCell *selectedCell;
 }
 
 @property (nonatomic) NSMutableArray<Record *> *entries;
+@property (nonatomic) NSMutableArray<NSIndexPath *> *downloadingCellPaths;
 
 @end
 
@@ -47,6 +49,7 @@
                                                  name:@"imageDownloaded"
                                                object:nil];
      */
+    self.downloadingCellPaths = [NSMutableArray array];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,6 +67,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ServerCell" forIndexPath:indexPath];
     cell.textLabel.text = self.entries[indexPath.row].name;
     cell.detailTextLabel.text = self.entries[indexPath.row].address;
+    if ([self.downloadingCellPaths containsObject:indexPath]) {
+        [self showActivityIndicatorForCell:cell atIndexPath:indexPath];
+    }
     return cell;
 }
 
@@ -72,6 +78,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     Record *record = self.entries[indexPath.row];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:nil
@@ -80,7 +87,7 @@
     UIAlertAction *uploadAction = [UIAlertAction actionWithTitle:@"Upload"
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action) {
-                                                            [self uploadRecord:record];
+                                                            [self uploadRecord:record atIndexPath:indexPath];
                                                         }];
     [alert addAction:uploadAction];
     
@@ -112,13 +119,35 @@
                 //    [self findPhotoForKey:key];
                 //}
                 PFGeoPoint *point = object[@"point"];
-                CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+                CLLocation *location;
+                if ([point isKindOfClass:[NSNull class]]) {
+                    location = nil;
+                } else {
+                    location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+                }
+                
+                PFObject *ratingObject = object[@"rating"];
+                NSInteger rating;
+                if ([ratingObject isKindOfClass:[NSNull class]]) {
+                    rating = 0;
+                } else {
+                    rating = [object[@"rating"] intValue];
+                }
+                
+                PFObject *priceObject = object[@"price"];
+                NSInteger price;
+                if ([priceObject isKindOfClass:[NSNull class]]) {
+                    price = 0;
+                } else {
+                    price = [object[@"price"] intValue];
+                }
+                
                 Record *record = [[Record alloc] initWithName:object[@"name"]
                                                          type:object[@"type"]
                                                       address:object[@"address"]
                                                      location:location
-                                                       rating:[object[@"rating"] intValue]
-                                                        price:[object[@"price"] intValue]
+                                                       rating:rating
+                                                        price:price
                                                    photosKeys:object[@"photosKeys"]
                                                         notes:object[@"notes"]];
                 [self.entries addObject:record];
@@ -158,8 +187,8 @@
 //}
 */
 
-- (void)uploadRecord:(Record *)record {
-    
+- (void)uploadRecord:(Record *)record atIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = selectedCell;
     if ([[SharedData sharedData].listOfRecords containsObject:record]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"This record is already exists in my list"
                                                                        message:nil
@@ -170,7 +199,11 @@
         [alert addAction:defaultAction];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
-        for (NSString *key in record.photosKeys) {
+        [self showActivityIndicatorForCell:cell atIndexPath:indexPath];
+        //for (NSString *key in record.photosKeys) {
+        for (int i = 0; i < record.photosKeys.count; i++) {
+            NSLog(@"record.photosKeys.count %d", record.photosKeys.count);
+            NSString *key = record.photosKeys[i];
             if (![[PhotosStore photosStore] imageForKey:key]) {
                 PFQuery *query = [PFQuery queryWithClassName:@"PhotoObject"];
                 [query whereKey:@"photoName" equalTo:key];
@@ -180,15 +213,28 @@
                         PFFile *photo = photoObject[@"photoFile"];
                         NSData *imageData = [photo getData];
                         image = [UIImage imageWithData:imageData];
-                        [[PhotosStore photosStore] setImage:image forKey:key];
+                        if (image) {
+                            [[PhotosStore photosStore] setImage:image forKey:key];
+                        }
                     } else {
                         NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    }
+                    if (i == record.photosKeys.count - 1) {
+                        [self dropActivityIndicatorForCell:cell atIndexPath:indexPath];
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully added to my list"
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction *action) {}];
+                        [alert addAction:defaultAction];
+                        [self presentViewController:alert animated:YES completion:nil];
                     }
                 }];
             }
         }
         [[SharedData sharedData] addRecord:record];
-        
+        /*
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Record has been succesfully added to my list"
                                                                        message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -197,7 +243,20 @@
                                                               handler:^(UIAlertAction *action) {}];
         [alert addAction:defaultAction];
         [self presentViewController:alert animated:YES completion:nil];
+         */
     }
+}
+
+-(void)showActivityIndicatorForCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    UIActivityIndicatorView *smallActivityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [smallActivityView startAnimating];
+    cell.accessoryView = smallActivityView;
+    [self.downloadingCellPaths addObject:indexPath];
+}
+
+-(void)dropActivityIndicatorForCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    cell.accessoryView = nil;
+    [self.downloadingCellPaths removeObject:indexPath];
 }
 
 /*
